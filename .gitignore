@@ -1,0 +1,18 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+.venv/
+.env
+.ipynb_checkpoints/
+
+# OS
+.DS_Store
+
+# Caches / logs
+cache_fast/
+logs_paper/*.npz
+logs_paper/*.tmp
+.huggingface/
