@@ -30,7 +30,7 @@ pip install -U pip wheel
 pip install -r requirements.txt
 
 
-### 2) Datasets you need
+Datasets you need
 
 We train on E-DAIC and DAIC-WOZ. Obtain access from the official providers and place the data locally.
 
@@ -50,6 +50,8 @@ repo/
 ├─ fast_multimodal.py
 ├─ requirements.txt
 ├─ run_paper.sh
+├─ extractor.py
+├─ controller.py
 ├─ metadata_mapped.csv
 ├─ Detailed_PHQ8_Labels.csv
 ├─ data/                      # E-DAIC root (example)
