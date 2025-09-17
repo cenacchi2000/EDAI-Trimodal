@@ -30,3 +30,41 @@ pip install -U pip wheel
 pip install -r requirements.txt
 
 
+### 2) Datasets you need
+
+We train on E-DAIC and DAIC-WOZ. Obtain access from the official providers and place the data locally.
+
+Required CSVs (repo root by default)
+
+metadata_mapped.csv (must include: Participant_ID, PTSD Severity, and optionally PHQ_Score)
+
+Detailed_PHQ8_Labels.csv (must include: Participant_ID, PHQ_8Total)
+
+The script prefers PHQ_8Total for depression; falls back to PHQ_Score if missing. PTSD severity is taken from metadata_mapped.csv.
+
+Expected folder layout
+
+You can keep the two datasets in two separate roots (names customizable via flags):
+
+repo/
+├─ fast_multimodal.py
+├─ requirements.txt
+├─ run_paper.sh
+├─ metadata_mapped.csv
+├─ Detailed_PHQ8_Labels.csv
+├─ data/                      # E-DAIC root (example)
+│  ├─ 300_P/
+│  │  ├─ 300_AUDIO.wav
+│  │  ├─ 300_TRANSCRIPT.csv               # any *transcript*.csv works
+│  │  ├─ 300_openface_clnf.csv            # any PID + (clnf|openface|au|gaze|pose)
+│  │  └─ ...
+│  └─ ...
+└─ data_daicwoz/              # DAIC-WOZ root (example)
+   ├─ 302_P/
+   │  ├─ 302_AUDIO.wav
+   │  ├─ 302_TRANSCRIPT.csv
+   │  ├─ 302_openface_clnf.csv
+   │  └─ ...
+   └─ ...
+
+
