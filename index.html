@@ -85,6 +85,33 @@
     .cta-row{display:flex; gap:12px; justify-content:center; margin:26px 0 34px}
     .cta-row .chip{padding:11px 16px; font-weight:700}
 
+
+    /* === Pill buttons (exact look like the screenshot) === */
+.pill-row{
+  display:flex; gap:18px; justify-content:center; align-items:center;
+  margin:18px 0 36px; flex-wrap:wrap;
+}
+.pill{
+  appearance:none; border:0; border-radius:999px;
+  padding:14px 22px;
+  background:#1f2937; color:#fff;
+  font-weight:700; font-size:18px;
+  display:inline-flex; gap:12px; align-items:center;
+  text-decoration:none;
+  box-shadow:0 4px 14px rgba(15,23,42,.18);
+  transition:transform .12s ease, box-shadow .12s ease, background .12s ease;
+}
+.pill:hover{ transform:translateY(-1px); box-shadow:0 8px 22px rgba(15,23,42,.18); background:#111827; }
+.pill:focus-visible{ outline:0; box-shadow:0 0 0 4px rgba(59,130,246,.28); }
+.pill svg{ width:22px; height:22px; flex:0 0 22px; color:#d8dee8; }
+
+    .pdf-placeholder{
+  display:flex; align-items:center; gap:14px; padding:16px 18px;
+  border:1px dashed rgba(34,80,244,.35);
+  background:rgba(34,80,244,.04);
+  border-radius:14px; margin-top:8px;
+}
+
     /* ===== Architecture hero image (centered, frameless) ===== */
     .arch-wrap{display:flex; justify-content:center}
     .arch{
@@ -174,18 +201,44 @@
 
       <p class="subtitle">Manuscript submitted to <strong>IEEE Transactions on Affective Computing</strong> · 2025</p>
 
-      <p class="authors">
-        <a href="https://cenacchi2000.github.io/filippocenacchi.github.io/" target="_blank" rel="noopener">Filippo Cenacchi</a> ·
-        <a href="https://scholar.google.com.au/citations?user=p0BxAfAAAAAJ&hl=en" target="_blank" rel="noopener">Deborah Richards</a> ·
-        <a href="https://scholar.google.com.au/citations?user=cDs3DM8AAAAJ&hl=en" target="_blank" rel="noopener">Longbing Cao</a>
-        — Macquarie University
-      </p>
+      <div class="authors">
+  <div class="names">
+    <a href="https://cenacchi2000.github.io/filippocenacchi.github.io/" target="_blank" rel="noopener">Filippo Cenacchi</a> ·
+    <a href="https://scholar.google.com.au/citations?user=p0BxAfAAAAAJ&hl=en" target="_blank" rel="noopener">Deborah Richards</a> ·
+    <a href="https://scholar.google.com.au/citations?user=cDs3DM8AAAAJ&hl=en" target="_blank" rel="noopener">Longbing Cao</a>
+  </div>
+  <div class="affil">Macquarie University</div>
+</div>
 
-      <div class="cta-row">
-        <a class="chip primary" href="#manuscript">Paper</a>
-        <a class="chip" href="https://github.com/cenacchi2000/EDAI-Trimodal" target="_blank" rel="noopener">Code</a>
-        <a class="chip" href="#figures">Figures</a>
-      </div>
+
+     <div class="pill-row">
+  <!-- Paper -->
+  <a class="pill" href="#manuscript" aria-label="Open paper section">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/>
+    </svg>
+    <span>Paper</span>
+  </a>
+
+  <!-- Code -->
+  <a class="pill" href="https://github.com/cenacchi2000/EDAI-Trimodal" target="_blank" rel="noopener" aria-label="Open code repository">
+    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+      <path d="M12 .5a11.5 11.5 0 0 0-3.64 22.41c.57.1.78-.25.78-.55v-2.1c-3.18.69-3.85-1.37-3.85-1.37-.52-1.32-1.27-1.67-1.27-1.67-1.04-.71.08-.69.08-.69 1.15.08 1.76 1.18 1.76 1.18 1.02 1.75 2.68 1.24 3.33.95.1-.76.4-1.24.72-1.53-2.54-.29-5.22-1.27-5.22-5.65 0-1.25.45-2.28 1.18-3.08-.12-.29-.51-1.46.11-3.04 0 0 .96-.31 3.15 1.18a10.9 10.9 0 0 1 5.73 0c2.19-1.49 3.15-1.18 3.15-1.18.62 1.58.23 2.75.11 3.04.73.8 1.18 1.83 1.18 3.08 0 4.39-2.69 5.35-5.25 5.64.41.36.77 1.07.77 2.16v3.2c0 .3.21.66.79.55A11.5 11.5 0 0 0 12 .5z"/>
+    </svg>
+    <span>Code</span>
+  </a>
+
+  <!-- Figures -->
+  <a class="pill" href="#figures" aria-label="Jump to figures">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <rect x="3" y="4" width="18" height="14" rx="2" ry="2"></rect>
+      <circle cx="8.5" cy="9.5" r="1.5"></circle>
+      <path d="M21 16l-5.5-5.5L9 17l-3-3-3 3"></path>
+    </svg>
+    <span>Figures</span>
+  </a>
+</div>
+
 
       <!-- Architecture image, centered, no frame -->
       <div class="arch-wrap">
@@ -263,7 +316,7 @@
         </figure>
 
         <figure class="fig">
-          <img src="assets/decision_curve_DEPRESSION.png" alt="Decision curves depression" data-zoom>
+          <img src="assets/decision_curve_DEP_fusion_xgb_perclass.png" alt="Decision curves depression" data-zoom>
           <p><strong>Decision-curve analysis (Depression).</strong> Fusion delivers higher net benefit across thresholds.</p>
         </figure>
 
@@ -350,18 +403,41 @@
 
   <!-- ===== MANUSCRIPT (PDF) ===== -->
   <section id="manuscript">
-    <div class="container">
-      <h2>Full Manuscript</h2>
-      <div class="card">
-        <p class="lead">For 1:1, word-for-word viewing, either drop your PDF at <code>assets/paper.pdf</code> (the iframe below will load it), or click the button to open the arXiv PDF.</p>
-        <div class="cta-row" style="justify-content:flex-start">
-          <a class="chip primary" href="https://arxiv.org/pdf/2510.20239.pdf" target="_blank" rel="noopener">Open arXiv PDF</a>
+  <div class="container">
+    <h2>Full Manuscript</h2>
+    <div class="card">
+      <p class="lead">
+        For 1:1, word-for-word viewing, either drop your PDF at
+        <code>assets/paper.pdf</code> (the viewer below loads it automatically),
+        or open the arXiv PDF.
+      </p>
+      <div class="cta-row" style="justify-content:flex-start">
+        <a class="chip primary" href="https://arxiv.org/pdf/2510.20239.pdf" target="_blank" rel="noopener">
+          Open arXiv PDF
+        </a>
+      </div>
+
+      <!-- Placeholder (shown if the local PDF is missing) -->
+      <div id="pdf-fallback" class="pdf-placeholder" hidden>
+        <div>
+          <strong>No local PDF found.</strong>
+          <div style="color:#5b6b80;margin-top:4px">
+            Add <code>assets/paper.pdf</code> to this repo (case-sensitive) to enable inline viewing.
+          </div>
         </div>
-        <!-- If you place assets/paper.pdf in the repo, this iframe will show it; otherwise it will fail silently without darkening the page. -->
-        <iframe src="assets/paper.pdf#view=FitH" style="width:100%; height:70vh; border:1px solid rgba(15,36,65,.1); border-radius:14px"></iframe>
+      </div>
+
+      <!-- PDF viewer shell (hidden until we confirm the file exists) -->
+      <div id="pdf-shell" hidden>
+        <iframe id="pdf-frame"
+                title="Manuscript PDF"
+                style="width:100%; height:70vh; border:1px solid rgba(15,36,65,.10); border-radius:14px">
+        </iframe>
       </div>
     </div>
-  </section>
+  </div>
+</section>
+
 
   <!-- ===== LIGHTBOX (no dark page) ===== -->
   <div class="lightbox" id="lightbox" aria-hidden="true">
@@ -376,6 +452,29 @@
       <div>Static, single-file site. Drop images in <code>assets/</code> with the exact filenames above and push to GitHub Pages.</div>
     </div>
   </footer>
+  <script>
+(async ()=>{
+  const url = 'assets/paper.pdf';
+  const shell = document.getElementById('pdf-shell');
+  const frame = document.getElementById('pdf-frame');
+  const fallback = document.getElementById('pdf-fallback');
+
+  try {
+    const res = await fetch(url, { method: 'HEAD', cache: 'no-store' });
+    const isPDF = res.ok && (res.headers.get('content-type')||'').includes('pdf');
+    if (!isPDF) throw new Error('Not a PDF or missing');
+
+    // Only set src after confirming it exists (prevents the Chrome “Failed to load” pane)
+    frame.src = url + '#view=FitH';
+    shell.hidden = false;
+    fallback.hidden = true;
+  } catch (e) {
+    // Clean fallback — no iframe, no error UI
+    shell.hidden = true;
+    fallback.hidden = false;
+  }
+})();
+</script>
 
   <script>
     // Lightbox without dark scrim
