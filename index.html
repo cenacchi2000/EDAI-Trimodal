@@ -3,284 +3,292 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Dementia & MCI Detection from Facial Expressions </title>
-  <meta name="description" content="A clean, single‑file template for a CVPR‑style project page (MemFlow aesthetic)." />
-  <meta property="og:title" content="Project Title — Optical Flow with Memory" />
-  <meta property="og:description" content="A clean, single‑file template for a CVPR‑style project page (MemFlow aesthetic)." />
+  <title>Tri‑Modal Severity Fused Diagnosis — Depression & PTSD</title>
+  <meta name="description" content="Project page for 'Tri‑Modal Severity Fused Diagnosis across Depression and Post‑traumatic Stress Disorders'." />
+  <meta property="og:title" content="Tri‑Modal Severity Fused Diagnosis — Depression & PTSD" />
+  <meta property="og:description" content="Tri‑modal fusion (text‑audio‑face) for graded severity across depression (PHQ‑8) and PTSD, with calibrated late fusion and clinician‑oriented evaluation." />
   <meta property="og:type" content="website" />
-  <meta name="theme-color" content="#101114" />
+  <meta name="theme-color" content="#f7f9fc" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
   <style>
     :root{
-      --bg:#0f1115;          /* page bg */
-      --panel:#141821;       /* cards / panels */
-      --text:#e7e9ea;        /* primary text */
-      --muted:#a0a7b4;       /* secondary text */
-      --accent:#7dd3fc;      /* cyan */
-      --accent-2:#c4b5fd;    /* violet */
-      --link:#93c5fd;        /* light blue */
-      --ring:rgba(125,211,252,.5);
-      --shadow:0 10px 30px rgba(0,0,0,.45);
+      /* Light, airy, advanced aesthetic */
+      --bg:#f6f8fb;          /* page bg */
+      --bg2:#ffffff;         /* panels */
+      --ink:#0f172a;         /* primary text */
+      --muted:#475569;       /* secondary text */
+      --line:#e5eaf2;        /* borders */
+      --accent:#2563eb;      /* blue */
+      --accent-2:#7c3aed;    /* violet */
+      --accent-3:#06b6d4;    /* cyan */
       --radius:18px;
+      --shadow:0 10px 30px rgba(15,23,42,.10);
       --max:1100px;
     }
     *{box-sizing:border-box}
     html,body{height:100%}
-    body{
-      margin:0; font-family:Inter,ui-sans-serif,system-ui,Segoe UI,Roboto,Helvetica,Arial,"Apple Color Emoji","Segoe UI Emoji";
-      background:radial-gradient(1200px 700px at 20% -10%, rgba(125,211,252,.10), transparent 70%),
-                 radial-gradient(1200px 700px at 80% -20%, rgba(196,181,253,.10), transparent 70%),
-                 var(--bg);
-      color:var(--text);
-      -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
-    }
-    a{color:var(--link); text-decoration:none}
+    body{margin:0;font-family:Inter,system-ui,Segoe UI,Roboto,Helvetica,Arial; background:radial-gradient(1100px 600px at 20% -10%, rgba(37,99,235,.08), transparent 70%), radial-gradient(1100px 600px at 80% -20%, rgba(124,58,237,.08), transparent 70%), var(--bg); color:var(--ink);}
+    a{color:var(--accent); text-decoration:none}
     a:hover{text-decoration:underline}
     .container{max-width:var(--max); margin:0 auto; padding:0 20px}
-    /* ─── Nav ─────────────────────────────────────────────────────────── */
-    .nav{position:sticky; top:0; z-index:50; backdrop-filter:blur(8px); background:rgba(16,17,20,.6); border-bottom:1px solid rgba(255,255,255,.06)}
+    /* Nav */
+    .nav{position:sticky; top:0; z-index:50; backdrop-filter:blur(8px); background:rgba(255,255,255,.7); border-bottom:1px solid var(--line)}
     .navwrap{display:flex; align-items:center; justify-content:space-between; height:64px}
-    .brand{display:flex; gap:10px; align-items:center; font-weight:700; letter-spacing:.3px}
-    .brand-dot{width:10px;height:10px;border-radius:999px;background:linear-gradient(135deg,var(--accent),var(--accent-2)); box-shadow:0 0 0 4px rgba(125,211,252,.2)}
-    .nav a{color:var(--text); opacity:.85}
+    .brand{display:flex; gap:10px; align-items:center; font-weight:800; letter-spacing:.2px}
+    .dot{width:10px;height:10px;border-radius:999px;background:linear-gradient(135deg,var(--accent),var(--accent-2)); box-shadow:0 0 0 6px rgba(37,99,235,.15)}
     .navlinks{display:flex; gap:18px}
+    .navlinks a{color:var(--ink)}
     @media (max-width:780px){.navlinks{display:none}}
-    /* ─── Hero ────────────────────────────────────────────────────────── */
-    .hero{padding:90px 0 40px;text-align:center}
-    .title{font-size:clamp(32px,6vw,54px); font-weight:800; line-height:1.05; letter-spacing:-.02em; margin:0 auto; max-width:900px}
-    .subtitle{font-size:clamp(16px,2.7vw,20px); color:var(--muted); margin-top:14px}
-    .authors{margin-top:20px; color:#cbd5e1}
-    .affil{color:var(--muted); margin-top:6px}
+    /* Hero */
+    .hero{padding:80px 0 36px; text-align:center}
+    .title{font-size:clamp(32px,6vw,52px); font-weight:800; line-height:1.05; letter-spacing:-.02em; margin:0 auto; max-width:900px}
+    .subtitle{font-size:clamp(16px,2.6vw,20px); color:var(--muted); margin-top:14px}
+    .affil{color:#64748b; margin-top:6px}
     .cta{display:flex; flex-wrap:wrap; gap:12px; justify-content:center; margin-top:26px}
-    .btn{--bg:linear-gradient(135deg,var(--accent),var(--accent-2)); display:inline-flex; align-items:center; gap:10px; padding:12px 16px; font-weight:600; border-radius:12px; background:var(--panel); border:1px solid rgba(255,255,255,.08); box-shadow:var(--shadow)}
-    .btn.primary{background:var(--bg); color:#0b1220; border:none}
-    .btn:hover{filter:brightness(1.08)}
-    .btn svg{width:18px; height:18px}
-    /* ─── Teaser / Chart Panel ───────────────────────────────────────── */
-    .panel{background:linear-gradient(180deg,rgba(255,255,255,.03),rgba(255,255,255,.02)); border:1px solid rgba(255,255,255,.07); box-shadow:var(--shadow); border-radius:var(--radius); padding:22px}
-    .grid{display:grid; grid-template-columns:1.2fr .8fr; gap:22px; margin:26px auto; max-width:var(--max)}
+    .btn{display:inline-flex; align-items:center; gap:10px; padding:12px 16px; font-weight:600; border-radius:12px; background:var(--bg2); border:1px solid var(--line); box-shadow:var(--shadow)}
+    .btn.primary{background:linear-gradient(135deg,#dbeafe,#ede9fe); border-color:#dbeafe}
+    .btn svg{width:18px;height:18px}
+    /* Panels */
+    .panel{background:var(--bg2); border:1px solid var(--line); border-radius:var(--radius); box-shadow:var(--shadow); padding:22px}
+    .grid{display:grid; grid-template-columns:1fr 1fr; gap:22px; margin:26px auto; max-width:var(--max)}
     @media (max-width:980px){.grid{grid-template-columns:1fr}}
-    .figure{background:rgba(255,255,255,.02); border:1px dashed rgba(255,255,255,.1); border-radius:14px; display:flex; align-items:center; justify-content:center; min-height:320px}
-    .caption{color:var(--muted); font-size:.95rem; margin-top:10px}
-    /* ─── Sections ───────────────────────────────────────────────────── */
+    .figure{background:#fafbff; border:1px dashed #e5eaf2; border-radius:14px; display:flex; align-items:center; justify-content:center; min-height:320px}
+    .figure img{max-width:100%; border-radius:12px}
+    .caption{color:#64748b; font-size:.95rem; margin-top:10px}
+    /* Sections */
     section{padding:36px 0}
     h2{font-size:clamp(22px,3.5vw,30px); margin:0 0 14px; letter-spacing:-.01em}
-    p{line-height:1.7; color:#dbe0e6}
+    p{line-height:1.72; color:#1f2937}
+    .two{display:grid; grid-template-columns:1fr 1fr; gap:18px}
+    @media (max-width:920px){.two{grid-template-columns:1fr}}
     .cards{display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:14px}
-    .card{background:var(--panel); border:1px solid rgba(255,255,255,.07); border-radius:14px; padding:16px; display:flex; gap:12px; align-items:center; justify-content:space-between}
-    .badge{font-size:.8rem; color:var(--muted)}
-    /* Results grid */
-    .results{display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:16px}
-    .thumb{aspect-ratio:16/10; border-radius:12px; background:#0b0e13; border:1px solid rgba(255,255,255,.06); overflow:hidden}
-    .thumb img{width:100%; height:100%; object-fit:cover}
+    .card{background:var(--bg2); border:1px solid var(--line); border-radius:14px; padding:16px; display:flex; gap:12px; align-items:center; justify-content:space-between}
+    .badge{font-size:.8rem; color:#64748b}
+    /* Figure gallery */
+    .gallery{display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:16px}
+    figure{background:var(--bg2); border:1px solid var(--line); border-radius:14px; box-shadow:var(--shadow); margin:0; padding:12px}
+    figcaption{font-size:.9rem; color:#475569; margin-top:8px}
+    /* Tables */
+    table{width:100%; border-collapse:separate; border-spacing:0; background:var(--bg2); border:1px solid var(--line); border-radius:14px; overflow:hidden}
+    th,td{padding:10px 12px; border-bottom:1px solid var(--line); text-align:left; font-size:.95rem}
+    th{background:#f8fafc}
+    tr:last-child td{border-bottom:none}
     /* BibTeX */
-    pre{background:#0a0d12; border:1px solid rgba(255,255,255,.08); padding:16px; border-radius:12px; overflow:auto}
-    .copy{margin-left:8px; padding:8px 10px; border-radius:10px; background:#18202b; border:1px solid rgba(255,255,255,.08); color:#cfe1ff}
+    pre{background:#f8fafc; border:1px solid var(--line); padding:16px; border-radius:12px; overflow:auto}
+    .copy{margin-left:8px; padding:8px 10px; border-radius:10px; background:#eef2ff; border:1px solid #e0e7ff; color:#1e3a8a; font-weight:600}
     .copy:hover{filter:brightness(1.05)}
     /* Footer */
-    footer{border-top:1px solid rgba(255,255,255,.06); color:var(--muted); padding:30px 0 60px; text-align:center}
+    footer{border-top:1px solid var(--line); color:#475569; padding:30px 0 60px; text-align:center}
     .footlinks{display:flex; gap:14px; justify-content:center; flex-wrap:wrap}
     .mono{font-family: ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace}
   </style>
 </head>
 <body>
-  <!-- ───────────────────────── NAV ───────────────────────── -->
   <nav class="nav">
     <div class="container navwrap">
-      <div class="brand"><span class="brand-dot"></span> <span>Project Page</span></div>
+      <div class="brand"><span class="dot"></span> <span>Tri‑Modal Severity Fused Diagnosis</span></div>
       <div class="navlinks mono">
         <a href="#abstract">Abstract</a>
         <a href="#paper">Paper & Code</a>
+        <a href="#figures">Figures</a>
         <a href="#results">Results</a>
         <a href="#bibtex">BibTeX</a>
       </div>
     </div>
   </nav>
 
-  <!-- ───────────────────────── HERO ───────────────────────── -->
   <header class="hero container">
-    <h1 class="title">Dementia &amp; MCI Detection Based on Comprehensive Facial Expression Analysis</h1>
-    <p class="subtitle">IEEE Journal of Biomedical and Health Informatics (JBHI), 2025 · Taichi Okunishi, Chuheng Zheng, Mondher Bouazizi, Tomoaki Ohtsuki, Momoko Kitazawa, Toshiro Horigome, Taishiro Kishimoto</p>
-    <p class="affil">Keio University · School of Medicine &amp; Department of Computer and Information Science</p>
+    <h1 class="title">Tri‑Modal Severity Fused Diagnosis across Depression and Post‑traumatic Stress Disorders</h1>
+    <p class="subtitle">Manuscript submitted to <strong>IEEE Transactions on Affective Computing</strong> · 2025</p>
+    <p class="affil">Filippo Cenacchi · Deborah Richards · Longbing Cao — Macquarie University</p>
     <div class="cta">
-      <a class="btn primary" href="https://doi.org/10.1109/JBHI.2025.3526553" title="Open Paper">
-        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5 4h9l5 5v11a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1Z" fill="#0b1220"/><path d="M14 4v4a1 1 0 0 0 1 1h4" fill="#0b1220"/></svg>
-        Paper (PDF)
-      </a>
-      <a class="btn" href="#code" title="View Code">
-        <svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M12 .5l10.392 6v11.999L12 25.5 1.608 18.5V6.5L12 .5Zm0 2.309L3.392 7.5v9l8.608 4.691 8.608-4.691v-9L12 2.809Z"/></svg>
-        Code
-      </a>
-      <a class="btn" href="#video" title="Watch Video">
-        <svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M10 8l6 4-6 4V8z"/></svg>
-        Video
-      </a>
+      <a class="btn primary" href="https://arxiv.org/abs/2510.20239" target="_blank" rel="noopener">📄 Paper (arXiv)</a>
+      <a class="btn" href="#" title="Code repository (add link)">💻 Code (soon)</a>
+      <a class="btn" href="#figures" title="Scroll to figures">🖼️ Figures</a>
     </div>
   </header>
 
-  <!-- ───────────────── TEASER + BUBBLE CHART ───────────────── -->
   <div class="container grid">
     <div class="panel">
       <div class="figure">
-        <em>Teaser figure / hero image (drop a PNG or GIF here)</em>
+        <img src="assets/fig1_overview.png" alt="Architecture overview: text(768) + audio(256) + face(512) → standardized late fusion (1536‑D) with calibrated XGBoost heads for PHQ‑8 and PTSD"/>
       </div>
-      <div class="caption">Fig. 1 — Teaser showcasing qualitative motion estimation / prediction. Replace with your real asset.</div>
+      <div class="caption">Fig. 1 — Architecture overview: Text (768‑D), audio (256‑D), face (512‑D) → standardized fusion (1536‑D) with disorder‑specific calibrated heads.</div>
     </div>
     <div class="panel">
-      <h2 style="margin-top:0">AUC by Task (30‑second conversation)</h2>
-      <svg id="chart" viewBox="0 0 540 360" style="width:100%;height:auto;background:#0b0f17;border:1px solid rgba(255,255,255,.05);border-radius:12px"></svg>
-      <div class="caption">A simple, dependency‑free SVG chart. Replace the dummy numbers in <span class="mono">dataPoints</span> with your results.
-      </div>
+      <h2 style="margin-top:0">Key Outcomes (cross‑validated)</h2>
+      <ul>
+        <li><strong>Severity‑aware</strong> multi‑disorder prediction (PHQ‑8 5‑way; PTSD 3‑way).</li>
+        <li><strong>Fusion robustness</strong> vs. unimodal baselines; higher decision‑curve net benefit.</li>
+        <li><strong>Interpretability</strong> via SHAP: text dominates depression, audio/face strengthen PTSD.</li>
+      </ul>
+      <p class="caption">Numbers and section texts correspond to the manuscript. Replace teaser and add missing links as needed.</p>
     </div>
   </div>
 
-  <!-- ───────────────────────── ABSTRACT ─────────────────────── -->
   <section id="abstract" class="container">
     <h2>Abstract</h2>
     <p>
-      We present a screening method for dementia and mild cognitive impairment (MCI) using only
-      30&nbsp;seconds of conversational face video. Four complementary facial representations are extracted per frame—
-      Facial Action Units (AUs), discrete emotion probabilities, Valence–Arousal, and general face embeddings—then summarized
-      with simple statistics (mean, standard deviation, and per‑frame velocity) and classified with LightGBM. On the PROMPT dataset,
-      the approach achieves <strong>AUC&nbsp;0.933</strong> for dementia detection and <strong>AUC&nbsp;0.889</strong> for MCI detection while remaining
-      interpretable via statistical feature analyses.
+      Depression and PTSD frequently co‑occur, making automated assessment difficult when framed as binary, disorder‑specific tasks. We present a unified tri‑modal severity framework that synchronizes sentence‑level transformer text embeddings, log‑Mel audio statistics with deltas, and OpenFace‑based facial action units, gaze, and head‑pose descriptors. A calibrated late‑fusion classifier outputs graded severities for depression (PHQ‑8; five classes) and PTSD (three classes). On DAIC‑derived corpora, fusion matches the strongest unimodal baseline on accuracy and weighted‑F1 while improving decision‑curve utility and robustness to missing or noisy modalities. Errors concentrate between adjacent severity levels; extremes are reliably identified. SHAP attributions align with clinical markers: linguistic cues dominate depression; audio–facial cues are critical for PTSD.
     </p>
   </section>
 
-  <!-- ───────────────────────── PAPER & CODE ──────────────────── -->
   <section id="paper" class="container">
     <h2>Paper & Resources</h2>
     <div class="cards">
-      <a class="card" href="#" target="_blank" rel="noopener">
+      <a class="card" href="https://arxiv.org/abs/2510.20239" target="_blank" rel="noopener">
         <div>
-          <div><strong>Paper (PDF)</strong></div>
-          <div class="badge">arXiv / camera‑ready</div>
+          <div><strong>Paper (arXiv)</strong></div>
+          <div class="badge">v1 · 2510.20239</div>
         </div>
         <span>↗</span>
       </a>
       <a class="card" href="#" target="_blank" rel="noopener">
         <div>
           <div><strong>Code</strong></div>
-          <div class="badge">GitHub repository</div>
+          <div class="badge">add repository link</div>
         </div>
         <span>↗</span>
       </a>
-      <a class="card" href="#" target="_blank" rel="noopener">
+      <a class="card" href="#figures" rel="noopener">
         <div>
-          <div><strong>Dataset</strong></div>
-          <div class="badge">links or download</div>
+          <div><strong>Full Figure Gallery</strong></div>
+          <div class="badge">teaser, matrices, PR/ROC, ablations, SHAP</div>
         </div>
-        <span>↗</span>
-      </a>
-      <a class="card" href="#" target="_blank" rel="noopener">
-        <div>
-          <div><strong>Poster</strong></div>
-          <div class="badge">A0 / A4</div>
-        </div>
-        <span>↗</span>
+        <span>↓</span>
       </a>
     </div>
   </section>
 
-  <!-- ───────────────────────── RESULTS ───────────────────────── -->
+  <section class="container two">
+    <div class="panel">
+      <h2>Feature Extractors</h2>
+      <p><strong>Text</strong>: sentence‑transformers/all‑mpnet‑base‑v2; sentence mean‑pooling → 768‑D participant embedding.</p>
+      <p><strong>Audio</strong>: 16 kHz log‑Mel spectrograms (64 bins; 25 ms window; 10 ms hop) with Δ; per‑bin mean/std → 256‑D.</p>
+      <p><strong>Face</strong>: OpenFace 2.0 AUs, gaze, head‑pose; statistical + derivative measures → 512‑D.</p>
+    </div>
+    <div class="panel">
+      <h2>Fusion & Training</h2>
+      <p>Standardize each modality within folds; concatenate to 1,536‑D and train disorder‑specific XGBoost heads (multi:softprob) with inverse‑frequency class weights; stratified 5‑fold CV with seed‑ensembles; export out‑of‑fold predictions for metrics and plots.</p>
+    </div>
+  </section>
+
+  <section id="figures" class="container">
+    <h2>Figure Gallery</h2>
+    <div class="gallery">
+      <figure>
+        <img src="assets/fig2_logmel.png" alt="Representative log‑Mel spectrogram; voiced segments as bright vertical stripes"/>
+        <figcaption>Fig. 2 — Representative log‑Mel spectrogram (16 kHz; nmels=64).</figcaption>
+      </figure>
+      <figure>
+        <img src="assets/fig3_f1_bars.png" alt="Per‑class F1 bars for fusion on PHQ‑8 and PTSD; extremes higher than mid tiers"/>
+        <figcaption>Fig. 3 — Per‑class F1 for fusion (PHQ‑8 / PTSD). Extremes easier; mid‑tiers harder.</figcaption>
+      </figure>
+      <figure>
+        <img src="assets/fig4_confusion_dep.png" alt="Confusion matrix for PHQ‑8 fusion"/>
+        <figcaption>Fig. 4 — Confusion matrix: Depression (fusion). Errors concentrate between adjacent severities.</figcaption>
+      </figure>
+      <figure>
+        <img src="assets/fig5_confusion_ptsd.png" alt="Confusion matrix for PTSD fusion"/>
+        <figcaption>Fig. 5 — Confusion matrix: PTSD (fusion). Severe class separates clearly.</figcaption>
+      </figure>
+      <figure>
+        <img src="assets/fig6_unimodal_failure.png" alt="Unimodal failure modes examples"/>
+        <figcaption>Fig. 6 — Representative unimodal failure modes.</figcaption>
+      </figure>
+      <figure>
+        <img src="assets/fig7_modality_ci.png" alt="Modality contributions with 95% CIs"/>
+        <figcaption>Fig. 7 — Modality contributions (ACC/F1 with 95% CIs).</figcaption>
+      </figure>
+      <figure>
+        <img src="assets/fig8_pr_curves.png" alt="Precision–Recall curves for fusion"/>
+        <figcaption>Fig. 8 — PR curves (fusion).</figcaption>
+      </figure>
+      <figure>
+        <img src="assets/fig9_roc_curves.png" alt="ROC curves for fusion"/>
+        <figcaption>Fig. 9 — ROC curves (fusion).</figcaption>
+      </figure>
+      <figure>
+        <img src="assets/fig10_embeddings.png" alt="PCA and t‑SNE of fused embedding space"/>
+        <figcaption>Fig. 10 — Fused representations (PCA; t‑SNE).</figcaption>
+      </figure>
+      <figure>
+        <img src="assets/fig11_decision_curves.png" alt="Decision‑curve analysis (net benefit vs threshold)"/>
+        <figcaption>Fig. 11 — Decision‑curve analysis: fusion dominates unimodal strategies.</figcaption>
+      </figure>
+      <figure>
+        <img src="assets/fig12_shap.png" alt="SHAP summary plots for depression and PTSD"/>
+        <figcaption>Fig. 12 — SHAP summaries: text dominates depression; audio/face for PTSD.</figcaption>
+      </figure>
+    </div>
+    <p class="caption">Drop exported figure PNGs into an <code>assets/</code> folder with the exact filenames above for instant rendering.</p>
+  </section>
+
   <section id="results" class="container">
-    <h2>Qualitative Results</h2>
-    <div class="results">
-      <div class="thumb"><img src="https://images.unsplash.com/photo-1536148935331-408321065b18?q=80&w=1200&auto=format&fit=crop" alt="placeholder"/></div>
-      <div class="thumb"><img src="https://images.unsplash.com/photo-1501785888041-af3ef285b470?q=80&w=1200&auto=format&fit=crop" alt="placeholder"/></div>
-      <div class="thumb"><img src="https://images.unsplash.com/photo-1495567720989-cebdbdd97913?q=80&w=1200&auto=format&fit=crop" alt="placeholder"/></div>
-      <div class="thumb"><img src="https://images.unsplash.com/photo-1495231916356-a86217efff12?q=80&w=1200&auto=format&fit=crop" alt="placeholder"/></div>
+    <h2>Selected Results</h2>
+    <div class="two">
+      <div class="panel">
+        <h3>Label Distributions</h3>
+        <table>
+          <thead><tr><th>Depression (PHQ‑8)</th><th>n</th><th>PTSD (PCL‑5 bands)</th><th>n</th></tr></thead>
+          <tbody>
+            <tr><td>Minimal (0–4)</td><td>187</td><td>None/Mild (≤20)</td><td>85</td></tr>
+            <tr><td>Mild (5–9)</td><td>96</td><td>Moderate (21–40)</td><td>180</td></tr>
+            <tr><td>Moderate (10–14)</td><td>64</td><td>Severe (≥41)</td><td>140</td></tr>
+            <tr><td>Moderately severe (15–19)</td><td>43</td><td></td><td></td></tr>
+            <tr><td>Severe (20–24)</td><td>15</td><td></td><td></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="panel">
+        <h3>Setup (fixed across folds)</h3>
+        <p>Text 768‑D · Audio 256‑D · Face 512‑D → Fusion 1,536‑D. XGBoost multi:softprob; 2k trees; lr=0.05; depth=8; subsample=0.9; colsample=0.8; λ=2. Stratified 5‑fold CV with inverse class weights. Metrics include ACC, weighted‑F1, AUC, MCC, κ, PR/ROC, decision‑curves.</p>
+      </div>
+    </div>
+
+    <div class="panel" style="margin-top:16px">
+      <h3>Cross‑validated Performance (excerpt)</h3>
+      <table>
+        <thead><tr><th>Task</th><th>Model</th><th>ACC</th><th>F1w</th><th>AUC</th></tr></thead>
+        <tbody>
+          <tr><td>Depression</td><td>TEXT (XGB)</td><td>0.862</td><td>0.860</td><td>0.964</td></tr>
+          <tr><td>Depression</td><td>Fusion ALL (XGB)</td><td>0.852</td><td>0.850</td><td>0.961</td></tr>
+          <tr><td>PTSD</td><td>TEXT (XGB)</td><td>0.862</td><td>0.861</td><td>0.971</td></tr>
+          <tr><td>PTSD</td><td>Fusion ALL (XGB)</td><td>0.854</td><td>0.854</td><td>0.970</td></tr>
+        </tbody>
+      </table>
+      <p class="caption">Full Table III with confidence intervals can be provided as CSV or expandable table.</p>
     </div>
   </section>
 
-  <!-- ───────────────────────── BIBTEX ────────────────────────── -->
   <section id="bibtex" class="container">
-    <h2 style="display:flex;align-items:center;gap:8px">BibTeX
-      <button class="copy mono" id="copyBib">Copy</button>
-    </h2>
+    <h2 style="display:flex;align-items:center;gap:8px">BibTeX <button class="copy mono" id="copyBib">Copy</button></h2>
     <pre class="mono" id="bib">
-@article{okunishi2025dementia_mci_faces,
-  title   = {Dementia and MCI Detection Based on Comprehensive Facial Expression Analysis From Videos During Conversation},
-  author  = {Okunishi, Taichi and Zheng, Chuheng and Bouazizi, Mondher and Ohtsuki, Tomoaki and Kitazawa, Momoko and Horigome, Toshiro and Kishimoto, Taishiro},
-  journal = {IEEE Journal of Biomedical and Health Informatics},
+@article{Cenacchi2025TriModal,
+  title   = {Tri-Modal Severity Fused Diagnosis across Depression and Post-traumatic Stress Disorders},
+  author  = {Cenacchi, Filippo and Richards, Deborah and Cao, Longbing},
+  journal = {IEEE Transactions on Affective Computing},
   year    = {2025},
-  volume  = {29},
-  number  = {5},
-  pages   = {3537--3548},
-  doi     = {10.1109/JBHI.2025.3526553}
+  note    = {arXiv:2510.20239},
+  url     = {https://arxiv.org/abs/2510.20239}
 }
     </pre>
   </section>
 
   <footer>
     <div class="container">
-      <div class="footlinks">
-        <span>© 202X Your Name</span>
-        <span>·</span>
-        <a href="#">License</a>
-        <span>·</span>
-        <a href="#">Contact</a>
-      </div>
-      <div style="margin-top:10px">Built with a single HTML file • No frameworks required</div>
+      <div class="footlinks"><span>© 2025 Filippo Cenacchi</span> <span>·</span> <a href="#">Contact</a> <span>·</span> <a href="#">License</a></div>
+      <div style="margin-top:10px">Static, single‑file site. Drop images in <code>assets/</code> and push to GitHub Pages.</div>
     </div>
   </footer>
 
   <script>
-    // ── Simple SVG bar chart for AUC by task ─────────────────────────
-    const svg = document.getElementById('chart');
-    const W = 540, H = 360, padL = 52, padB = 42, padT = 24, padR = 20;
-    const plotW = W - padL - padR, plotH = H - padT - padB;
-
-    const data = [
-      {task:'Dementia', auc:0.933},
-      {task:'MCI',       auc:0.889}
-    ];
-
-    const yMin = 0.86, yMax = 0.96; // nice window to show differences
-    const barW = plotW / data.length * 0.55;
-
-    function xPos(i){ return padL + (i + 0.5) * (plotW / data.length); }
-    function yPos(v){ return padT + (1 - (v - yMin) / (yMax - yMin)) * plotH; }
-
-    function el(tag, attrs={}, parent=svg){
-      const e = document.createElementNS('http://www.w3.org/2000/svg', tag);
-      for (const k in attrs) e.setAttribute(k, attrs[k]);
-      parent.appendChild(e); return e;
-    }
-
-    // frame
-    el('rect',{x:padL,y:padT,width:plotW,height:plotH,rx:10,ry:10,fill:'#0a0f18',stroke:'rgba(255,255,255,.06)'});
-
-    // grid + y ticks
-    for(let y=0.86; y<=0.96; y+=0.02){
-      const Y = yPos(y);
-      el('line',{x1:padL,y1:Y,x2:padL+plotW,y2:Y,stroke:'rgba(255,255,255,.06)'});
-      el('text',{x:18,y:Y+4,fill:'#b6c2d1','font-size':'12'},svg).textContent = y.toFixed(2);
-    }
-
-    // bars
-    data.forEach((d,i)=>{
-      const x = xPos(i) - barW/2;
-      const y = yPos(d.auc);
-      const h = padT + plotH - y;
-      el('rect',{x,y,width:barW,height:h,fill:'#7dd3fc'});
-      el('text',{x:xPos(i),y:H-18,fill:'#cbd5e1','font-size':'12','text-anchor':'middle'},svg).textContent = d.task;
-      el('text',{x:xPos(i),y:y-8,fill:'#e5ebf5','font-size':'12','text-anchor':'middle'},svg).textContent = `AUC ${d.auc}`;
-    });
-
-    // axis labels
-    el('text',{x:padL+plotW/2,y:H-4,fill:'#cbd5e1','font-size':'12','text-anchor':'middle'},svg).textContent='Task';
-    el('text',{x:10,y:padT+plotH/2,fill:'#cbd5e1','font-size':'12',transform:`rotate(-90 10 ${padT+plotH/2})`},svg).textContent='AUC';
-
-    // ── Copy BibTeX ─────────────────────────────────────────────
+    // Copy BibTeX
     document.getElementById('copyBib').addEventListener('click', async () => {
       const txt = document.getElementById('bib').innerText.trim();
-      try{ await navigator.clipboard.writeText(txt);
-        const b = document.getElementById('copyBib');
-        b.textContent = 'Copied ✓'; setTimeout(()=> b.textContent='Copy', 1500);
-      }catch{ alert('Copy failed — select and copy manually.'); }
+      try{ await navigator.clipboard.writeText(txt); const b = document.getElementById('copyBib'); b.textContent = 'Copied ✓'; setTimeout(()=> b.textContent='Copy', 1500);}catch{ alert('Copy failed — select and copy manually.'); }
     });
   </script>
 </body>
