@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Project Title — Optical Flow with Memory (Template)</title>
+  <title>Dementia & MCI Detection from Facial Expressions — JBHI 2025</title>
   <meta name="description" content="A clean, single‑file template for a CVPR‑style project page (MemFlow aesthetic)." />
   <meta property="og:title" content="Project Title — Optical Flow with Memory" />
   <meta property="og:description" content="A clean, single‑file template for a CVPR‑style project page (MemFlow aesthetic)." />
@@ -101,11 +101,11 @@
 
   <!-- ───────────────────────── HERO ───────────────────────── -->
   <header class="hero container">
-    <h1 class="title">MemFlow‑style: Optical Flow Estimation & Prediction <span style="opacity:.65">with Memory</span></h1>
-    <p class="subtitle">CVPR 202X · First Author · Second Author · Third Author</p>
-    <p class="affil">Fudan University (example) · Replace with your affiliation</p>
+    <h1 class="title">Dementia &amp; MCI Detection Based on Comprehensive Facial Expression Analysis</h1>
+    <p class="subtitle">IEEE Journal of Biomedical and Health Informatics (JBHI), 2025 · Taichi Okunishi, Chuheng Zheng, Mondher Bouazizi, Tomoaki Ohtsuki, Momoko Kitazawa, Toshiro Horigome, Taishiro Kishimoto</p>
+    <p class="affil">Keio University · School of Medicine &amp; Department of Computer and Information Science</p>
     <div class="cta">
-      <a class="btn primary" href="#paper" title="Open Paper">
+      <a class="btn primary" href="https://doi.org/10.1109/JBHI.2025.3526553" title="Open Paper">
         <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5 4h9l5 5v11a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1Z" fill="#0b1220"/><path d="M14 4v4a1 1 0 0 0 1 1h4" fill="#0b1220"/></svg>
         Paper (PDF)
       </a>
@@ -129,7 +129,7 @@
       <div class="caption">Fig. 1 — Teaser showcasing qualitative motion estimation / prediction. Replace with your real asset.</div>
     </div>
     <div class="panel">
-      <h2 style="margin-top:0">EPE vs. Parameters (Bubble)</h2>
+      <h2 style="margin-top:0">AUC by Task (30‑second conversation)</h2>
       <svg id="chart" viewBox="0 0 540 360" style="width:100%;height:auto;background:#0b0f17;border:1px solid rgba(255,255,255,.05);border-radius:12px"></svg>
       <div class="caption">A simple, dependency‑free SVG chart. Replace the dummy numbers in <span class="mono">dataPoints</span> with your results.
       </div>
@@ -140,9 +140,12 @@
   <section id="abstract" class="container">
     <h2>Abstract</h2>
     <p>
-      This single‑file template lets you publish a polished CVPR‑style project page quickly. It includes a hero section,
-      call‑to‑action buttons, a teaser panel, a bubble chart, results grid, and a copyable BibTeX block — no build tools or dependencies.
-      Edit the placeholders below and push to GitHub Pages.
+      We present a screening method for dementia and mild cognitive impairment (MCI) using only
+      30&nbsp;seconds of conversational face video. Four complementary facial representations are extracted per frame—
+      Facial Action Units (AUs), discrete emotion probabilities, Valence–Arousal, and general face embeddings—then summarized
+      with simple statistics (mean, standard deviation, and per‑frame velocity) and classified with LightGBM. On the PROMPT dataset,
+      the approach achieves <strong>AUC&nbsp;0.933</strong> for dementia detection and <strong>AUC&nbsp;0.889</strong> for MCI detection while remaining
+      interpretable via statistical feature analyses.
     </p>
   </section>
 
@@ -198,12 +201,15 @@
       <button class="copy mono" id="copyBib">Copy</button>
     </h2>
     <pre class="mono" id="bib">
-@inproceedings{yourkey202Xmemflowstyle,
-  title     = {MemFlow‑style: Optical Flow Estimation and Prediction with Memory},
-  author    = {First Author and Second Author and Third Author},
-  booktitle = {Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR)},
-  year      = {202X},
-  url       = {https://your-website.example}
+@article{okunishi2025dementia_mci_faces,
+  title   = {Dementia and MCI Detection Based on Comprehensive Facial Expression Analysis From Videos During Conversation},
+  author  = {Okunishi, Taichi and Zheng, Chuheng and Bouazizi, Mondher and Ohtsuki, Tomoaki and Kitazawa, Momoko and Horigome, Toshiro and Kishimoto, Taishiro},
+  journal = {IEEE Journal of Biomedical and Health Informatics},
+  year    = {2025},
+  volume  = {29},
+  number  = {5},
+  pages   = {3537--3548},
+  doi     = {10.1109/JBHI.2025.3526553}
 }
     </pre>
   </section>
@@ -222,25 +228,21 @@
   </footer>
 
   <script>
-    // ── Tiny SVG bubble chart (no dependencies) ─────────────────────────
+    // ── Simple SVG bar chart for AUC by task ─────────────────────────
     const svg = document.getElementById('chart');
-    const W = 540, H = 360, padL = 52, padB = 46, padT = 24, padR = 20;
+    const W = 540, H = 360, padL = 52, padB = 42, padT = 24, padR = 20;
     const plotW = W - padL - padR, plotH = H - padT - padB;
 
-    // Dummy data — replace with your own (params in M, lower EPE is better)
-    const dataPoints = [
-      {name:'RAFT', epe:1.42, params:10, color:'#93c5fd'},
-      {name:'FlowFormer', epe:1.02, params:12, color:'#a5b4fc'},
-      {name:'VideoFlow‑MOF', epe:1.18, params:15, color:'#60a5fa'},
-      {name:'MemFlow (5 it)', epe:0.98, params:5, color:'#34d399'},
-      {name:'MemFlow‑T (15 it)', epe:0.94, params:8, color:'#22d3ee'}
+    const data = [
+      {task:'Dementia', auc:0.933},
+      {task:'MCI',       auc:0.889}
     ];
 
-    const xMin = 0, xMax = 16;         // Params (M)
-    const yMin = 0.8, yMax = 1.5;      // EPE
+    const yMin = 0.86, yMax = 0.96; // nice window to show differences
+    const barW = plotW / data.length * 0.55;
 
-    function xScale(v){ return padL + (v - xMin) / (xMax - xMin) * plotW }
-    function yScale(v){ return padT + (1 - (v - yMin) / (yMax - yMin)) * plotH }
+    function xPos(i){ return padL + (i + 0.5) * (plotW / data.length); }
+    function yPos(v){ return padT + (1 - (v - yMin) / (yMax - yMin)) * plotH; }
 
     function el(tag, attrs={}, parent=svg){
       const e = document.createElementNS('http://www.w3.org/2000/svg', tag);
@@ -248,45 +250,34 @@
       parent.appendChild(e); return e;
     }
 
-    // Axes
-    el('rect', {x:padL, y:padT, width:plotW, height:plotH, rx:10, ry:10, fill:'#0a0f18', stroke:'rgba(255,255,255,.06)'});
+    // frame
+    el('rect',{x:padL,y:padT,width:plotW,height:plotH,rx:10,ry:10,fill:'#0a0f18',stroke:'rgba(255,255,255,.06)'});
 
-    // X ticks
-    for(let x=0;x<=16;x+=4){
-      const X = xScale(x);
-      el('line',{x1:X, y1:padT, x2:X, y2:padT+plotH, stroke:'rgba(255,255,255,.06)'});
-      el('text',{x:X, y:H-18, fill:'#b6c2d1', 'font-size':'12', 'text-anchor':'middle'}, svg).textContent = x+"M";
+    // grid + y ticks
+    for(let y=0.86; y<=0.96; y+=0.02){
+      const Y = yPos(y);
+      el('line',{x1:padL,y1:Y,x2:padL+plotW,y2:Y,stroke:'rgba(255,255,255,.06)'});
+      el('text',{x:18,y:Y+4,fill:'#b6c2d1','font-size':'12'},svg).textContent = y.toFixed(2);
     }
-    // Y ticks
-    for(let y=0.8; y<=1.5; y+=0.2){
-      const Y = yScale(y);
-      el('line',{x1:padL, y1:Y, x2:padL+plotW, y2:Y, stroke:'rgba(255,255,255,.05)'});
-      el('text',{x:18, y:Y+4, fill:'#b6c2d1', 'font-size':'12'}, svg).textContent = y.toFixed(1);
-    }
-    // Axis labels
-    el('text',{x:padL+plotW/2, y:H-4, fill:'#cbd5e1', 'font-size':'12', 'text-anchor':'middle'}, svg).textContent = 'Parameters (Millions)';
-    el('text',{x:10, y:padT+plotH/2, fill:'#cbd5e1', 'font-size':'12', transform:`rotate(-90 10 ${padT+plotH/2})`}, svg).textContent = 'End‑Point Error (EPE)';
 
-    // Bubbles
-    dataPoints.forEach(d=>{
-      const r = 8 + d.params * 0.6; // radius encodes params lightly
-      const cx = xScale(d.params), cy = yScale(d.epe);
-      const g = el('g',{});
-      el('circle',{cx, cy, r:r+3, fill:'rgba(255,255,255,.06)'} ,g);
-      el('circle',{cx, cy, r, fill:d.color, opacity:.9}, g);
-      const label = el('text',{x:cx, y:cy - r - 6, fill:'#e5ebf5', 'font-size':'12', 'text-anchor':'middle'}, g);
-      label.textContent = d.name;
-      // tooltip
-      g.addEventListener('mouseenter',()=>{
-        label.textContent = `${d.name}  •  EPE ${d.epe}  •  ${d.params}M`;
-      });
-      g.addEventListener('mouseleave',()=>{ label.textContent = d.name;});
+    // bars
+    data.forEach((d,i)=>{
+      const x = xPos(i) - barW/2;
+      const y = yPos(d.auc);
+      const h = padT + plotH - y;
+      el('rect',{x,y,width:barW,height:h,fill:'#7dd3fc'});
+      el('text',{x:xPos(i),y:H-18,fill:'#cbd5e1','font-size':'12','text-anchor':'middle'},svg).textContent = d.task;
+      el('text',{x:xPos(i),y:y-8,fill:'#e5ebf5','font-size':'12','text-anchor':'middle'},svg).textContent = `AUC ${d.auc}`;
     });
+
+    // axis labels
+    el('text',{x:padL+plotW/2,y:H-4,fill:'#cbd5e1','font-size':'12','text-anchor':'middle'},svg).textContent='Task';
+    el('text',{x:10,y:padT+plotH/2,fill:'#cbd5e1','font-size':'12',transform:`rotate(-90 10 ${padT+plotH/2})`},svg).textContent='AUC';
 
     // ── Copy BibTeX ─────────────────────────────────────────────
     document.getElementById('copyBib').addEventListener('click', async () => {
       const txt = document.getElementById('bib').innerText.trim();
-      try{ await navigator.clipboard.writeText(txt); 
+      try{ await navigator.clipboard.writeText(txt);
         const b = document.getElementById('copyBib');
         b.textContent = 'Copied ✓'; setTimeout(()=> b.textContent='Copy', 1500);
       }catch{ alert('Copy failed — select and copy manually.'); }
