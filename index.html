@@ -401,42 +401,70 @@
     </div>
   </section>
 
-  <!-- ===== MANUSCRIPT (PDF) ===== -->
-  <section id="manuscript">
-  <div class="container">
-    <h2>Full Manuscript</h2>
-    <div class="card">
-      <p class="lead">
-        For 1:1, word-for-word viewing, either drop your PDF at
-        <code>assets/paper.pdf</code> (the viewer below loads it automatically),
-        or open the arXiv PDF.
-      </p>
-      <div class="cta-row" style="justify-content:flex-start">
-        <a class="chip primary" href="https://arxiv.org/pdf/2510.20239.pdf" target="_blank" rel="noopener">
-          Open arXiv PDF
-        </a>
-      </div>
+<script>
+(async ()=>{
+  const url = 'assets/paper.pdf';
+  const shell = document.getElementById('pdf-shell');
+  const frame = document.getElementById('pdf-frame');
+  const fallback = document.getElementById('pdf-fallback');
 
-      <!-- Placeholder (shown if the local PDF is missing) -->
-      <div id="pdf-fallback" class="pdf-placeholder" hidden>
-        <div>
-          <strong>No local PDF found.</strong>
-          <div style="color:#5b6b80;margin-top:4px">
-            Add <code>assets/paper.pdf</code> to this repo (case-sensitive) to enable inline viewing.
-          </div>
-        </div>
-      </div>
+  function showIframe() { shell.hidden = false; if (fallback) fallback.hidden = true; }
+  function showFallback() { shell.hidden = true; if (fallback) fallback.hidden = false; }
 
-      <!-- PDF viewer shell (hidden until we confirm the file exists) -->
-      <div id="pdf-shell" hidden>
-        <iframe id="pdf-frame"
-                title="Manuscript PDF"
-                style="width:100%; height:70vh; border:1px solid rgba(15,36,65,.10); border-radius:14px">
-        </iframe>
-      </div>
-    </div>
-  </div>
-</section>
+  try {
+    // Try a lightweight HEAD first; if that fails (some hosts), fall back to GET.
+    let ok = false, isPDF = false;
+
+    try {
+      const head = await fetch(url, { method: 'HEAD', cache: 'no-store' });
+      ok = head.ok;
+      const ct = (head.headers.get('content-type') || '').toLowerCase();
+      isPDF = ct.includes('pdf') || url.toLowerCase().endsWith('.pdf');
+    } catch (_) { /* ignore and try GET */ }
+
+    if (!ok) {
+      const get = await fetch(url, { method: 'GET', cache: 'no-store' });
+      ok = get.ok;
+      const ct = (get.headers.get('content-type') || '').toLowerCase();
+      isPDF = ct.includes('pdf') || url.toLowerCase().endsWith('.pdf');
+    }
+
+    if (ok && isPDF) {
+      // Set src only after confirmation to avoid Chrome "Failed to load" pane.
+      frame.src = url + '#view=FitH';
+      showIframe();
+    } else {
+      showFallback();
+    }
+  } catch (e) {
+    showFallback();
+  }
+
+  // ---- BibTeX fill + copy button ----
+  const bib = `@misc{cenacchi2025trimodalseverityfuseddiagnosis,
+  title={Tri-Modal Severity Fused Diagnosis across Depression and Post-traumatic Stress Disorders},
+  author={Filippo Cenacchi and Deborah Richards and Longbing Cao},
+  year={2025},
+  eprint={2510.20239},
+  archivePrefix={arXiv},
+  primaryClass={cs.CL},
+  url={https://arxiv.org/abs/2510.20239},
+}`;
+  const pre = document.getElementById('bibtex');
+  if (pre) pre.textContent = bib;
+
+  const copyBtn = document.getElementById('copy-bib');
+  if (copyBtn && navigator.clipboard) {
+    copyBtn.addEventListener('click', async () => {
+      try { await navigator.clipboard.writeText(bib);
+        copyBtn.textContent = 'Copied ✓';
+        setTimeout(()=> copyBtn.textContent = 'Copy BibTeX', 1200);
+      } catch(_) { /* no-op */ }
+    });
+  }
+})();
+</script>
+
 
 
   <!-- ===== LIGHTBOX (no dark page) ===== -->
