@@ -6,83 +6,94 @@
   <title>Tri‑Modal Severity Fused Diagnosis — Depression & PTSD</title>
   <meta name="description" content="Project page for 'Tri‑Modal Severity Fused Diagnosis across Depression and Post‑traumatic Stress Disorders'." />
   <meta property="og:title" content="Tri‑Modal Severity Fused Diagnosis — Depression & PTSD" />
-  <meta property="og:description" content="Tri‑modal fusion (text‑audio‑face) for graded severity across depression (PHQ‑8) and PTSD, with calibrated late fusion and clinician‑oriented evaluation." />
+  <meta property="og:description" content="Tri‑modal fusion (text‑audio‑face) for graded severity across depression (PHQ‑8) and PTSD (PCL‑5), with calibrated late fusion and clinician‑oriented evaluation." />
   <meta property="og:type" content="website" />
-  <meta name="theme-color" content="#f7f9fc" />
+  <meta name="theme-color" content="#f5f7fb" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
   <style>
     :root{
-      /* Light, airy, advanced aesthetic */
-      --bg:#f6f8fb;          /* page bg */
+      /* Light, advanced aesthetic */
+      --bg:#f5f7fb;          /* page bg */
       --bg2:#ffffff;         /* panels */
       --ink:#0f172a;         /* primary text */
       --muted:#475569;       /* secondary text */
-      --line:#e5eaf2;        /* borders */
+      --line:#e8edf4;        /* borders */
       --accent:#2563eb;      /* blue */
       --accent-2:#7c3aed;    /* violet */
       --accent-3:#06b6d4;    /* cyan */
       --radius:18px;
-      --shadow:0 10px 30px rgba(15,23,42,.10);
+      --shadow:0 12px 36px rgba(15,23,42,.12);
       --max:1100px;
     }
-    *{box-sizing:border-box}
+    *,*::before,*::after{box-sizing:border-box}
     html,body{height:100%}
-    body{margin:0;font-family:Inter,system-ui,Segoe UI,Roboto,Helvetica,Arial; background:radial-gradient(1100px 600px at 20% -10%, rgba(37,99,235,.08), transparent 70%), radial-gradient(1100px 600px at 80% -20%, rgba(124,58,237,.08), transparent 70%), var(--bg); color:var(--ink);}
+    body{margin:0;font-family:Inter,system-ui,Segoe UI,Roboto,Helvetica,Arial; background:
+      radial-gradient(1100px 600px at 20% -10%, rgba(37,99,235,.09), transparent 70%),
+      radial-gradient(1100px 600px at 80% -20%, rgba(124,58,237,.08), transparent 70%),
+      var(--bg);
+      color:var(--ink);
+    }
     a{color:var(--accent); text-decoration:none}
     a:hover{text-decoration:underline}
     .container{max-width:var(--max); margin:0 auto; padding:0 20px}
-    /* Nav */
-    .nav{position:sticky; top:0; z-index:50; backdrop-filter:blur(8px); background:rgba(255,255,255,.7); border-bottom:1px solid var(--line)}
-    .navwrap{display:flex; align-items:center; justify-content:space-between; height:64px}
+
+    /* NAV */
+    .nav{position:sticky; top:0; z-index:50; backdrop-filter:blur(10px); background:rgba(255,255,255,.75); border-bottom:1px solid var(--line)}
+    .navwrap{display:flex; align-items:center; justify-content:space-between; height:70px}
     .brand{display:flex; gap:10px; align-items:center; font-weight:800; letter-spacing:.2px}
     .dot{width:10px;height:10px;border-radius:999px;background:linear-gradient(135deg,var(--accent),var(--accent-2)); box-shadow:0 0 0 6px rgba(37,99,235,.15)}
-    .navlinks{display:flex; gap:18px}
-    .navlinks a{color:var(--ink)}
-    @media (max-width:780px){.navlinks{display:none}}
-    /* Hero */
-    .hero{padding:80px 0 36px; text-align:center}
-    .title{font-size:clamp(32px,6vw,52px); font-weight:800; line-height:1.05; letter-spacing:-.02em; margin:0 auto; max-width:900px}
+    .navlinks{display:flex; gap:20px}
+    .navlinks a{color:var(--ink); font-weight:600}
+    @media (max-width:820px){.navlinks{display:none}}
+
+    /* HERO */
+    .hero{padding:90px 0 40px; text-align:center}
+    .title{font-size:clamp(34px,6vw,58px); font-weight:800; line-height:1.06; letter-spacing:-.02em; margin:0 auto; max-width:980px}
     .subtitle{font-size:clamp(16px,2.6vw,20px); color:var(--muted); margin-top:14px}
     .affil{color:#64748b; margin-top:6px}
     .cta{display:flex; flex-wrap:wrap; gap:12px; justify-content:center; margin-top:26px}
     .btn{display:inline-flex; align-items:center; gap:10px; padding:12px 16px; font-weight:600; border-radius:12px; background:var(--bg2); border:1px solid var(--line); box-shadow:var(--shadow)}
     .btn.primary{background:linear-gradient(135deg,#dbeafe,#ede9fe); border-color:#dbeafe}
     .btn svg{width:18px;height:18px}
-    /* Panels */
-    .panel{background:var(--bg2); border:1px solid var(--line); border-radius:var(--radius); box-shadow:var(--shadow); padding:22px}
+
+    /* LAYOUT */
+    section{padding:42px 0; scroll-margin-top:90px} /* avoids anchor overlap under sticky nav */
     .grid{display:grid; grid-template-columns:1fr 1fr; gap:22px; margin:26px auto; max-width:var(--max)}
     @media (max-width:980px){.grid{grid-template-columns:1fr}}
-    .figure{background:#fafbff; border:1px dashed #e5eaf2; border-radius:14px; display:flex; align-items:center; justify-content:center; min-height:320px}
-    .figure img{max-width:100%; border-radius:12px}
+    .panel{background:var(--bg2); border:1px solid var(--line); border-radius:var(--radius); box-shadow:var(--shadow); padding:22px}
+
+    /* FIGURES */
+    .figure{background:#fbfdff; border:1px dashed #e5eaf2; border-radius:14px; display:flex; align-items:center; justify-content:center; min-height:320px}
+    .figure img{max-width:100%; height:auto; border-radius:12px}
     .caption{color:#64748b; font-size:.95rem; margin-top:10px}
-    /* Sections */
-    section{padding:36px 0}
-    h2{font-size:clamp(22px,3.5vw,30px); margin:0 0 14px; letter-spacing:-.01em}
-    p{line-height:1.72; color:#1f2937}
-    .two{display:grid; grid-template-columns:1fr 1fr; gap:18px}
-    @media (max-width:920px){.two{grid-template-columns:1fr}}
-    .cards{display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:14px}
-    .card{background:var(--bg2); border:1px solid var(--line); border-radius:14px; padding:16px; display:flex; gap:12px; align-items:center; justify-content:space-between}
-    .badge{font-size:.8rem; color:#64748b}
-    /* Figure gallery */
     .gallery{display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:16px}
     figure{background:var(--bg2); border:1px solid var(--line); border-radius:14px; box-shadow:var(--shadow); margin:0; padding:12px}
     figcaption{font-size:.9rem; color:#475569; margin-top:8px}
-    /* Tables */
+
+    /* INFO CARDS */
+    .two{display:grid; grid-template-columns:1fr 1fr; gap:18px}
+    @media (max-width:920px){.two{grid-template-columns:1fr}}
+    .cards{display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:14px}
+    .card{background:var(--bg2); border:1px solid var(--line); border-radius:14px; padding:16px; display:flex; gap:12px; align-items:center; justify-content:space-between; box-shadow:var(--shadow)}
+    .badge{font-size:.8rem; color:#64748b}
+
+    /* TABLES */
     table{width:100%; border-collapse:separate; border-spacing:0; background:var(--bg2); border:1px solid var(--line); border-radius:14px; overflow:hidden}
     th,td{padding:10px 12px; border-bottom:1px solid var(--line); text-align:left; font-size:.95rem}
     th{background:#f8fafc}
     tr:last-child td{border-bottom:none}
-    /* BibTeX */
+
+    /* BIBTEX */
     pre{background:#f8fafc; border:1px solid var(--line); padding:16px; border-radius:12px; overflow:auto}
     .copy{margin-left:8px; padding:8px 10px; border-radius:10px; background:#eef2ff; border:1px solid #e0e7ff; color:#1e3a8a; font-weight:600}
     .copy:hover{filter:brightness(1.05)}
-    /* Footer */
-    footer{border-top:1px solid var(--line); color:#475569; padding:30px 0 60px; text-align:center}
+
+    /* FOOTER */
+    footer{border-top:1px solid var(--line); color:#475569; padding:30px 0 70px; text-align:center}
     .footlinks{display:flex; gap:14px; justify-content:center; flex-wrap:wrap}
-    .mono{font-family: ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace}
+    .mono{font-family: ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,\"Liberation Mono\",\"Courier New\",monospace}
   </style>
 </head>
 <body>
@@ -94,6 +105,7 @@
         <a href="#paper">Paper & Code</a>
         <a href="#figures">Figures</a>
         <a href="#results">Results</a>
+        <a href="#manuscript">Full Manuscript</a>
         <a href="#bibtex">BibTeX</a>
       </div>
     </div>
@@ -105,7 +117,7 @@
     <p class="affil">Filippo Cenacchi · Deborah Richards · Longbing Cao — Macquarie University</p>
     <div class="cta">
       <a class="btn primary" href="https://arxiv.org/abs/2510.20239" target="_blank" rel="noopener">📄 Paper (arXiv)</a>
-      <a class="btn" href="#" title="Code repository (add link)">💻 Code (soon)</a>
+      <a class="btn" href="https://github.com/cenacchi2000/EDAI-Trimodal" target="_blank" rel="noopener">💻 Code</a>
       <a class="btn" href="#figures" title="Scroll to figures">🖼️ Figures</a>
     </div>
   </header>
@@ -113,9 +125,10 @@
   <div class="container grid">
     <div class="panel">
       <div class="figure">
-        <img src="assets/fig1_overview.png" alt="Architecture overview: text(768) + audio(256) + face(512) → standardized late fusion (1536‑D) with calibrated XGBoost heads for PHQ‑8 and PTSD"/>
+        <!-- Overleaf: \includegraphics{Diagram} -->
+        <img src="assets/Diagram.png" alt="Architecture overview: text(768) + audio(256) + face(512) → standardized late fusion (1536‑D) with calibrated XGBoost heads for PHQ‑8 and PTSD"/>
       </div>
-      <div class="caption">Fig. 1 — Architecture overview: Text (768‑D), audio (256‑D), face (512‑D) → standardized fusion (1536‑D) with disorder‑specific calibrated heads.</div>
+      <div class="caption">Fig. — Architecture overview (Overleaf file: <code>Diagram.png</code>; use .svg/.png export from your vector source).</div>
     </div>
     <div class="panel">
       <h2 style="margin-top:0">Key Outcomes (cross‑validated)</h2>
@@ -124,7 +137,7 @@
         <li><strong>Fusion robustness</strong> vs. unimodal baselines; higher decision‑curve net benefit.</li>
         <li><strong>Interpretability</strong> via SHAP: text dominates depression, audio/face strengthen PTSD.</li>
       </ul>
-      <p class="caption">Numbers and section texts correspond to the manuscript. Replace teaser and add missing links as needed.</p>
+      <p class="caption">Drop your exported figures into <code>assets/</code> with the exact Overleaf names below; no dark background; margins tuned to avoid overlap with sticky nav.</p>
     </div>
   </div>
 
@@ -145,17 +158,17 @@
         </div>
         <span>↗</span>
       </a>
-      <a class="card" href="#" target="_blank" rel="noopener">
+      <a class="card" href="https://github.com/cenacchi2000/EDAI-Trimodal" target="_blank" rel="noopener">
         <div>
           <div><strong>Code</strong></div>
-          <div class="badge">add repository link</div>
+          <div class="badge">GitHub repository</div>
         </div>
         <span>↗</span>
       </a>
       <a class="card" href="#figures" rel="noopener">
         <div>
           <div><strong>Full Figure Gallery</strong></div>
-          <div class="badge">teaser, matrices, PR/ROC, ablations, SHAP</div>
+          <div class="badge">Overleaf file names</div>
         </div>
         <span>↓</span>
       </a>
@@ -176,54 +189,95 @@
   </section>
 
   <section id="figures" class="container">
-    <h2>Figure Gallery</h2>
+    <h2>Figure Gallery (Overleaf filenames)</h2>
     <div class="gallery">
       <figure>
-        <img src="assets/fig2_logmel.png" alt="Representative log‑Mel spectrogram; voiced segments as bright vertical stripes"/>
-        <figcaption>Fig. 2 — Representative log‑Mel spectrogram (16 kHz; nmels=64).</figcaption>
+        <img src="assets/logmel.png" alt="Representative log‑Mel spectrogram"/>
+        <figcaption>logmel.png — Representative log‑Mel spectrogram (16 kHz; nmels=64).</figcaption>
       </figure>
       <figure>
-        <img src="assets/fig3_f1_bars.png" alt="Per‑class F1 bars for fusion on PHQ‑8 and PTSD; extremes higher than mid tiers"/>
-        <figcaption>Fig. 3 — Per‑class F1 for fusion (PHQ‑8 / PTSD). Extremes easier; mid‑tiers harder.</figcaption>
+        <img src="assets/perclass_f1_XGB_DEP_ALL.png" alt="Per‑class F1, depression fusion"/>
+        <figcaption>perclass_f1_XGB_DEP_ALL.png — Per‑class F1 (Depression, fusion).</figcaption>
       </figure>
       <figure>
-        <img src="assets/fig4_confusion_dep.png" alt="Confusion matrix for PHQ‑8 fusion"/>
-        <figcaption>Fig. 4 — Confusion matrix: Depression (fusion). Errors concentrate between adjacent severities.</figcaption>
+        <img src="assets/perclass_f1_XGB_PTSD_ALL.png" alt="Per‑class F1, PTSD fusion"/>
+        <figcaption>perclass_f1_XGB_PTSD_ALL.png — Per‑class F1 (PTSD, fusion).</figcaption>
       </figure>
       <figure>
-        <img src="assets/fig5_confusion_ptsd.png" alt="Confusion matrix for PTSD fusion"/>
-        <figcaption>Fig. 5 — Confusion matrix: PTSD (fusion). Severe class separates clearly.</figcaption>
+        <img src="assets/pooled_cm_XGB_DEP_ALL.png" alt="Confusion matrix, depression fusion"/>
+        <figcaption>pooled_cm_XGB_DEP_ALL.png — Confusion matrix: Depression (fusion).</figcaption>
       </figure>
       <figure>
-        <img src="assets/fig6_unimodal_failure.png" alt="Unimodal failure modes examples"/>
-        <figcaption>Fig. 6 — Representative unimodal failure modes.</figcaption>
+        <img src="assets/pooled_cm_XGB_PTSD_ALL.png" alt="Confusion matrix, PTSD fusion"/>
+        <figcaption>pooled_cm_XGB_PTSD_ALL.png — Confusion matrix: PTSD (fusion).</figcaption>
       </figure>
       <figure>
-        <img src="assets/fig7_modality_ci.png" alt="Modality contributions with 95% CIs"/>
-        <figcaption>Fig. 7 — Modality contributions (ACC/F1 with 95% CIs).</figcaption>
+        <img src="assets/pooled_cm_XGB_DEP_AUDIO.png" alt="Unimodal failure mode: depression audio only"/>
+        <figcaption>pooled_cm_XGB_DEP_AUDIO.png — Unimodal failure example (Depression — Audio only).</figcaption>
       </figure>
       <figure>
-        <img src="assets/fig8_pr_curves.png" alt="Precision–Recall curves for fusion"/>
-        <figcaption>Fig. 8 — PR curves (fusion).</figcaption>
+        <img src="assets/pooled_cm_XGB_PTSD_TEXT.png" alt="Unimodal failure mode: PTSD text only"/>
+        <figcaption>pooled_cm_XGB_PTSD_TEXT.png — Unimodal failure example (PTSD — Text only).</figcaption>
       </figure>
       <figure>
-        <img src="assets/fig9_roc_curves.png" alt="ROC curves for fusion"/>
-        <figcaption>Fig. 9 — ROC curves (fusion).</figcaption>
+        <img src="assets/dep_bars_fixed_v12.png" alt="Modality bars, depression"/>
+        <figcaption>dep_bars_fixed_v12.png — Accuracy/F1 with 95% CIs (Depression).</figcaption>
       </figure>
       <figure>
-        <img src="assets/fig10_embeddings.png" alt="PCA and t‑SNE of fused embedding space"/>
-        <figcaption>Fig. 10 — Fused representations (PCA; t‑SNE).</figcaption>
+        <img src="assets/ptsd_bars_fixed_v12.png" alt="Modality bars, PTSD"/>
+        <figcaption>ptsd_bars_fixed_v12.png — Accuracy/F1 with 95% CIs (PTSD).</figcaption>
       </figure>
       <figure>
-        <img src="assets/fig11_decision_curves.png" alt="Decision‑curve analysis (net benefit vs threshold)"/>
-        <figcaption>Fig. 11 — Decision‑curve analysis: fusion dominates unimodal strategies.</figcaption>
+        <img src="assets/pr_XGB_DEP_ALL.png" alt="PR curve, depression fusion"/>
+        <figcaption>pr_XGB_DEP_ALL.png — Precision–Recall (Depression, fusion).</figcaption>
       </figure>
       <figure>
-        <img src="assets/fig12_shap.png" alt="SHAP summary plots for depression and PTSD"/>
-        <figcaption>Fig. 12 — SHAP summaries: text dominates depression; audio/face for PTSD.</figcaption>
+        <img src="assets/pr_XGB_PTSD_ALL.png" alt="PR curve, PTSD fusion"/>
+        <figcaption>pr_XGB_PTSD_ALL.png — Precision–Recall (PTSD, fusion).</figcaption>
+      </figure>
+      <figure>
+        <img src="assets/roc_XGB_DEP_ALL.png" alt="ROC curve, depression fusion"/>
+        <figcaption>roc_XGB_DEP_ALL.png — ROC (Depression, fusion).</figcaption>
+      </figure>
+      <figure>
+        <img src="assets/roc_XGB_PTSD_ALL.png" alt="ROC curve, PTSD fusion"/>
+        <figcaption>roc_XGB_PTSD_ALL.png — ROC (PTSD, fusion).</figcaption>
+      </figure>
+      <figure>
+        <img src="assets/pca2d_DEP_ALL.png" alt="PCA depression"/>
+        <figcaption>pca2d_DEP_ALL.png — PCA (Depression, fused reps).</figcaption>
+      </figure>
+      <figure>
+        <img src="assets/pca2d_PTSD_ALL.png" alt="PCA PTSD"/>
+        <figcaption>pca2d_PTSD_ALL.png — PCA (PTSD, fused reps).</figcaption>
+      </figure>
+      <figure>
+        <img src="assets/tsne2d_DEP_ALL.png" alt="t-SNE depression"/>
+        <figcaption>tsne2d_DEP_ALL.png — t‑SNE (Depression, fused reps).</figcaption>
+      </figure>
+      <figure>
+        <img src="assets/tsne2d_PTSD_ALL.png" alt="t-SNE PTSD"/>
+        <figcaption>tsne2d_PTSD_ALL.png — t‑SNE (PTSD, fused reps).</figcaption>
+      </figure>
+      <figure>
+        <img src="assets/decision_curve_DEP_fusion_xgb_perclass.png" alt="Decision curve depression"/>
+        <figcaption>decision_curve_DEP_fusion_xgb_perclass.png — Decision‑curve analysis (Depression).</figcaption>
+      </figure>
+      <figure>
+        <img src="assets/decision_curve_PTSD_fusion_xgb_perclass.png" alt="Decision curve PTSD"/>
+        <figcaption>decision_curve_PTSD_fusion_xgb_perclass.png — Decision‑curve analysis (PTSD).</figcaption>
+      </figure>
+      <figure>
+        <img src="assets/shap_DEP_fusion_xgb.png" alt="SHAP depression"/>
+        <figcaption>shap_DEP_fusion_xgb.png — SHAP summary (Depression, fusion).</figcaption>
+      </figure>
+      <figure>
+        <img src="assets/shap_PTSD_fusion_xgb.png" alt="SHAP PTSD"/>
+        <figcaption>shap_PTSD_fusion_xgb.png — SHAP summary (PTSD, fusion).</figcaption>
       </figure>
     </div>
-    <p class="caption">Drop exported figure PNGs into an <code>assets/</code> folder with the exact filenames above for instant rendering.</p>
+    <p class="caption">Put all image files into <code>assets/</code> 
+      with these exact names to render 1:1 with your Overleaf project.</p>
   </section>
 
   <section id="results" class="container">
@@ -263,6 +317,18 @@
     </div>
   </section>
 
+  <section id="manuscript" class="container">
+    <h2>Full Manuscript</h2>
+    <div class="panel">
+      <p class="caption">For 1:1, word‑for‑word viewing, drop your PDF at <code>assets/paper.pdf</code> or change the <code>src</code> below to the arXiv PDF. This avoids copy‑pasting the entire LaTeX into HTML.</p>
+      <div class="figure" style="min-height:0;padding:0;border-style:solid">
+        <object data="assets/paper.pdf#view=FitH" type="application/pdf" width="100%" height="720">
+          <p>PDF preview unavailable. <a href="https://arxiv.org/pdf/2510.20239.pdf" target="_blank" rel="noopener">Open on arXiv</a>.</p>
+        </object>
+      </div>
+    </div>
+  </section>
+
   <section id="bibtex" class="container">
     <h2 style="display:flex;align-items:center;gap:8px">BibTeX <button class="copy mono" id="copyBib">Copy</button></h2>
     <pre class="mono" id="bib">
@@ -279,7 +345,7 @@
 
   <footer>
     <div class="container">
-      <div class="footlinks"><span>© 2025 Filippo Cenacchi</span> <span>·</span> <a href="#">Contact</a> <span>·</span> <a href="#">License</a></div>
+      <div class="footlinks"><span>© 2025 Filippo Cenacchi</span> <span>·</span> <a href="mailto:filippo.cenacchi@mq.edu.au">Contact</a> <span>·</span> <a href="https://github.com/cenacchi2000/EDAI-Trimodal" target="_blank">Code</a></div>
       <div style="margin-top:10px">Static, single‑file site. Drop images in <code>assets/</code> and push to GitHub Pages.</div>
     </div>
   </footer>
