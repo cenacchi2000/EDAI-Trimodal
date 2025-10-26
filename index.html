@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Project Title — Optical Flow with Memory (Template)</title>
+  <meta name="description" content="A clean, single‑file template for a CVPR‑style project page (MemFlow aesthetic)." />
+  <meta property="og:title" content="Project Title — Optical Flow with Memory" />
+  <meta property="og:description" content="A clean, single‑file template for a CVPR‑style project page (MemFlow aesthetic)." />
+  <meta property="og:type" content="website" />
+  <meta name="theme-color" content="#101114" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#0f1115;          /* page bg */
+      --panel:#141821;       /* cards / panels */
+      --text:#e7e9ea;        /* primary text */
+      --muted:#a0a7b4;       /* secondary text */
+      --accent:#7dd3fc;      /* cyan */
+      --accent-2:#c4b5fd;    /* violet */
+      --link:#93c5fd;        /* light blue */
+      --ring:rgba(125,211,252,.5);
+      --shadow:0 10px 30px rgba(0,0,0,.45);
+      --radius:18px;
+      --max:1100px;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0; font-family:Inter,ui-sans-serif,system-ui,Segoe UI,Roboto,Helvetica,Arial,"Apple Color Emoji","Segoe UI Emoji";
+      background:radial-gradient(1200px 700px at 20% -10%, rgba(125,211,252,.10), transparent 70%),
+                 radial-gradient(1200px 700px at 80% -20%, rgba(196,181,253,.10), transparent 70%),
+                 var(--bg);
+      color:var(--text);
+      -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
+    }
+    a{color:var(--link); text-decoration:none}
+    a:hover{text-decoration:underline}
+    .container{max-width:var(--max); margin:0 auto; padding:0 20px}
+    /* ─── Nav ─────────────────────────────────────────────────────────── */
+    .nav{position:sticky; top:0; z-index:50; backdrop-filter:blur(8px); background:rgba(16,17,20,.6); border-bottom:1px solid rgba(255,255,255,.06)}
+    .navwrap{display:flex; align-items:center; justify-content:space-between; height:64px}
+    .brand{display:flex; gap:10px; align-items:center; font-weight:700; letter-spacing:.3px}
+    .brand-dot{width:10px;height:10px;border-radius:999px;background:linear-gradient(135deg,var(--accent),var(--accent-2)); box-shadow:0 0 0 4px rgba(125,211,252,.2)}
+    .nav a{color:var(--text); opacity:.85}
+    .navlinks{display:flex; gap:18px}
+    @media (max-width:780px){.navlinks{display:none}}
+    /* ─── Hero ────────────────────────────────────────────────────────── */
+    .hero{padding:90px 0 40px;text-align:center}
+    .title{font-size:clamp(32px,6vw,54px); font-weight:800; line-height:1.05; letter-spacing:-.02em; margin:0 auto; max-width:900px}
+    .subtitle{font-size:clamp(16px,2.7vw,20px); color:var(--muted); margin-top:14px}
+    .authors{margin-top:20px; color:#cbd5e1}
+    .affil{color:var(--muted); margin-top:6px}
+    .cta{display:flex; flex-wrap:wrap; gap:12px; justify-content:center; margin-top:26px}
+    .btn{--bg:linear-gradient(135deg,var(--accent),var(--accent-2)); display:inline-flex; align-items:center; gap:10px; padding:12px 16px; font-weight:600; border-radius:12px; background:var(--panel); border:1px solid rgba(255,255,255,.08); box-shadow:var(--shadow)}
+    .btn.primary{background:var(--bg); color:#0b1220; border:none}
+    .btn:hover{filter:brightness(1.08)}
+    .btn svg{width:18px; height:18px}
+    /* ─── Teaser / Chart Panel ───────────────────────────────────────── */
+    .panel{background:linear-gradient(180deg,rgba(255,255,255,.03),rgba(255,255,255,.02)); border:1px solid rgba(255,255,255,.07); box-shadow:var(--shadow); border-radius:var(--radius); padding:22px}
+    .grid{display:grid; grid-template-columns:1.2fr .8fr; gap:22px; margin:26px auto; max-width:var(--max)}
+    @media (max-width:980px){.grid{grid-template-columns:1fr}}
+    .figure{background:rgba(255,255,255,.02); border:1px dashed rgba(255,255,255,.1); border-radius:14px; display:flex; align-items:center; justify-content:center; min-height:320px}
+    .caption{color:var(--muted); font-size:.95rem; margin-top:10px}
+    /* ─── Sections ───────────────────────────────────────────────────── */
+    section{padding:36px 0}
+    h2{font-size:clamp(22px,3.5vw,30px); margin:0 0 14px; letter-spacing:-.01em}
+    p{line-height:1.7; color:#dbe0e6}
+    .cards{display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:14px}
+    .card{background:var(--panel); border:1px solid rgba(255,255,255,.07); border-radius:14px; padding:16px; display:flex; gap:12px; align-items:center; justify-content:space-between}
+    .badge{font-size:.8rem; color:var(--muted)}
+    /* Results grid */
+    .results{display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:16px}
+    .thumb{aspect-ratio:16/10; border-radius:12px; background:#0b0e13; border:1px solid rgba(255,255,255,.06); overflow:hidden}
+    .thumb img{width:100%; height:100%; object-fit:cover}
+    /* BibTeX */
+    pre{background:#0a0d12; border:1px solid rgba(255,255,255,.08); padding:16px; border-radius:12px; overflow:auto}
+    .copy{margin-left:8px; padding:8px 10px; border-radius:10px; background:#18202b; border:1px solid rgba(255,255,255,.08); color:#cfe1ff}
+    .copy:hover{filter:brightness(1.05)}
+    /* Footer */
+    footer{border-top:1px solid rgba(255,255,255,.06); color:var(--muted); padding:30px 0 60px; text-align:center}
+    .footlinks{display:flex; gap:14px; justify-content:center; flex-wrap:wrap}
+    .mono{font-family: ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace}
+  </style>
+</head>
+<body>
+  <!-- ───────────────────────── NAV ───────────────────────── -->
+  <nav class="nav">
+    <div class="container navwrap">
+      <div class="brand"><span class="brand-dot"></span> <span>Project Page</span></div>
+      <div class="navlinks mono">
+        <a href="#abstract">Abstract</a>
+        <a href="#paper">Paper & Code</a>
+        <a href="#results">Results</a>
+        <a href="#bibtex">BibTeX</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ───────────────────────── HERO ───────────────────────── -->
+  <header class="hero container">
+    <h1 class="title">MemFlow‑style: Optical Flow Estimation & Prediction <span style="opacity:.65">with Memory</span></h1>
+    <p class="subtitle">CVPR 202X · First Author · Second Author · Third Author</p>
+    <p class="affil">Fudan University (example) · Replace with your affiliation</p>
+    <div class="cta">
+      <a class="btn primary" href="#paper" title="Open Paper">
+        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5 4h9l5 5v11a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1Z" fill="#0b1220"/><path d="M14 4v4a1 1 0 0 0 1 1h4" fill="#0b1220"/></svg>
+        Paper (PDF)
+      </a>
+      <a class="btn" href="#code" title="View Code">
+        <svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M12 .5l10.392 6v11.999L12 25.5 1.608 18.5V6.5L12 .5Zm0 2.309L3.392 7.5v9l8.608 4.691 8.608-4.691v-9L12 2.809Z"/></svg>
+        Code
+      </a>
+      <a class="btn" href="#video" title="Watch Video">
+        <svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M10 8l6 4-6 4V8z"/></svg>
+        Video
+      </a>
+    </div>
+  </header>
+
+  <!-- ───────────────── TEASER + BUBBLE CHART ───────────────── -->
+  <div class="container grid">
+    <div class="panel">
+      <div class="figure">
+        <em>Teaser figure / hero image (drop a PNG or GIF here)</em>
+      </div>
+      <div class="caption">Fig. 1 — Teaser showcasing qualitative motion estimation / prediction. Replace with your real asset.</div>
+    </div>
+    <div class="panel">
+      <h2 style="margin-top:0">EPE vs. Parameters (Bubble)</h2>
+      <svg id="chart" viewBox="0 0 540 360" style="width:100%;height:auto;background:#0b0f17;border:1px solid rgba(255,255,255,.05);border-radius:12px"></svg>
+      <div class="caption">A simple, dependency‑free SVG chart. Replace the dummy numbers in <span class="mono">dataPoints</span> with your results.
+      </div>
+    </div>
+  </div>
+
+  <!-- ───────────────────────── ABSTRACT ─────────────────────── -->
+  <section id="abstract" class="container">
+    <h2>Abstract</h2>
+    <p>
+      This single‑file template lets you publish a polished CVPR‑style project page quickly. It includes a hero section,
+      call‑to‑action buttons, a teaser panel, a bubble chart, results grid, and a copyable BibTeX block — no build tools or dependencies.
+      Edit the placeholders below and push to GitHub Pages.
+    </p>
+  </section>
+
+  <!-- ───────────────────────── PAPER & CODE ──────────────────── -->
+  <section id="paper" class="container">
+    <h2>Paper & Resources</h2>
+    <div class="cards">
+      <a class="card" href="#" target="_blank" rel="noopener">
+        <div>
+          <div><strong>Paper (PDF)</strong></div>
+          <div class="badge">arXiv / camera‑ready</div>
+        </div>
+        <span>↗</span>
+      </a>
+      <a class="card" href="#" target="_blank" rel="noopener">
+        <div>
+          <div><strong>Code</strong></div>
+          <div class="badge">GitHub repository</div>
+        </div>
+        <span>↗</span>
+      </a>
+      <a class="card" href="#" target="_blank" rel="noopener">
+        <div>
+          <div><strong>Dataset</strong></div>
+          <div class="badge">links or download</div>
+        </div>
+        <span>↗</span>
+      </a>
+      <a class="card" href="#" target="_blank" rel="noopener">
+        <div>
+          <div><strong>Poster</strong></div>
+          <div class="badge">A0 / A4</div>
+        </div>
+        <span>↗</span>
+      </a>
+    </div>
+  </section>
+
+  <!-- ───────────────────────── RESULTS ───────────────────────── -->
+  <section id="results" class="container">
+    <h2>Qualitative Results</h2>
+    <div class="results">
+      <div class="thumb"><img src="https://images.unsplash.com/photo-1536148935331-408321065b18?q=80&w=1200&auto=format&fit=crop" alt="placeholder"/></div>
+      <div class="thumb"><img src="https://images.unsplash.com/photo-1501785888041-af3ef285b470?q=80&w=1200&auto=format&fit=crop" alt="placeholder"/></div>
+      <div class="thumb"><img src="https://images.unsplash.com/photo-1495567720989-cebdbdd97913?q=80&w=1200&auto=format&fit=crop" alt="placeholder"/></div>
+      <div class="thumb"><img src="https://images.unsplash.com/photo-1495231916356-a86217efff12?q=80&w=1200&auto=format&fit=crop" alt="placeholder"/></div>
+    </div>
+  </section>
+
+  <!-- ───────────────────────── BIBTEX ────────────────────────── -->
+  <section id="bibtex" class="container">
+    <h2 style="display:flex;align-items:center;gap:8px">BibTeX
+      <button class="copy mono" id="copyBib">Copy</button>
+    </h2>
+    <pre class="mono" id="bib">
+@inproceedings{yourkey202Xmemflowstyle,
+  title     = {MemFlow‑style: Optical Flow Estimation and Prediction with Memory},
+  author    = {First Author and Second Author and Third Author},
+  booktitle = {Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR)},
+  year      = {202X},
+  url       = {https://your-website.example}
+}
+    </pre>
+  </section>
+
+  <footer>
+    <div class="container">
+      <div class="footlinks">
+        <span>© 202X Your Name</span>
+        <span>·</span>
+        <a href="#">License</a>
+        <span>·</span>
+        <a href="#">Contact</a>
+      </div>
+      <div style="margin-top:10px">Built with a single HTML file • No frameworks required</div>
+    </div>
+  </footer>
+
+  <script>
+    // ── Tiny SVG bubble chart (no dependencies) ─────────────────────────
+    const svg = document.getElementById('chart');
+    const W = 540, H = 360, padL = 52, padB = 46, padT = 24, padR = 20;
+    const plotW = W - padL - padR, plotH = H - padT - padB;
+
+    // Dummy data — replace with your own (params in M, lower EPE is better)
+    const dataPoints = [
+      {name:'RAFT', epe:1.42, params:10, color:'#93c5fd'},
+      {name:'FlowFormer', epe:1.02, params:12, color:'#a5b4fc'},
+      {name:'VideoFlow‑MOF', epe:1.18, params:15, color:'#60a5fa'},
+      {name:'MemFlow (5 it)', epe:0.98, params:5, color:'#34d399'},
+      {name:'MemFlow‑T (15 it)', epe:0.94, params:8, color:'#22d3ee'}
+    ];
+
+    const xMin = 0, xMax = 16;         // Params (M)
+    const yMin = 0.8, yMax = 1.5;      // EPE
+
+    function xScale(v){ return padL + (v - xMin) / (xMax - xMin) * plotW }
+    function yScale(v){ return padT + (1 - (v - yMin) / (yMax - yMin)) * plotH }
+
+    function el(tag, attrs={}, parent=svg){
+      const e = document.createElementNS('http://www.w3.org/2000/svg', tag);
+      for (const k in attrs) e.setAttribute(k, attrs[k]);
+      parent.appendChild(e); return e;
+    }
+
+    // Axes
+    el('rect', {x:padL, y:padT, width:plotW, height:plotH, rx:10, ry:10, fill:'#0a0f18', stroke:'rgba(255,255,255,.06)'});
+
+    // X ticks
+    for(let x=0;x<=16;x+=4){
+      const X = xScale(x);
+      el('line',{x1:X, y1:padT, x2:X, y2:padT+plotH, stroke:'rgba(255,255,255,.06)'});
+      el('text',{x:X, y:H-18, fill:'#b6c2d1', 'font-size':'12', 'text-anchor':'middle'}, svg).textContent = x+"M";
+    }
+    // Y ticks
+    for(let y=0.8; y<=1.5; y+=0.2){
+      const Y = yScale(y);
+      el('line',{x1:padL, y1:Y, x2:padL+plotW, y2:Y, stroke:'rgba(255,255,255,.05)'});
+      el('text',{x:18, y:Y+4, fill:'#b6c2d1', 'font-size':'12'}, svg).textContent = y.toFixed(1);
+    }
+    // Axis labels
+    el('text',{x:padL+plotW/2, y:H-4, fill:'#cbd5e1', 'font-size':'12', 'text-anchor':'middle'}, svg).textContent = 'Parameters (Millions)';
+    el('text',{x:10, y:padT+plotH/2, fill:'#cbd5e1', 'font-size':'12', transform:`rotate(-90 10 ${padT+plotH/2})`}, svg).textContent = 'End‑Point Error (EPE)';
+
+    // Bubbles
+    dataPoints.forEach(d=>{
+      const r = 8 + d.params * 0.6; // radius encodes params lightly
+      const cx = xScale(d.params), cy = yScale(d.epe);
+      const g = el('g',{});
+      el('circle',{cx, cy, r:r+3, fill:'rgba(255,255,255,.06)'} ,g);
+      el('circle',{cx, cy, r, fill:d.color, opacity:.9}, g);
+      const label = el('text',{x:cx, y:cy - r - 6, fill:'#e5ebf5', 'font-size':'12', 'text-anchor':'middle'}, g);
+      label.textContent = d.name;
+      // tooltip
+      g.addEventListener('mouseenter',()=>{
+        label.textContent = `${d.name}  •  EPE ${d.epe}  •  ${d.params}M`;
+      });
+      g.addEventListener('mouseleave',()=>{ label.textContent = d.name;});
+    });
+
+    // ── Copy BibTeX ─────────────────────────────────────────────
+    document.getElementById('copyBib').addEventListener('click', async () => {
+      const txt = document.getElementById('bib').innerText.trim();
+      try{ await navigator.clipboard.writeText(txt); 
+        const b = document.getElementById('copyBib');
+        b.textContent = 'Copied ✓'; setTimeout(()=> b.textContent='Copy', 1500);
+      }catch{ alert('Copy failed — select and copy manually.'); }
+    });
+  </script>
+</body>
+</html>
