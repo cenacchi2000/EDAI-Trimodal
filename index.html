@@ -41,6 +41,45 @@
       -webkit-font-smoothing:antialiased;
       -moz-osx-font-smoothing:grayscale;
     }
+    /* ===== MemFlow-like display titles ===== */
+:root{
+  --title-weight: 900;
+  --title-tracking: -0.02em;
+}
+
+.title{
+  font-weight: var(--title-weight);
+  letter-spacing: var(--title-tracking);
+  font-size: clamp(38px, 6vw, 60px);
+  line-height: 1.05;
+  text-align: center;
+}
+
+.section-title{
+  font-weight: var(--title-weight);
+  letter-spacing: var(--title-tracking);
+  font-size: clamp(28px, 4vw, 40px);
+  line-height: 1.08;
+  text-align: center;
+  margin: 0 0 20px;
+  position: relative;
+}
+
+.section-title::after{
+  content:"";
+  display:block;
+  width:72px;
+  height:3px;
+  border-radius:3px;
+  margin:14px auto 0;
+  background: linear-gradient(90deg, rgba(34,80,244,.5), rgba(34,80,244,.15));
+}
+
+/* Optional: slightly larger subsection headings inside cards */
+.card h3{
+  font-weight: 800;
+  letter-spacing: -0.01em;
+}
 
     /* ===== Top nav (blurred, light) ===== */
     .nav {
@@ -199,8 +238,6 @@
     <div class="hero-inner">
       <h1 class="title">Tri-Modal Severity Fused Diagnosis across<br/>Depression &amp; PTSD</h1>
 
-      <p class="subtitle">Manuscript submitted to <strong>IEEE Transactions on Affective Computing</strong> · 2025</p>
-
       <div class="authors">
   <div class="names">
     <a href="https://cenacchi2000.github.io/filippocenacchi.github.io/" target="_blank" rel="noopener">Filippo Cenacchi</a> ·
@@ -253,7 +290,7 @@
   <!-- ===== ABSTRACT ===== -->
   <section id="abstract">
     <div class="container">
-      <h2>Abstract</h2>
+      <h2 class="section-title">Abstract</h2>
       <p class="lead">
         Depression and PTSD frequently co-occur, complicating automated assessment when framed as binary, disorder-specific tasks.
         We present a unified tri-modal severity framework that synchronizes sentence-level transformer text embeddings, log-Mel
@@ -269,96 +306,97 @@
   <!-- ===== FIGURE WALKTHROUGH (narrated; filenames match Overleaf) ===== -->
   <section id="figures">
     <div class="container">
-      <h2>Figure Walkthrough</h2>
+      <h2 class="section-title">Figure Walkthrough</h2>
 
-      <div class="fig-grid">
-        <!-- Row 1 -->
-        <figure class="fig">
-          <img src="assets/logmel.png" alt="Representative log-Mel spectrogram" data-zoom>
-          <figcaption><strong>Mel-Spectrogram.</strong> Representative log-Mel spectrogram. Voiced segments appear as bright vertical stripes; silences are low-energy gaps.</figcaption>
-        </figure>
 
-        <figure class="fig">
-          <img src="assets/perclass_f1_XGB_DEP_ALL.png" alt="Per-class F1 (Depression, fusion)" data-zoom>
-          <p><strong>Per-class F1 — Depression (fusion).</strong> Extremes are easiest; mid-tiers remain challenging.</p>
-        </figure>
+  <div class="fig-grid">
+  <!-- Row 1: Signal views -->
+  <figure class="fig">
+    <img src="assets/logmel.png" alt="Representative log-Mel spectrogram" data-zoom>
+    <p><strong>Signal view — Audio (Mel).</strong> High-energy vertical bands flag voiced speech; low-energy troughs reflect pauses. These patterns are later summarized into tempo, spectral slope and stability cues that correlate with affective intensity.</p>
+  </figure>
 
-        <figure class="fig">
-          <img src="assets/perclass_f1_XGB_PTSD_ALL.png" alt="Per-class F1 (PTSD, fusion)" data-zoom>
-          <p><strong>Per-class F1 — PTSD (fusion).</strong> Fusion maintains sensitivity while improving robustness.</p>
-        </figure>
+  <figure class="fig">
+    <img src="assets/dep_bars_fixed_v12.png" alt="Modality contributions: Depression" data-zoom>
+    <p><strong>Modality roles in Depression.</strong> Text dominates severity separation; audio contributes robustness under short, disfluent turns; facial micro-expressive cues support edge cases near the Mild/Moderate boundary.</p>
+  </figure>
 
-        <!-- Row 2 -->
-        <figure class="fig">
-          <img src="assets/pooled_cm_XGB_DEP_ALL.png" alt="Confusion matrix: Depression, fusion" data-zoom>
-          <p><strong>Confusion matrix — Depression (fusion).</strong> Errors cluster between adjacent severities.</p>
-        </figure>
+  <figure class="fig">
+    <img src="assets/ptsd_bars_fixed_v12.png" alt="Modality contributions: PTSD" data-zoom>
+    <p><strong>Modality roles in PTSD.</strong> Text+face is the strongest pair; gaze/head-pose regularity and AU clusters improve Severe detection where lexical cues alone saturate.</p>
+  </figure>
 
-        <figure class="fig">
-          <img src="assets/pooled_cm_XGB_PTSD_ALL.png" alt="Confusion matrix: PTSD, fusion" data-zoom>
-          <p><strong>Confusion matrix — PTSD (fusion).</strong> Severe cases separate sharply; mild vs. moderate overlaps remain.</p>
-        </figure>
+  <!-- Row 2: Class-wise performance -->
+  <figure class="fig">
+    <img src="assets/perclass_f1_XGB_DEP_ALL.png" alt="Per-class F1 (Depression, fusion)" data-zoom>
+    <p><strong>Per-class F1 — Depression (fusion).</strong> Extremes (Minimal/Severe) are reliably identified; confusions concentrate between Mild/Moderate and Moderate/Moderately-severe — consistent with clinical ambiguity.</p>
+  </figure>
 
-        <figure class="fig">
-          <img src="assets/pooled_cm_XGB_DEP_AUDIO.png" alt="Unimodal failure mode" data-zoom>
-          <p><strong>Unimodal failure:</strong> Depression — audio only. Motivates tri-modal fusion for mid-tier precision.</p>
-        </figure>
+  <figure class="fig">
+    <img src="assets/perclass_f1_XGB_PTSD_ALL.png" alt="Per-class F1 (PTSD, fusion)" data-zoom>
+    <p><strong>Per-class F1 — PTSD (fusion).</strong> Fusion preserves sensitivity in Moderate while sharpening precision in Severe, indicating complementary gains beyond text-only baselines.</p>
+  </figure>
 
-        <!-- Row 3 -->
-        <figure class="fig">
-          <img src="assets/dep_bars_fixed_v12.png" alt="Modality contributions: Depression" data-zoom>
-          <p><strong>Modality contributions — Depression.</strong> Text dominates; audio adds robustness.</p>
-        </figure>
+  <figure class="fig">
+    <img src="assets/decision_curve_DEP_fusion_xgb_perclass.png" alt="Decision-curve analysis depression" data-zoom>
+    <p><strong>Decision-curve (Depression).</strong> Net-benefit remains higher across clinically relevant thresholds, suggesting fewer unnecessary escalations for the same hit rate.</p>
+  </figure>
 
-        <figure class="fig">
-          <img src="assets/ptsd_bars_fixed_v12.png" alt="Modality contributions: PTSD" data-zoom>
-          <p><strong>Modality contributions — PTSD.</strong> Text+face is a strong pair; fusion stabilizes severe cases.</p>
-        </figure>
+  <!-- Row 3: Confusions & geometry -->
+  <figure class="fig">
+    <img src="assets/pooled_cm_XGB_DEP_ALL.png" alt="Confusion matrix Depression" data-zoom>
+    <p><strong>Confusion matrix — Depression.</strong> Errors are largely local (adjacent severities). This locality is desirable for downstream triage where near-misses induce similar care pathways.</p>
+  </figure>
 
-        <figure class="fig">
-          <img src="assets/decision_curve_DEP_fusion_xgb_perclass.png" alt="Decision curves depression" data-zoom>
-          <p><strong>Decision-curve analysis (Depression).</strong> Fusion delivers higher net benefit across thresholds.</p>
-        </figure>
+  <figure class="fig">
+    <img src="assets/pooled_cm_XGB_PTSD_ALL.png" alt="Confusion matrix PTSD" data-zoom>
+    <p><strong>Confusion matrix — PTSD.</strong> Severe cases separate clearly; None/Mild vs Moderate retains overlap tied to short utterances and neutral lexical content.</p>
+  </figure>
 
-        <!-- Row 4 -->
-        <figure class="fig">
-          <img src="assets/roc_XGB_DEP_ALL.png" alt="ROC Depression" data-zoom>
-          <p><strong>ROC — Depression (fusion).</strong> High AUC with balanced trade-offs.</p>
-        </figure>
+  <figure class="fig">
+    <img src="assets/pooled_cm_XGB_DEP_AUDIO.png" alt="Unimodal failure" data-zoom>
+    <p><strong>Unimodal failure (Audio-only).</strong> Removing text collapses mid-tier precision, motivating late-fusion calibration to stabilize risk estimates.</p>
+  </figure>
 
-        <figure class="fig">
-          <img src="assets/roc_XGB_PTSD_ALL.png" alt="ROC PTSD" data-zoom>
-          <p><strong>ROC — PTSD (fusion).</strong> Consistently strong discrimination.</p>
-        </figure>
+  <!-- Row 4: Global discrimination & attribution -->
+  <figure class="fig">
+    <img src="assets/roc_XGB_DEP_ALL.png" alt="ROC Depression" data-zoom>
+    <p><strong>ROC — Depression (fusion).</strong> High AUC indicates balanced discrimination; gains come from complementary cues in borderline classes.</p>
+  </figure>
 
-        <figure class="fig">
-          <img src="assets/shap_DEP_fusion_xgb.png" alt="SHAP Depression" data-zoom>
-          <p><strong>Interpretability — Depression.</strong> Linguistic features lead contributions.</p>
-        </figure>
+  <figure class="fig">
+    <img src="assets/roc_XGB_PTSD_ALL.png" alt="ROC PTSD" data-zoom>
+    <p><strong>ROC — PTSD (fusion).</strong> Robust separation across folds with minimal degradation under missing-modality ablations.</p>
+  </figure>
 
-        <!-- Row 5 -->
-        <figure class="fig">
-          <img src="assets/shap_PTSD_fusion_xgb.png" alt="SHAP PTSD" data-zoom>
-          <p><strong>Interpretability — PTSD.</strong> Audio/face cues strengthen decisions on higher severities.</p>
-        </figure>
+  <figure class="fig">
+    <img src="assets/shap_DEP_fusion_xgb.png" alt="SHAP Depression" data-zoom>
+    <p><strong>Attribution — Depression.</strong> SHAP highlights lexical markers (negation, hopelessness frames) with supportive prosodic stability; facial AUs contribute to differentiating Moderate vs Moderately-severe.</p>
+  </figure>
 
-        <figure class="fig">
-          <img src="assets/pca2d_DEP_ALL.png" alt="PCA Depression" data-zoom>
-          <p><strong>Embeddings — PCA (Depression).</strong> Coarse class structure; overlap in mid-tiers.</p>
-        </figure>
+  <!-- Row 5: Embedding geometry -->
+  <figure class="fig">
+    <img src="assets/shap_PTSD_fusion_xgb.png" alt="SHAP PTSD" data-zoom>
+    <p><strong>Attribution — PTSD.</strong> Startle-like prosodic bursts and head-pose micro-stability increase SHAP importance for Severe, where textual descriptions alone compress.</p>
+  </figure>
 
-        <figure class="fig">
-          <img src="assets/tsne2d_PTSD_ALL.png" alt="t-SNE PTSD" data-zoom>
-          <p><strong>Embeddings — t-SNE (PTSD).</strong> Non-linear clusters highlight severe separation.</p>
-        </figure>
-      </div>
-    </div>
-  </section>
+  <figure class="fig">
+    <img src="assets/pca2d_DEP_ALL.png" alt="PCA Depression" data-zoom>
+    <p><strong>Embedding geometry — PCA (Depression).</strong> Linear projection shows coarse gradients; overlap in mid-tiers reflects mixed lexical/prosodic presentations.</p>
+  </figure>
+
+  <figure class="fig">
+    <img src="assets/tsne2d_PTSD_ALL.png" alt="t-SNE PTSD" data-zoom>
+    <p><strong>Embedding geometry — t-SNE (PTSD).</strong> Non-linear neighborhoods reveal dense Severe clusters and diffuse Mild regions, matching confusion patterns above.</p>
+  </figure>
+</div>
+
 
   <!-- ===== RESULTS ===== -->
   <section id="results">
     <div class="container">
-      <h2>Selected Results</h2>
+      <h2 class="section-title">Selected Results</h2>
+
 
       <div class="grid">
         <div class="card">
@@ -400,47 +438,35 @@
       </div>
     </div>
   </section>
+<!-- ===== MANUSCRIPT (arXiv only) ===== -->
+<section id="manuscript">
+  <div class="container">
+    <h2 class="section-title">Full Manuscript</h2>
+
+    <div class="card">
+      <p class="lead">
+        Read the manuscript on arXiv and cite it using the BibTeX below.
+      </p>
+
+      <div class="cta-row" style="justify-content:flex-start">
+        <a class="chip primary" href="https://arxiv.org/pdf/2510.20239.pdf" target="_blank" rel="noopener">
+          Open arXiv PDF
+        </a>
+        <a class="chip" href="https://arxiv.org/abs/2510.20239" target="_blank" rel="noopener">
+          arXiv abstract
+        </a>
+      </div>
+
+      <!-- BibTeX (copy-ready) -->
+      <h3 style="margin-top:18px">BibTeX</h3>
+      <pre id="bibtex" style="margin:8px 0 12px; padding:12px; background:#f8f9ff; border:1px solid rgba(15,36,65,.10); border-radius:12px; overflow:auto"></pre>
+      <button class="chip" id="copy-bib" type="button" aria-label="Copy BibTeX">Copy BibTeX</button>
+    </div>
+  </div>
+</section>
 
 <script>
-(async ()=>{
-  const url = 'assets/manuscript.pdf';
-  const shell = document.getElementById('pdf-shell');
-  const frame = document.getElementById('pdf-frame');
-  const fallback = document.getElementById('pdf-fallback');
-
-  function showIframe() { shell.hidden = false; if (fallback) fallback.hidden = true; }
-  function showFallback() { shell.hidden = true; if (fallback) fallback.hidden = false; }
-
-  try {
-    // Try a lightweight HEAD first; if that fails (some hosts), fall back to GET.
-    let ok = false, isPDF = false;
-
-    try {
-      const head = await fetch(url, { method: 'HEAD', cache: 'no-store' });
-      ok = head.ok;
-      const ct = (head.headers.get('content-type') || '').toLowerCase();
-      isPDF = ct.includes('pdf') || url.toLowerCase().endsWith('.pdf');
-    } catch (_) { /* ignore and try GET */ }
-
-    if (!ok) {
-      const get = await fetch(url, { method: 'GET', cache: 'no-store' });
-      ok = get.ok;
-      const ct = (get.headers.get('content-type') || '').toLowerCase();
-      isPDF = ct.includes('pdf') || url.toLowerCase().endsWith('.pdf');
-    }
-
-    if (ok && isPDF) {
-      // Set src only after confirmation to avoid Chrome "Failed to load" pane.
-      frame.src = url + '#view=FitH';
-      showIframe();
-    } else {
-      showFallback();
-    }
-  } catch (e) {
-    showFallback();
-  }
-
-  // ---- BibTeX fill + copy button ----
+(() => {
   const bib = `@misc{cenacchi2025trimodalseverityfuseddiagnosis,
   title={Tri-Modal Severity Fused Diagnosis across Depression and Post-traumatic Stress Disorders},
   author={Filippo Cenacchi and Deborah Richards and Longbing Cao},
@@ -456,14 +482,16 @@
   const copyBtn = document.getElementById('copy-bib');
   if (copyBtn && navigator.clipboard) {
     copyBtn.addEventListener('click', async () => {
-      try { await navigator.clipboard.writeText(bib);
+      try {
+        await navigator.clipboard.writeText(bib);
         copyBtn.textContent = 'Copied ✓';
-        setTimeout(()=> copyBtn.textContent = 'Copy BibTeX', 1200);
-      } catch(_) { /* no-op */ }
+        setTimeout(() => (copyBtn.textContent = 'Copy BibTeX'), 1200);
+      } catch {}
     });
   }
 })();
 </script>
+
 
 
 
