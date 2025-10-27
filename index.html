@@ -254,6 +254,97 @@
   perspective: 1600px;
   position: relative;
 }
+/* Results full-bleed soft gradient header */
+#results{ position:relative; padding: 18px 0 64px; }
+#results .results-hero{
+  position:absolute; inset:0 0 auto 0; height:220px; z-index:-1;
+  background:
+    radial-gradient(900px 320px at 15% 0%, rgba(34,80,244,.12), transparent 60%),
+    radial-gradient(900px 320px at 85% 0%, rgba(99,102,241,.12), transparent 60%),
+    linear-gradient(180deg, rgba(255,255,255,.0), rgba(15,23,42,.03));
+}
+#results .results-wrap{
+  max-width: min(1400px, 96vw);
+  margin: 0 auto;
+  padding: 0 clamp(24px, 5vw, 48px);
+  text-align:center;
+}
+
+/* Pretty KPI cards */
+.kpis--pretty{
+  display:grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 18px;
+  margin: 18px auto 12px;
+}
+.kpi{
+  grid-column: span 3;
+  background: var(--card);
+  border-radius: 20px;
+  padding: 18px 18px 16px;
+  box-shadow: 0 12px 32px rgba(15,23,42,.08);
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  border: 1px solid rgba(15,36,65,.06);
+  transform: translateY(6px);
+  opacity: 0;
+}
+.kpi.fade-in.show{ transform: none; opacity: 1; transition: transform .6s cubic-bezier(.2,.7,.2,1), opacity .6s; }
+.kpi::before{
+  content:""; position:absolute; inset:-1px; border-radius:22px; z-index:-1;
+  background: linear-gradient(120deg, transparent 30%, rgba(255,255,255,.6) 45%, transparent 60%);
+  transform: translateX(-80%);
+  transition: transform .9s ease;
+}
+.kpi:hover::before{ transform: translateX(30%); }
+
+/* Colorways */
+.kpi--brand{ --c1:#2250f4; --c2:#7aa2ff; }
+.kpi--mint{ --c1:#0ea5a4; --c2:#7fe6e0; }
+.kpi--orchid{ --c1:#7c3aed; --c2:#c4b5fd; }
+.kpi--amber{ --c1:#f59e0b; --c2:#fde68a; }
+
+/* Accent rings */
+.kpi::after{
+  content:""; position:absolute; inset:auto -20% -45% -20%; height:120px; z-index:-1;
+  background: radial-gradient(60% 120% at 50% 0%, color-mix(in srgb, var(--c1), #fff 70%) 0%, transparent 70%);
+  filter: blur(20px);
+}
+
+/* KPI content */
+.kpi header{ font-weight:700; color:var(--muted); letter-spacing:.02em; margin-bottom:8px; }
+.kpi .kpi-main{
+  display:flex; align-items:baseline; justify-content:center; gap:8px;
+}
+.kpi-value{ font-weight:900; letter-spacing:-.02em; font-size: clamp(36px, 4vw, 54px); line-height:1; background: linear-gradient(90deg, var(--c1), var(--c2));
+  -webkit-background-clip:text; background-clip:text; color: transparent; }
+.kpi-unit{ font-weight:900; font-size: clamp(16px, 1.6vw, 20px); color: var(--ink); }
+.kpi footer{ margin-top:6px; color:var(--muted); font-weight:600; }
+
+/* Bulleted narrative */
+.bullets{ display:grid; gap:12px; margin: 18px auto 4px; text-align:left; max-width:min(1000px, 90vw); }
+.bullet{ display:flex; gap:10px; padding:12px 14px; border:1px solid rgba(15,36,65,.08); background:#fff; border-radius:14px; box-shadow: var(--shadow); }
+.dot{ width:12px; height:12px; border-radius:999px; margin-top:6px; flex:0 0 12px; }
+.dot--brand{ background:#2250f4; } .dot--mint{ background:#0ea5a4; }
+.dot--orchid{ background:#7c3aed; } .dot--amber{ background:#f59e0b; }
+.bullet p{ margin:0; color:var(--ink); }
+.bullet strong{ font-weight:800; }
+
+/* Responsive columns for KPI grid */
+@media (max-width:1100px){ .kpi{ grid-column: span 4; } }
+@media (max-width:800px){ .kpi{ grid-column: span 6; } }
+@media (max-width:560px){ .kpi{ grid-column: 1 / -1; } }
+
+/* Fade / slide-in base (re-usable) */
+.fade-in{ opacity:0; transform: translateY(8px); }
+.fade-in.show{ opacity:1; transform:none; transition: opacity .6s ease, transform .6s ease; }
+
+/* Reduce motion respect */
+@media (prefers-reduced-motion: reduce){
+  .kpi, .fade-in, .kpi::before{ transition:none !important; }
+  .kpi, .fade-in{ opacity:1; transform:none; }
+}
 
 .card-3d .card-inner{
   position: relative;
@@ -351,82 +442,73 @@
   color: var(--muted, #5b6b80);
 }
 /* Wider side whitespace for the figures section */
+/* Wider side whitespace for figures */
 .container.narrow{
-  max-width: min(1040px, 86vw);
-  padding-inline: clamp(32px, 6vw, 96px);
+  max-width: min(1180px, 92vw);
+  padding-inline: clamp(36px, 6vw, 96px);
 }
 
-/* Exactly two cards per row on desktop; one on small screens */
+/* Exactly 3 cards per row on large screens */
 .cards{
-  display: grid;
-  grid-template-columns: repeat(2, minmax(320px, 1fr));
-  gap: 32px;
-  margin-inline: auto;
-  align-items: stretch;
-}
-@media (max-width: 820px){
-  .cards{ grid-template-columns: 1fr; }
-}
-
-/* Remove hover logic entirely */
-.cards:has(.card-3d:hover) .card-3d:not(:hover){ filter:none; pointer-events:auto; }
-.card-3d:hover,
-.card-3d:hover .card-inner{ transform:none; position:static; }
-
-/* Click-to-open uses .active */
-.card-3d .card-inner{
-  transform-style: preserve-3d;
-  transition: transform .6s cubic-bezier(.2,.7,.2,1);
-  min-height: 280px;
-}
-.card-3d .card-back{ position:absolute; inset:0; border-radius:18px; background:#fff; transform:rotateY(180deg); overflow:hidden; }
-.card-3d.active .card-inner{ transform: rotateY(180deg); }
-
-/* Blur siblings only when one is active */
-.cards:has(.card-3d.active) .card-3d:not(.active){
-  filter: blur(4px) saturate(.9);
-  pointer-events: none;
-}
-
-/* Fullscreen center ONLY when active */
-.card-3d.active{
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%,-50%) !important;
-  z-index: 9999;
-  width: min(1100px, 92vw);
-  height: min(82vh, 920px);
-  padding: 0;
-  box-shadow: 0 30px 120px rgba(2,8,23,.35);
-}
-.card-3d.active .card-inner,
-.card-3d.active .card-back{ height:100%; }
-
-/* Back layout for long explanations */
-.back-wrap{
   display:grid;
-  grid-template-columns: 1.2fr 1fr;
-  gap: 24px;
-  height:100%;
-  padding: 24px;
+  grid-template-columns: repeat(3, minmax(280px,1fr));
+  gap: 32px;
+  margin-inline:auto;
+  align-items:stretch;
 }
+@media (max-width: 1080px){ .cards{ grid-template-columns: repeat(2, minmax(280px,1fr)); } }
+@media (max-width: 720px){ .cards{ grid-template-columns: 1fr; } }
+
+/* Card base */
+.card{ background:#fff; border-radius:18px; box-shadow:0 10px 30px rgba(15,23,42,.06); padding:18px; transition:transform .25s, box-shadow .25s; }
+.card:hover{ transform:translateY(-2px); box-shadow:0 16px 40px rgba(15,23,42,.10); }
+
+/* 3D flip surfaces */
+.card-3d{ perspective:1600px; position:relative; }
+.card-3d .card-inner{ position:relative; transform-style:preserve-3d; transition:transform .6s cubic-bezier(.2,.7,.2,1); min-height:280px; }
+.card-3d .card-face{ backface-visibility:hidden; }
+.card-3d .card-back{ position:absolute; inset:0; border-radius:18px; background:#fff; transform:rotateY(180deg); overflow:hidden; }
+
+/* —— NO HOVER STATES — only .active will flip —— */
+.card-3d.active .card-inner{ transform:rotateY(180deg); }
+
+/* Fullscreen card when active */
+.card-3d.active{
+  position:fixed; top:50%; left:50%; transform:translate(-50%,-50%) !important;
+  z-index:9999; width:min(1100px,92vw); height:min(82vh,920px); padding:0;
+  box-shadow:0 30px 120px rgba(2,8,23,.35);
+}
+.card-3d.active .card-inner, .card-3d.active .card-back{ height:100%; }
+.cards:has(.card-3d.active) .card-3d:not(.active){ filter:blur(4px) saturate(.9); pointer-events:none; }
+
+/* Back layout */
+.back-wrap{ display:grid; grid-template-columns:1.2fr 1fr; gap:24px; height:100%; padding:24px; }
 .back-figure{ display:flex; align-items:center; justify-content:center; overflow:hidden; border-radius:14px; background:linear-gradient(180deg,#f8fbff,#eef3ff); }
 .back-figure img{ width:100%; max-height:100%; object-fit:contain; }
 .back-text{ overflow:auto; padding-right:6px; }
 
+/* Center both section titles */
+.section-title{ text-align:center; }
 
-/* accessibility: reduce animation if the user prefers */
-@media (prefers-reduced-motion: reduce){
-  .card-3d .card-inner{ transition: none; }
+/* Selected Results: full-width feel + centered */
+#results .container{
+  max-width: min(1400px, 96vw);
+  padding-inline: clamp(24px, 4vw, 48px);
+  text-align: center;
 }
 
-    
-/* smoothness + accessibility */
-@media (prefers-reduced-motion: reduce){
-  .card-3d .card-inner{ transition: none; }
-  .card{ transition: none; }
+/* KPI row centered and spanning wide */
+.kpis{
+  display:grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 20px;
+  justify-items: stretch;
 }
+.kpi{ grid-column: span 3; }
+@media(max-width:1100px){ .kpi{ grid-column: span 4; } }
+@media(max-width:800px){ .kpi{ grid-column: span 6; } }
+@media(max-width:560px){ .kpi{ grid-column: 1 / -1; } }
+
 
     /* Tables */
     .table{width:100%; border-collapse: collapse; overflow:hidden; border-radius:14px; background:#fff; box-shadow:var(--shadow)}
@@ -864,80 +946,80 @@
   </div>
 
 </div>
-
+<!-- ===== RESULTS (updated, centered, animated) ===== -->
 <section id="results">
-  <div class="container">
-    <h2>Selected Results</h2>
+  <div class="results-hero" aria-hidden="true"></div>
 
-    <!-- KPI strip (animated counters) -->
-    <div class="kpis">
-      <div class="kpi fade-in">
-        <h4>Depression · TEXT (XGB)</h4>
-        <div class="big"><span class="count" data-to="0.862">0.862</span> ACC</div>
-        <small>F1w 0.860 · AUC 0.964</small>
+  <div class="results-wrap">
+    <h2 class="section-title">Selected Results</h2>
+
+    <!-- KPI row -->
+    <div class="kpis kpis--pretty">
+      <article class="kpi kpi--brand fade-in" aria-label="Depression TEXT XGB performance">
+        <header>Depression · <strong>TEXT</strong> (XGB)</header>
+        <div class="kpi-main">
+          <span class="kpi-value"><span class="count" data-to="0.862">0.862</span></span>
+          <span class="kpi-unit">ACC</span>
+        </div>
+        <footer>F1w 0.860 · AUC 0.964</footer>
+      </article>
+
+      <article class="kpi kpi--mint fade-in" aria-label="PTSD TEXT XGB performance">
+        <header>PTSD · <strong>TEXT</strong> (XGB)</header>
+        <div class="kpi-main">
+          <span class="kpi-value"><span class="count" data-to="0.862">0.862</span></span>
+          <span class="kpi-unit">ACC</span>
+        </div>
+        <footer>F1w 0.861 · AUC 0.971</footer>
+      </article>
+
+      <article class="kpi kpi--orchid fade-in" aria-label="Depression Fusion ALL performance">
+        <header>Depression · <strong>Fusion</strong> (ALL)</header>
+        <div class="kpi-main">
+          <span class="kpi-value"><span class="count" data-to="0.852">0.852</span></span>
+          <span class="kpi-unit">ACC</span>
+        </div>
+        <footer>F1w 0.850 · AUC 0.961</footer>
+      </article>
+
+      <article class="kpi kpi--amber fade-in" aria-label="PTSD Fusion ALL performance">
+        <header>PTSD · <strong>Fusion</strong> (ALL)</header>
+        <div class="kpi-main">
+          <span class="kpi-value"><span class="count" data-to="0.854">0.854</span></span>
+          <span class="kpi-unit">ACC</span>
+        </div>
+        <footer>F1w 0.854 · AUC 0.970</footer>
+      </article>
+    </div>
+
+    <!-- Narrative bullets -->
+    <div class="bullets fade-in">
+      <div class="bullet">
+        <span class="dot dot--brand"></span>
+        <p><strong>Text dominates depression; audio+face bolster PTSD.</strong> Removing TEXT is the only ablation that materially hurts both tasks; audio and face add robustness, especially improving <em>Severe PTSD</em> separation.</p>
       </div>
-      <div class="kpi fade-in">
-        <h4>PTSD · TEXT (XGB)</h4>
-        <div class="big"><span class="count" data-to="0.862">0.862</span> ACC</div>
-        <small>F1w 0.861 · AUC 0.971</small>
+      <div class="bullet">
+        <span class="dot dot--mint"></span>
+        <p><strong>Fusion ≈ strongest unimodal on ACC/F1, but better for clinics.</strong> Tri-modal fusion matches text on headline metrics and improves decision-curve <em>net benefit</em> and robustness under noisy/missing streams.</p>
       </div>
-      <div class="kpi fade-in">
-        <h4>Depression · Fusion (ALL)</h4>
-        <div class="big"><span class="count" data-to="0.852">0.852</span> ACC</div>
-        <small>F1w 0.850 · AUC 0.961</small>
+      <div class="bullet">
+        <span class="dot dot--orchid"></span>
+        <p><strong>Error shape is clinically sensible.</strong> Extremes are reliably identified; confusions cluster between adjacent severities (e.g., Mild↔Moderate), reflecting real-world ambiguity.</p>
       </div>
-      <div class="kpi fade-in">
-        <h4>PTSD · Fusion (ALL)</h4>
-        <div class="big"><span class="count" data-to="0.854">0.854</span> ACC</div>
-        <small>F1w 0.854 · AUC 0.970</small>
+      <div class="bullet">
+        <span class="dot dot--amber"></span>
+        <p><strong>PTSD synergy differs.</strong> Text+Face is particularly strong; fusion sharpens <em>Severe</em> while Moderate remains toughest—consistent with confusion matrices and per-class F1.</p>
       </div>
     </div>
 
-    <!-- Why these matter -->
-    <div class="reasons fade-in" style="margin-top:18px">
-      <div class="reason">
-        <strong>Fusion improves clinical utility.</strong> Decision-curve analysis shows higher net benefit across wide thresholds vs. unimodal baselines — ideal for threshold-based triage/stepped care.
-        <span title="Higher net benefit across thresholds for both tasks">ℹ︎</span>
-      </div>
-      <div class="reason">
-        <strong>Text is central; audio+face add robustness.</strong> Removing TEXT is the only ablation that materially drops ACC/F1; audio/face steady severe-case sensitivity and guard against missing/noisy streams.
-      </div>
-      <div class="reason">
-        <strong>Error shape.</strong> Per-class F1 peaks at extremes (minimal / severe); mid-tiers remain hardest. PR shows strong recall at high precision for severe cases; ROC ≈ ceiling.
-      </div>
-    </div>
-
-    <!-- Setup, now scannable -->
-    <details class="accordion fade-in" style="margin-top:22px" open>
-      <summary>Setup at a glance</summary>
-      <div class="content">
-        <div class="badges">
-          <span class="badge brand">Encoders: Text 768-D · Audio 256-D · Face 512-D</span>
-          <span class="badge">Fusion: concat → z-score per fold</span>
-          <span class="badge">Classifier: XGBoost multi:softprob</span>
-          <span class="badge">CV: stratified 5-fold · inverse class weights</span>
-          <span class="badge">Metrics: ACC, F1w, AUC, MCC, κ, PR/ROC</span>
-        </div>
-        <div class="cols" style="margin-top:12px">
-          <ul>
-            <li><strong>Why this setup?</strong> Class imbalance handled by per-fold weights; out-of-fold probabilities used for metrics.</li>
-            <li><strong>Robustness knobs.</strong> Late fusion stabilizes when one stream degrades (e.g., low-SNR audio).</li>
-          </ul>
-          <ul>
-            <li><strong>Interpretability.</strong> SHAP: language dominates depression; prosody/facial expressivity support PTSD.</li>
-            <li><strong>Where fusion helps.</strong> Net-benefit gains and severe-class sensitivity.</li>
-          </ul>
-        </div>
-      </div>
-    </details>
-
-    <!-- Existing table kept, but visually framed as “Details” -->
-    <details class="accordion fade-in" style="margin-top:16px">
+    <!-- Collapsible full table (kept; optional) -->
+    <details class="accordion fade-in" style="margin-top:22px">
       <summary>Cross-validated Performance (full table)</summary>
       <div class="content">
-        <!-- keep your original table markup below -->
         <table class="table">
-          <thead><tr><th>Task</th><th>Model</th><th>ACC</th><th>F1w</th><th>AUC</th></tr></thead>
+          <thead>
+            <tr><th>Task</th><th>Model</th><th>ACC</th><th>F1w</th><th>AUC</th></tr>
+          </thead>
           <tbody>
             <tr><td>Depression</td><td>TEXT (XGB)</td><td>0.862</td><td>0.860</td><td>0.964</td></tr>
             <tr><td>Depression</td><td>Fusion ALL (XGB)</td><td>0.852</td><td>0.850</td><td>0.961</td></tr>
@@ -949,6 +1031,7 @@
     </details>
   </div>
 </section>
+
 
 <!-- ===== MANUSCRIPT (arXiv only) ===== -->
 <section id="manuscript">
@@ -1005,22 +1088,6 @@
 </script>
 
 
-<script>
-// simple fade-in on scroll
-const io = new IntersectionObserver(es=>es.forEach(e=>{
-  if(e.isIntersecting) e.target.classList.add('show');
-}), {threshold:.15});
-document.querySelectorAll('.fade-in').forEach(el=>io.observe(el));
-
-// animated KPI counters
-function animateCount(el){
-  const to = parseFloat(el.dataset.to); if(isNaN(to)) return;
-  let cur = 0; const step = to/30;
-  const tick = ()=>{ cur = Math.min(to, cur+step); el.textContent = cur.toFixed(3); if(cur<to) requestAnimationFrame(tick); };
-  tick();
-}
-document.querySelectorAll('.count').forEach(animateCount);
-</script>
 
 
   <!-- ===== LIGHTBOX (no dark page) ===== -->
@@ -1101,6 +1168,47 @@ document.querySelectorAll('.count').forEach(animateCount);
 })();
 </script>
 
+<script>
+// Reveal on scroll (staggered)
+const observer = new IntersectionObserver((entries)=>{
+  entries.forEach((e, i)=>{
+    if (e.isIntersecting){
+      e.target.classList.add('show');
+      // stagger
+      e.target.style.transitionDelay = `${(i%6)*60}ms`;
+      // start counters within visible KPI
+      e.target.querySelectorAll('.count').forEach(startCount);
+      observer.unobserve(e.target);
+    }
+  });
+},{ threshold: .15 });
+
+document.querySelectorAll('#results .fade-in, #results .kpi').forEach(el=>observer.observe(el));
+
+// Count-up animation (3 significant decimals)
+function startCount(el){
+  const target = parseFloat(el.dataset.to);
+  if (isNaN(target)) return;
+
+  // no animation if user prefers reduced motion
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (reduce){ el.textContent = target.toFixed(3); return; }
+
+  let now = 0;
+  const duration = 900; // ms
+  const t0 = performance.now();
+
+  function easeOut(t){ return 1 - Math.pow(1 - t, 3); }
+
+  function tick(t){
+    const p = Math.min(1, (t - t0) / duration);
+    now = target * easeOut(p);
+    el.textContent = now.toFixed(3);
+    if (p < 1) requestAnimationFrame(tick);
+  }
+  requestAnimationFrame(tick);
+}
+</script>
 
   <script>
     // Lightbox without dark scrim
