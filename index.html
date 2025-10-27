@@ -75,6 +75,50 @@
   background: linear-gradient(90deg, rgba(34,80,244,.5), rgba(34,80,244,.15));
 }
 
+  /* --- Abstract typography --- */
+.section#abstract h2{
+  font-size: clamp(2.2rem, 2.2vw + 1.4rem, 3.2rem);
+  letter-spacing:-0.02em;
+}
+
+.section#abstract p{
+  max-width: 75ch;
+  margin-inline:auto;
+  font-size: clamp(1.1rem, 0.9vw + 1rem, 1.45rem);
+  line-height: 1.9;
+  text-align: justify;
+  text-justify: inter-word;
+  hyphens: auto;
+  color: var(--muted, #5b6b80);
+}
+/* --- Results KPIs / badges / animations --- */
+.kpis{display:grid;grid-template-columns:repeat(12,1fr);gap:var(--gap)}
+.kpi{grid-column:span 3;background:var(--card);border:1px solid rgba(15,36,65,.06);
+  border-radius:var(--radius);box-shadow:var(--shadow);padding:16px 18px}
+.kpi h4{margin:2px 0 8px;font-size:14px;color:var(--muted);font-weight:700;letter-spacing:.04em}
+.kpi .big{font-weight:900;font-size:36px;letter-spacing:-.02em}
+.kpi small{color:var(--muted)}
+@media(max-width:900px){.kpi{grid-column:span 6}}
+@media(max-width:640px){.kpi{grid-column:1/-1}}
+
+.badges{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0 0}
+.badge{border:1px solid rgba(15,36,65,.10);background:#fff;border-radius:999px;padding:6px 10px;font-weight:600;font-size:12px}
+.badge.brand{background:rgba(34,80,244,.08);border-color:rgba(34,80,244,.15);color:var(--brand-ink)}
+
+.accordion{border:1px solid rgba(15,36,65,.08);border-radius:var(--radius);background:#fff;box-shadow:var(--shadow)}
+.accordion summary{cursor:pointer;list-style:none;padding:14px 16px;font-weight:800}
+.accordion summary::-webkit-details-marker{display:none}
+.accordion .content{padding:0 16px 16px;color:var(--muted)}
+.accordion .cols{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:760px){.accordion .cols{grid-template-columns:1fr}}
+
+.reasons{display:grid;gap:12px;margin-top:14px}
+.reason{background:#fff;border:1px solid rgba(15,36,65,.08);border-radius:14px;padding:12px}
+
+.fade-in{opacity:0;transform:translateY(8px);transition:opacity .6s ease,transform .6s ease}
+.fade-in.show{opacity:1;transform:none}
+.count{transition:opacity .3s ease}
+
 /* Optional: slightly larger subsection headings inside cards */
 .card h3{
   font-weight: 800;
@@ -162,36 +206,156 @@
     }
     .arch img{ display:block; width:100%; height:auto; object-fit:contain }
 
-    /* ===== Sections / cards ===== */
-    section{padding:60px 20px}
-    .container{max-width:var(--max); margin:0 auto}
-    h2{font-size: clamp(26px, 3.4vw, 36px); margin:0 0 18px; letter-spacing:-.01em}
-    .lead{color:var(--muted); max-width:900px}
+    /* --- Card grid tightening & centering --- */
+.cards{
+  display:grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px,1fr));
+  gap: 28px;
+}
 
-    .grid{
-      display:grid; gap:var(--gap);
-      grid-template-columns: repeat(12, 1fr);
-    }
-    .card{
-      grid-column: span 6;
-      background:var(--card); border:1px solid rgba(15,36,65,.06);
-      border-radius:var(--radius); box-shadow:var(--shadow); padding:18px;
-    }
-    .card.tight{padding:12px}
-    @media (max-width:960px){
-      .card{grid-column: 1 / -1}
-    }
+.card{
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: 0 10px 30px rgba(15,23,42,.06);
+  padding: 18px;
+  transition: transform .25s ease, box-shadow .25s ease, filter .25s ease;
+  will-change: transform;
+}
 
-    /* Figure cards */
-    .fig-grid{
-      display:grid; gap:var(--gap);
-      grid-template-columns: repeat(12, 1fr);
-    }
-    .fig{ grid-column: span 4; background:var(--card); border:1px solid rgba(15,36,65,.06); border-radius:var(--radius); padding:14px; box-shadow:var(--shadow) }
-    .fig img{ width:100%; height:auto; object-fit:contain; display:block; border-radius:12px }
-    .fig p{ margin:8px 4px 2px; font-size:14px; color:var(--muted) }
-    @media (max-width:1100px){ .fig{ grid-column: span 6 } }
-    @media (max-width:720px){ .fig{ grid-column: 1 / -1 } }
+/* remove “fixed height”/extra space if you had it */
+.card .media,
+.card .media > img{
+  height: auto !important;
+  max-height: none !important;
+}
+
+.card .media{
+  margin: 8px 0 14px;
+}
+
+.card .media > img{
+  display:block;
+  margin-inline:auto;
+  max-width: 100%;
+  object-fit: contain;
+}
+
+.card .body{
+  margin-top: 8px;
+}
+
+.card:hover{
+  transform: translateY(-2px);
+  box-shadow: 0 16px 40px rgba(15,23,42,.10);
+}
+
+/* --- 3D flip + fullscreen on hover --- */
+.card-3d{
+  perspective: 1600px;
+  position: relative;
+}
+
+.card-3d .card-inner{
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform .6s cubic-bezier(.2,.7,.2,1);
+  min-height: 280px;
+}
+
+.card-3d .card-face{
+  position: relative;
+  backface-visibility: hidden;
+  transform: translateZ(0);
+}
+
+/* back face hidden until hovered */
+.card-3d .card-back{
+  position: absolute;
+  inset: 0;
+  border-radius: 18px;
+  background: #fff;
+  transform: rotateY(180deg);
+  overflow: hidden;
+}
+
+/* flip to back when hovered */
+.card-3d:hover .card-inner{
+  transform: rotateY(180deg);
+}
+
+/* fullscreen center + page blur using :has() */
+.cards{
+  position: relative;
+}
+
+.cards:has(.card-3d:hover) .card-3d:not(:hover){
+  filter: blur(4px) saturate(.8);
+  pointer-events: none;
+}
+
+.card-3d:hover{
+  position: fixed;
+  inset: auto;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%) !important;
+  z-index: 9999;
+  width: min(1100px, 92vw);
+  height: min(82vh, 920px);
+  padding: 0;                /* tighten */
+  box-shadow: 0 30px 120px rgba(2,8,23,.35);
+}
+
+/* ensure the inner fills the fullscreen card */
+.card-3d:hover .card-inner,
+.card-3d:hover .card-back{
+  height: 100%;
+}
+
+/* back layout: figure + long text side-by-side */
+.back-wrap{
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 22px;
+  height: 100%;
+  padding: 24px;
+}
+
+.back-figure{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  overflow:hidden;
+  border-radius: 14px;
+  background: linear-gradient(180deg,#f8fbff,#eef3ff);
+}
+
+.back-figure img{
+  width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+.back-text{
+  overflow:auto;
+  padding-right: 6px;
+}
+
+.back-text h4{
+  margin: 0 0 8px;
+  font-size: clamp(1.1rem, .6vw + 1rem, 1.4rem);
+}
+.back-text p{
+  font-size: clamp(1rem, .45vw + .95rem, 1.15rem);
+  line-height: 1.75;
+  color: var(--muted, #5b6b80);
+}
+
+/* smoothness + accessibility */
+@media (prefers-reduced-motion: reduce){
+  .card-3d .card-inner{ transition: none; }
+  .card{ transition: none; }
+}
 
     /* Tables */
     .table{width:100%; border-collapse: collapse; overflow:hidden; border-radius:14px; background:#fff; box-shadow:var(--shadow)}
@@ -288,7 +452,7 @@
   </header>
 
   <!-- ===== ABSTRACT ===== -->
-  <section id="abstract">
+  <section id="abstract" class="section">
     <div class="container">
       <h2 class="section-title">Abstract</h2>
       <p class="lead">
@@ -309,135 +473,414 @@
       <h2 class="section-title">Figure Walkthrough</h2>
 
 
-  <div class="fig-grid">
-  <!-- Row 1: Signal views -->
-  <figure class="fig">
-    <img src="assets/logmel.png" alt="Representative log-Mel spectrogram" data-zoom>
-    <p><strong>Signal view — Audio (Mel).</strong> High-energy vertical bands flag voiced speech; low-energy troughs reflect pauses. These patterns are later summarized into tempo, spectral slope and stability cues that correlate with affective intensity.</p>
-  </figure>
+<div class="cards">
 
-  <figure class="fig">
-    <img src="assets/dep_bars_fixed_v12.png" alt="Modality contributions: Depression" data-zoom>
-    <p><strong>Modality roles in Depression.</strong> Text dominates severity separation; audio contributes robustness under short, disfluent turns; facial micro-expressive cues support edge cases near the Mild/Moderate boundary.</p>
-  </figure>
-
-  <figure class="fig">
-    <img src="assets/ptsd_bars_fixed_v12.png" alt="Modality contributions: PTSD" data-zoom>
-    <p><strong>Modality roles in PTSD.</strong> Text+face is the strongest pair; gaze/head-pose regularity and AU clusters improve Severe detection where lexical cues alone saturate.</p>
-  </figure>
-
-  <!-- Row 2: Class-wise performance -->
-  <figure class="fig">
-    <img src="assets/perclass_f1_XGB_DEP_ALL.png" alt="Per-class F1 (Depression, fusion)" data-zoom>
-    <p><strong>Per-class F1 — Depression (fusion).</strong> Extremes (Minimal/Severe) are reliably identified; confusions concentrate between Mild/Moderate and Moderate/Moderately-severe — consistent with clinical ambiguity.</p>
-  </figure>
-
-  <figure class="fig">
-    <img src="assets/perclass_f1_XGB_PTSD_ALL.png" alt="Per-class F1 (PTSD, fusion)" data-zoom>
-    <p><strong>Per-class F1 — PTSD (fusion).</strong> Fusion preserves sensitivity in Moderate while sharpening precision in Severe, indicating complementary gains beyond text-only baselines.</p>
-  </figure>
-
-  <figure class="fig">
-    <img src="assets/decision_curve_DEP_fusion_xgb_perclass.png" alt="Decision-curve analysis depression" data-zoom>
-    <p><strong>Decision-curve (Depression).</strong> Net-benefit remains higher across clinically relevant thresholds, suggesting fewer unnecessary escalations for the same hit rate.</p>
-  </figure>
-
-  <!-- Row 3: Confusions & geometry -->
-  <figure class="fig">
-    <img src="assets/pooled_cm_XGB_DEP_ALL.png" alt="Confusion matrix Depression" data-zoom>
-    <p><strong>Confusion matrix — Depression.</strong> Errors are largely local (adjacent severities). This locality is desirable for downstream triage where near-misses induce similar care pathways.</p>
-  </figure>
-
-  <figure class="fig">
-    <img src="assets/pooled_cm_XGB_PTSD_ALL.png" alt="Confusion matrix PTSD" data-zoom>
-    <p><strong>Confusion matrix — PTSD.</strong> Severe cases separate clearly; None/Mild vs Moderate retains overlap tied to short utterances and neutral lexical content.</p>
-  </figure>
-
-  <figure class="fig">
-    <img src="assets/pooled_cm_XGB_DEP_AUDIO.png" alt="Unimodal failure" data-zoom>
-    <p><strong>Unimodal failure (Audio-only).</strong> Removing text collapses mid-tier precision, motivating late-fusion calibration to stabilize risk estimates.</p>
-  </figure>
-
-  <!-- Row 4: Global discrimination & attribution -->
-  <figure class="fig">
-    <img src="assets/roc_XGB_DEP_ALL.png" alt="ROC Depression" data-zoom>
-    <p><strong>ROC — Depression (fusion).</strong> High AUC indicates balanced discrimination; gains come from complementary cues in borderline classes.</p>
-  </figure>
-
-  <figure class="fig">
-    <img src="assets/roc_XGB_PTSD_ALL.png" alt="ROC PTSD" data-zoom>
-    <p><strong>ROC — PTSD (fusion).</strong> Robust separation across folds with minimal degradation under missing-modality ablations.</p>
-  </figure>
-
-  <figure class="fig">
-    <img src="assets/shap_DEP_fusion_xgb.png" alt="SHAP Depression" data-zoom>
-    <p><strong>Attribution — Depression.</strong> SHAP highlights lexical markers (negation, hopelessness frames) with supportive prosodic stability; facial AUs contribute to differentiating Moderate vs Moderately-severe.</p>
-  </figure>
-
-  <!-- Row 5: Embedding geometry -->
-  <figure class="fig">
-    <img src="assets/shap_PTSD_fusion_xgb.png" alt="SHAP PTSD" data-zoom>
-    <p><strong>Attribution — PTSD.</strong> Startle-like prosodic bursts and head-pose micro-stability increase SHAP importance for Severe, where textual descriptions alone compress.</p>
-  </figure>
-
-  <figure class="fig">
-    <img src="assets/pca2d_DEP_ALL.png" alt="PCA Depression" data-zoom>
-    <p><strong>Embedding geometry — PCA (Depression).</strong> Linear projection shows coarse gradients; overlap in mid-tiers reflects mixed lexical/prosodic presentations.</p>
-  </figure>
-
-  <figure class="fig">
-    <img src="assets/tsne2d_PTSD_ALL.png" alt="t-SNE PTSD" data-zoom>
-    <p><strong>Embedding geometry — t-SNE (PTSD).</strong> Non-linear neighborhoods reveal dense Severe clusters and diffuse Mild regions, matching confusion patterns above.</p>
-  </figure>
-</div>
-
-
-  <!-- ===== RESULTS ===== -->
-  <section id="results">
-    <div class="container">
-      <h2 class="section-title">Selected Results</h2>
-
-
-      <div class="grid">
-        <div class="card">
-          <h3>Label Distributions</h3>
-          <table class="table">
-            <thead><tr><th>Depression (PHQ-8)</th><th>n</th><th>PTSD (PCL-5 bands)</th><th>n</th></tr></thead>
-            <tbody>
-              <tr><td>Minimal (0–4)</td><td>187</td><td>None/Mild (≤20)</td><td>85</td></tr>
-              <tr><td>Mild (5–9)</td><td>96</td><td>Moderate (21–40)</td><td>180</td></tr>
-              <tr><td>Moderate (10–14)</td><td>64</td><td>Severe (≥41)</td><td>140</td></tr>
-              <tr><td>Moderately severe (15–19)</td><td>43</td><td></td><td></td></tr>
-              <tr><td>Severe (20–24)</td><td>15</td><td></td><td></td></tr>
-            </tbody>
-          </table>
+  <!-- 1) Signal: log-Mel spectrogram -->
+  <div class="card card-3d">
+    <div class="card-inner">
+      <div class="card-face card-front">
+        <div class="media">
+          <img src="assets/logmel.png" alt="Representative log-Mel spectrogram">
         </div>
-
-        <div class="card">
-          <h3>Setup (fixed across folds)</h3>
-          <p class="lead" style="margin-top:6px">
-            Text 768-D · Audio 256-D · Face 512-D → Fusion 1,536-D. XGBoost multi:softprob, 2k trees,
-            lr=0.05, depth=8, subsample=0.9, colsample=0.8, λ=2. Stratified 5-fold CV with inverse class weights.
-            Metrics include ACC, weighted-F1, AUC, MCC, κ, PR/ROC, decision-curves.
-          </p>
-        </div>
-
-        <div class="card" style="grid-column:1/-1">
-          <h3>Cross-validated Performance (excerpt)</h3>
-          <table class="table">
-            <thead><tr><th>Task</th><th>Model</th><th>ACC</th><th>F1w</th><th>AUC</th></tr></thead>
-            <tbody>
-              <tr><td>Depression</td><td>TEXT (XGB)</td><td>0.862</td><td>0.860</td><td>0.964</td></tr>
-              <tr><td>Depression</td><td>Fusion ALL (XGB)</td><td>0.852</td><td>0.850</td><td>0.961</td></tr>
-              <tr><td>PTSD</td><td>TEXT (XGB)</td><td>0.862</td><td>0.861</td><td>0.971</td></tr>
-              <tr><td>PTSD</td><td>Fusion ALL (XGB)</td><td>0.854</td><td>0.854</td><td>0.970</td></tr>
-            </tbody>
-          </table>
-          <p class="lead" style="margin-top:10px">Full table with confidence intervals can be provided as CSV or an expandable table.</p>
+        <h3>Signal view — Audio (Mel)</h3>
+        <p class="muted">Vertical bands = voiced speech; troughs = pauses and low energy.</p>
+      </div>
+      <div class="card-face card-back">
+        <div class="back-wrap">
+          <div class="back-figure"><img src="assets/logmel.png" alt="log-Mel spectrogram (large)"></div>
+          <div class="back-text">
+            <h4>What this shows</h4>
+            <p>We summarize speech into time–frequency statistics (means/SDs over Mel bins and Δ)
+               that capture tempo, spectral slope, and stability—signals linked to affect and arousal.
+               This compact 256-D audio embedding complements text and facial cues in fusion.</p>
+          </div>
         </div>
       </div>
     </div>
-  </section>
+  </div>
+
+  <!-- 2) Modality roles — Depression -->
+  <div class="card card-3d">
+    <div class="card-inner">
+      <div class="card-face card-front">
+        <div class="media"><img src="assets/dep_bars_fixed_v12.png" alt="Modality contributions in Depression"></div>
+        <h3>Modality roles — Depression</h3>
+        <p class="muted">Text separates severities; audio/face stabilize near boundaries.</p>
+      </div>
+      <div class="card-face card-back">
+        <div class="back-wrap">
+          <div class="back-figure"><img src="assets/dep_bars_fixed_v12.png" alt="Modality roles Depression (large)"></div>
+          <div class="back-text">
+            <h4>What this shows</h4>
+            <p>Linguistic markers dominate PHQ-8 grading. Audio adds robustness on short, disfluent
+               turns, while micro-expressive facial AUs help around Mild↔Moderate boundaries—where
+               presentations are mixed and ambiguity is highest.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3) Modality roles — PTSD -->
+  <div class="card card-3d">
+    <div class="card-inner">
+      <div class="card-face card-front">
+        <div class="media"><img src="assets/ptsd_bars_fixed_v12.png" alt="Modality contributions in PTSD"></div>
+        <h3>Modality roles — PTSD</h3>
+        <p class="muted">Text+Face strongest; audio–facial cues boost Severe detection.</p>
+      </div>
+      <div class="card-face card-back">
+        <div class="back-wrap">
+          <div class="back-figure"><img src="assets/ptsd_bars_fixed_v12.png" alt="Modality roles PTSD (large)"></div>
+          <div class="back-text">
+            <h4>What this shows</h4>
+            <p>For PTSD, gaze/head-pose regularity and AU clusters, together with lexical content,
+               strengthen separation—especially for Severe—where text alone saturates.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4) Per-class F1 — Depression -->
+  <div class="card card-3d">
+    <div class="card-inner">
+      <div class="card-face card-front">
+        <div class="media"><img src="assets/perclass_f1_XGB_DEP_ALL.png" alt="Per-class F1 (Depression)"></div>
+        <h3>Per-class F1 — Depression</h3>
+        <p class="muted">Extremes are easy; adjacent severities confuse more.</p>
+      </div>
+      <div class="card-face card-back">
+        <div class="back-wrap">
+          <div class="back-figure"><img src="assets/perclass_f1_XGB_DEP_ALL.png" alt="Per-class F1 Depression (large)"></div>
+          <div class="back-text">
+            <h4>What this shows</h4>
+            <p>Minimal and Severe are reliably identified. Confusions are local (Mild↔Moderate,
+               Moderate↔Mod-Severe), consistent with clinical ambiguity and overlapping symptom profiles.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 5) Per-class F1 — PTSD -->
+  <div class="card card-3d">
+    <div class="card-inner">
+      <div class="card-face card-front">
+        <div class="media"><img src="assets/perclass_f1_XGB_PTSD_ALL.png" alt="Per-class F1 (PTSD)"></div>
+        <h3>Per-class F1 — PTSD</h3>
+        <p class="muted">Moderate stays challenging; Severe is sharper with fusion.</p>
+      </div>
+      <div class="card-face card-back">
+        <div class="back-wrap">
+          <div class="back-figure"><img src="assets/perclass_f1_XGB_PTSD_ALL.png" alt="Per-class F1 PTSD (large)"></div>
+          <div class="back-text">
+            <h4>What this shows</h4>
+            <p>Fusion preserves sensitivity in Moderate while sharpening Severe—evidence that non-lexical
+               arousal cues (prosody, micro-stability) complement text in PTSD grading.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 6) Decision curve — Depression -->
+  <div class="card card-3d">
+    <div class="card-inner">
+      <div class="card-face card-front">
+        <div class="media"><img src="assets/decision_curve_DEP_fusion_xgb_perclass.png" alt="Decision curve (Depression)"></div>
+        <h3>Decision-curve (Depression)</h3>
+        <p class="muted">Higher net benefit across clinically relevant thresholds.</p>
+      </div>
+      <div class="card-face card-back">
+        <div class="back-wrap">
+          <div class="back-figure"><img src="assets/decision_curve_DEP_fusion_xgb_perclass.png" alt="Decision curve Depression (large)"></div>
+          <div class="back-text">
+            <h4>What this shows</h4>
+            <p>Calibrated late-fusion probabilities yield better net benefit than unimodal baselines,
+               suggesting fewer unnecessary escalations for similar hit-rates in stepped-care workflows.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 7) Confusion matrix — Depression -->
+  <div class="card card-3d">
+    <div class="card-inner">
+      <div class="card-face card-front">
+        <div class="media"><img src="assets/pooled_cm_XGB_DEP_ALL.png" alt="Confusion matrix (Depression)"></div>
+        <h3>Confusion — Depression</h3>
+        <p class="muted">Errors cluster locally between adjacent PHQ-8 tiers.</p>
+      </div>
+      <div class="card-face card-back">
+        <div class="back-wrap">
+          <div class="back-figure"><img src="assets/pooled_cm_XGB_DEP_ALL.png" alt="Confusion matrix Depression (large)"></div>
+          <div class="back-text">
+            <h4>What this shows</h4>
+            <p>Locality of errors is desirable for triage: near-misses often map to similar care pathways.
+               Fusion reduces off-diagonal, non-local mistakes compared to unimodal heads.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 8) Confusion matrix — PTSD -->
+  <div class="card card-3d">
+    <div class="card-inner">
+      <div class="card-face card-front">
+        <div class="media"><img src="assets/pooled_cm_XGB_PTSD_ALL.png" alt="Confusion matrix (PTSD)"></div>
+        <h3>Confusion — PTSD</h3>
+        <p class="muted">Severe separates; Mild vs Moderate retains overlap.</p>
+      </div>
+      <div class="card-face card-back">
+        <div class="back-wrap">
+          <div class="back-figure"><img src="assets/pooled_cm_XGB_PTSD_ALL.png" alt="Confusion matrix PTSD (large)"></div>
+          <div class="back-text">
+            <h4>What this shows</h4>
+            <p>Overlap in low–mid tiers reflects neutral lexical content and short utterances; Severe
+               benefits from audio–facial arousal patterns and posture/gaze regularity.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 9) Unimodal failure (Audio-only example) -->
+  <div class="card card-3d">
+    <div class="card-inner">
+      <div class="card-face card-front">
+        <div class="media"><img src="assets/pooled_cm_XGB_DEP_AUDIO.png" alt="Unimodal failure (Audio-only)"></div>
+        <h3>Unimodal Failure — Audio</h3>
+        <p class="muted">Removing text collapses mid-tier precision.</p>
+      </div>
+      <div class="card-face card-back">
+        <div class="back-wrap">
+          <div class="back-figure"><img src="assets/pooled_cm_XGB_DEP_AUDIO.png" alt="Unimodal Audio-only (large)"></div>
+          <div class="back-text">
+            <h4>What this shows</h4>
+            <p>Audio alone underfits PHQ-8 mid-tiers, motivating late-fusion calibration and
+               disorder-specific heads that can gracefully degrade when streams are noisy/missing.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 10) ROC — Depression -->
+  <div class="card card-3d">
+    <div class="card-inner">
+      <div class="card-face card-front">
+        <div class="media"><img src="assets/roc_XGB_DEP_ALL.png" alt="ROC (Depression)"></div>
+        <h3>ROC — Depression</h3>
+        <p class="muted">High AUC with balanced trade-offs across classes.</p>
+      </div>
+      <div class="card-face card-back">
+        <div class="back-wrap">
+          <div class="back-figure"><img src="assets/roc_XGB_DEP_ALL.png" alt="ROC Depression (large)"></div>
+          <div class="back-text">
+            <h4>What this shows</h4>
+            <p>Complementary cues lift discrimination near borderline classes, aligning with PR/decision-curve
+               gains and narrow CIs under stratified CV.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 11) ROC — PTSD -->
+  <div class="card card-3d">
+    <div class="card-inner">
+      <div class="card-face card-front">
+        <div class="media"><img src="assets/roc_XGB_PTSD_ALL.png" alt="ROC (PTSD)"></div>
+        <h3>ROC — PTSD</h3>
+        <p class="muted">Robust separation; slightly flatter than PHQ-8.</p>
+      </div>
+      <div class="card-face card-back">
+        <div class="back-wrap">
+          <div class="back-figure"><img src="assets/roc_XGB_PTSD_ALL.png" alt="ROC PTSD (large)"></div>
+          <div class="back-text">
+            <h4>What this shows</h4>
+            <p>Consistent AUC across folds; lingering overlap tracks the Mild↔Moderate confusion pattern
+               observed in the matrix and embeddings.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 12) SHAP — Depression -->
+  <div class="card card-3d">
+    <div class="card-inner">
+      <div class="card-face card-front">
+        <div class="media"><img src="assets/shap_DEP_fusion_xgb.png" alt="SHAP summary (Depression)"></div>
+        <h3>Attribution — Depression</h3>
+        <p class="muted">Language cues dominate; audio/face refine mid-tier splits.</p>
+      </div>
+      <div class="card-face card-back">
+        <div class="back-wrap">
+          <div class="back-figure"><img src="assets/shap_DEP_fusion_xgb.png" alt="SHAP Depression (large)"></div>
+          <div class="back-text">
+            <h4>What this shows</h4>
+            <p>SHAP aligns with clinical theory: negative affect frames, self-referential style, and reduced
+               lexical diversity drive PHQ-8; prosodic stability and AUs help Moderate vs Mod-Severe.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 13) SHAP — PTSD -->
+  <div class="card card-3d">
+    <div class="card-inner">
+      <div class="card-face card-front">
+        <div class="media"><img src="assets/shap_PTSD_fusion_xgb.png" alt="SHAP summary (PTSD)"></div>
+        <h3>Attribution — PTSD</h3>
+        <p class="muted">Prosodic bursts & head-pose micro-stability are salient.</p>
+      </div>
+      <div class="card-face card-back">
+        <div class="back-wrap">
+          <div class="back-figure"><img src="assets/shap_PTSD_fusion_xgb.png" alt="SHAP PTSD (large)"></div>
+          <div class="back-text">
+            <h4>What this shows</h4>
+            <p>Startle-like prosodic activity and stable head-pose/gaze increase importance for Severe PTSD,
+               complementing lexical markers when text saturates.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 14) Embedding geometry — PCA (DEP) -->
+  <div class="card card-3d">
+    <div class="card-inner">
+      <div class="card-face card-front">
+        <div class="media"><img src="assets/pca2d_DEP_ALL.png" alt="PCA embedding (Depression)"></div>
+        <h3>Embedding — PCA (DEP)</h3>
+        <p class="muted">Coarse gradients with mid-tier overlap.</p>
+      </div>
+      <div class="card-face card-back">
+        <div class="back-wrap">
+          <div class="back-figure"><img src="assets/pca2d_DEP_ALL.png" alt="PCA Depression (large)"></div>
+          <div class="back-text">
+            <h4>What this shows</h4>
+            <p>Linear projections separate extremes; mid-tiers intermix—mirroring per-class F1 and indicating
+               nuanced, mixed lexical–prosodic profiles.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 15) Embedding geometry — t-SNE (PTSD) -->
+  <div class="card card-3d">
+    <div class="card-inner">
+      <div class="card-face card-front">
+        <div class="media"><img src="assets/tsne2d_PTSD_ALL.png" alt="t-SNE embedding (PTSD)"></div>
+        <h3>Embedding — t-SNE (PTSD)</h3>
+        <p class="muted">Dense Severe clusters; diffuse Mild regions.</p>
+      </div>
+      <div class="card-face card-back">
+        <div class="back-wrap">
+          <div class="back-figure"><img src="assets/tsne2d_PTSD_ALL.png" alt="t-SNE PTSD (large)"></div>
+          <div class="back-text">
+            <h4>What this shows</h4>
+            <p>Non-linear neighborhoods expose compact Severe structure and spread-out Mild instances,
+               matching the confusion pattern and modality analysis above.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<section id="results">
+  <div class="container">
+    <h2>Selected Results</h2>
+
+    <!-- KPI strip (animated counters) -->
+    <div class="kpis">
+      <div class="kpi fade-in">
+        <h4>Depression · TEXT (XGB)</h4>
+        <div class="big"><span class="count" data-to="0.862">0.862</span> ACC</div>
+        <small>F1w 0.860 · AUC 0.964</small>
+      </div>
+      <div class="kpi fade-in">
+        <h4>PTSD · TEXT (XGB)</h4>
+        <div class="big"><span class="count" data-to="0.862">0.862</span> ACC</div>
+        <small>F1w 0.861 · AUC 0.971</small>
+      </div>
+      <div class="kpi fade-in">
+        <h4>Depression · Fusion (ALL)</h4>
+        <div class="big"><span class="count" data-to="0.852">0.852</span> ACC</div>
+        <small>F1w 0.850 · AUC 0.961</small>
+      </div>
+      <div class="kpi fade-in">
+        <h4>PTSD · Fusion (ALL)</h4>
+        <div class="big"><span class="count" data-to="0.854">0.854</span> ACC</div>
+        <small>F1w 0.854 · AUC 0.970</small>
+      </div>
+    </div>
+
+    <!-- Why these matter -->
+    <div class="reasons fade-in" style="margin-top:18px">
+      <div class="reason">
+        <strong>Fusion improves clinical utility.</strong> Decision-curve analysis shows higher net benefit across wide thresholds vs. unimodal baselines — ideal for threshold-based triage/stepped care.
+        <span title="Higher net benefit across thresholds for both tasks">ℹ︎</span>
+      </div>
+      <div class="reason">
+        <strong>Text is central; audio+face add robustness.</strong> Removing TEXT is the only ablation that materially drops ACC/F1; audio/face steady severe-case sensitivity and guard against missing/noisy streams.
+      </div>
+      <div class="reason">
+        <strong>Error shape.</strong> Per-class F1 peaks at extremes (minimal / severe); mid-tiers remain hardest. PR shows strong recall at high precision for severe cases; ROC ≈ ceiling.
+      </div>
+    </div>
+
+    <!-- Setup, now scannable -->
+    <details class="accordion fade-in" style="margin-top:22px" open>
+      <summary>Setup at a glance</summary>
+      <div class="content">
+        <div class="badges">
+          <span class="badge brand">Encoders: Text 768-D · Audio 256-D · Face 512-D</span>
+          <span class="badge">Fusion: concat → z-score per fold</span>
+          <span class="badge">Classifier: XGBoost multi:softprob</span>
+          <span class="badge">CV: stratified 5-fold · inverse class weights</span>
+          <span class="badge">Metrics: ACC, F1w, AUC, MCC, κ, PR/ROC</span>
+        </div>
+        <div class="cols" style="margin-top:12px">
+          <ul>
+            <li><strong>Why this setup?</strong> Class imbalance handled by per-fold weights; out-of-fold probabilities used for metrics.</li>
+            <li><strong>Robustness knobs.</strong> Late fusion stabilizes when one stream degrades (e.g., low-SNR audio).</li>
+          </ul>
+          <ul>
+            <li><strong>Interpretability.</strong> SHAP: language dominates depression; prosody/facial expressivity support PTSD.</li>
+            <li><strong>Where fusion helps.</strong> Net-benefit gains and severe-class sensitivity.</li>
+          </ul>
+        </div>
+      </div>
+    </details>
+
+    <!-- Existing table kept, but visually framed as “Details” -->
+    <details class="accordion fade-in" style="margin-top:16px">
+      <summary>Cross-validated Performance (full table)</summary>
+      <div class="content">
+        <!-- keep your original table markup below -->
+        <table class="table">
+          <thead><tr><th>Task</th><th>Model</th><th>ACC</th><th>F1w</th><th>AUC</th></tr></thead>
+          <tbody>
+            <tr><td>Depression</td><td>TEXT (XGB)</td><td>0.862</td><td>0.860</td><td>0.964</td></tr>
+            <tr><td>Depression</td><td>Fusion ALL (XGB)</td><td>0.852</td><td>0.850</td><td>0.961</td></tr>
+            <tr><td>PTSD</td><td>TEXT (XGB)</td><td>0.862</td><td>0.861</td><td>0.971</td></tr>
+            <tr><td>PTSD</td><td>Fusion ALL (XGB)</td><td>0.854</td><td>0.854</td><td>0.970</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </details>
+  </div>
+</section>
+
 <!-- ===== MANUSCRIPT (arXiv only) ===== -->
 <section id="manuscript">
   <div class="container">
@@ -493,6 +936,22 @@
 </script>
 
 
+<script>
+// simple fade-in on scroll
+const io = new IntersectionObserver(es=>es.forEach(e=>{
+  if(e.isIntersecting) e.target.classList.add('show');
+}), {threshold:.15});
+document.querySelectorAll('.fade-in').forEach(el=>io.observe(el));
+
+// animated KPI counters
+function animateCount(el){
+  const to = parseFloat(el.dataset.to); if(isNaN(to)) return;
+  let cur = 0; const step = to/30;
+  const tick = ()=>{ cur = Math.min(to, cur+step); el.textContent = cur.toFixed(3); if(cur<to) requestAnimationFrame(tick); };
+  tick();
+}
+document.querySelectorAll('.count').forEach(animateCount);
+</script>
 
 
   <!-- ===== LIGHTBOX (no dark page) ===== -->
@@ -505,7 +964,6 @@
   <footer>
     <div class="container">
       <div>© 2025 Filippo Cenacchi · <a class="inline" href="#top">Back to top</a></div>
-      <div>Static, single-file site. Drop images in <code>assets/</code> with the exact filenames above and push to GitHub Pages.</div>
     </div>
   </footer>
   <script>
@@ -530,6 +988,19 @@
     fallback.hidden = false;
   }
 })();
+</script>
+
+      <script>
+  (function(){
+    const grid = document.querySelector('.cards');
+    if(!grid) return;
+
+    const onEnter = e => { if(e.target.classList.contains('card-3d')) document.documentElement.style.overflow='hidden'; };
+    const onLeave = e => { if(e.target.classList.contains('card-3d')) document.documentElement.style.overflow=''; };
+
+    grid.addEventListener('pointerenter', onEnter, true);
+    grid.addEventListener('pointerleave', onLeave, true);
+  })();
 </script>
 
   <script>
