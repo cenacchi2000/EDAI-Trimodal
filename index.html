@@ -109,12 +109,7 @@
 .kpi--orchid{--c1:#7c3aed; --c2:#c4b5fd; }
 .kpi--amber{ --c1:#f59e0b; --c2:#fde68a; }
 
-/* —— CLICK ONLY: remove all hover flip/zoom remnants —— */
-.card-3d:hover,
-.card-3d:hover .card-inner{ transform:none !important; position:static !important; box-shadow:none !important; }
 
-/* Any old “:has(.card-3d:hover)” page-blur rules are neutralized */
-.cards:has(.card-3d:hover) .card-3d:not(:hover){ filter:none !important; pointer-events:auto !important; }
 
 /* Click-to-center flip (unchanged, just ensure it’s present) */
 .card-3d{ perspective:1600px; position:relative; }
@@ -137,10 +132,6 @@
 .back-figure img{ width:100%; max-height:100%; object-fit:contain; }
 .back-text{ overflow:auto; padding-right:6px; }
 
-/* Blur the page when active */
-.scrim{ position:fixed; inset:0; background:rgba(10,16,28,.25); backdrop-filter:blur(6px) saturate(1.1); opacity:0; pointer-events:none; transition:opacity .25s ease; z-index:10000; }
-.scrim.open{ opacity:1; pointer-events:auto; }
-body.modal-open{ overflow:hidden; }
 
 
 .kpi{
@@ -307,6 +298,7 @@ body.modal-open{ overflow:hidden; }
   will-change: transform;
 }
 
+    
 /* remove “fixed height”/extra space if you had it */
 .card .media,
 .card .media > img{
@@ -329,16 +321,73 @@ body.modal-open{ overflow:hidden; }
   margin-top: 8px;
 }
 
-.card:hover{
-  transform: translateY(-2px);
-  box-shadow: 0 16px 40px rgba(15,23,42,.10);
+/* ==== FIGURES: grid + cards (final) ==== */
+.container.narrow{ max-width:min(1180px,92vw); padding-inline:clamp(36px,6vw,96px); }
+
+.cards{ display:grid; grid-template-columns:repeat(3, minmax(280px,1fr)); gap:32px; align-items:stretch; }
+@media (max-width:1080px){ .cards{ grid-template-columns:repeat(2, minmax(280px,1fr)); } }
+@media (max-width:720px){ .cards{ grid-template-columns:1fr; } }
+
+.card{
+  background:#fff; border-radius:18px; box-shadow:0 10px 30px rgba(15,23,42,.06);
+  padding:18px; transition:transform .25s, box-shadow .25s; will-change:transform;
+}
+.card:hover{ transform:translateY(-2px); box-shadow:0 16px 40px rgba(15,23,42,.10); }
+
+/* ---- Hover flip ONLY (no .active, no :has, no scrim) ---- */
+.card-3d{ perspective:1200px; position:relative; }
+.card-3d .card-inner{
+  position:relative; min-height:280px;
+  transform-style:preserve-3d; transition:transform .55s cubic-bezier(.2,.7,.2,1);
+}
+.card-3d .card-face{ backface-visibility:hidden; transform:translateZ(0); }
+.card-3d .card-back{
+  position:absolute; inset:0; border-radius:18px; background:#fff; transform:rotateY(180deg); overflow:hidden;
+}
+.card-3d:hover .card-inner{ transform:rotateY(180deg); }
+
+/* Back layout */
+.back-wrap{ display:grid; grid-template-columns:1.2fr 1fr; gap:20px; height:100%; padding:20px; }
+.back-figure{ display:flex; align-items:center; justify-content:center; border-radius:14px; overflow:hidden; background:linear-gradient(180deg,#f8fbff,#eef3ff); }
+.back-figure img{ width:100%; max-height:100%; object-fit:contain; }
+.back-text{ overflow:auto; padding-right:6px; }
+.back-text h4{ margin:0 0 8px; font-size:clamp(1.1rem,.6vw + 1rem,1.4rem); }
+.back-text p{ font-size:clamp(1rem,.45vw + .95rem,1.15rem); line-height:1.75; color:var(--muted,#5b6b80); }
+
+/* ==== RESULTS: single, consistent layout (final) ==== */
+#results{ margin-top:96px; padding:18px 0 56px; position:relative; }
+#results .results-hero{
+  position:absolute; inset:0 0 auto 0; height:180px; z-index:-1;
+  background:
+    radial-gradient(900px 320px at 15% 0%, rgba(34,80,244,.12), transparent 60%),
+    radial-gradient(900px 320px at 85% 0%, rgba(99,102,241,.12), transparent 60%),
+    linear-gradient(180deg, rgba(255,255,255,.0), rgba(15,23,42,.03));
 }
 
-/* --- 3D flip + fullscreen on hover --- */
-.card-3d{
-  perspective: 1600px;
-  position: relative;
+.kpis{ display:grid; grid-template-columns:repeat(4, minmax(220px,1fr)); gap:16px; }
+@media (max-width:1100px){ .kpis{ grid-template-columns:repeat(2, minmax(240px,1fr)); } }
+@media (max-width:560px){ .kpis{ grid-template-columns:1fr; } }
+
+.kpi{
+  grid-column:auto; background:#fff; border:1px solid rgba(15,36,65,.08);
+  border-radius:18px; box-shadow:0 10px 30px rgba(15,23,42,.06);
+  padding:14px 16px;
 }
+.kpi header{ margin:0 0 8px; font-weight:700; color:#5b6b80; letter-spacing:.01em; line-height:1.25; }
+.kpi .kpi-main{ display:flex; align-items:baseline; justify-content:center; gap:6px; white-space:nowrap; }
+.kpi-value{
+  font-weight:900; letter-spacing:-.02em; font-size:clamp(26px,2.3vw,36px); line-height:1.05;
+  background:linear-gradient(90deg,var(--c1),var(--c2));
+  -webkit-background-clip:text; background-clip:text; color:transparent;
+}
+.kpi-unit{ font-weight:900; font-size:clamp(13px,1.1vw,16px); color:var(--ink); }
+.kpi footer{ margin-top:6px; color:#5b6b80; font-weight:600; }
+
+.kpi--brand{ --c1:#2250f4; --c2:#7aa2ff; }
+.kpi--mint { --c1:#0ea5a4; --c2:#7fe6e0; }
+.kpi--orchid{ --c1:#7c3aed; --c2:#c4b5fd; }
+.kpi--amber{ --c1:#f59e0b; --c2:#fde68a; }
+
 /* Results full-bleed soft gradient header */
 /* more separation from the figures section above */
 #results{
@@ -449,59 +498,7 @@ body.modal-open{ overflow:hidden; }
   .kpi, .fade-in{ opacity:1; transform:none; }
 }
 
-.card-3d .card-inner{
-  position: relative;
-  transform-style: preserve-3d;
-  transition: transform .6s cubic-bezier(.2,.7,.2,1);
-  min-height: 280px;
-}
 
-.card-3d .card-face{
-  position: relative;
-  backface-visibility: hidden;
-  transform: translateZ(0);
-}
-
-/* back face hidden until hovered */
-.card-3d .card-back{
-  position: absolute;
-  inset: 0;
-  border-radius: 18px;
-  background: #fff;
-  transform: rotateY(180deg);
-  overflow: hidden;
-}
-
-/* flip to back when hovered */
-.card-3d:hover .card-inner{
-  transform: rotateY(180deg);
-}
-
-/* fullscreen center + page blur using :has() */
-.cards{
-  position: relative;
-}
-/* 3D flip — hover only, no enlargement */
-.card-3d{ perspective:1600px; position:relative; }
-.card-3d .card-inner{
-  position:relative;
-  transform-style:preserve-3d;
-  transition:transform .6s cubic-bezier(.2,.7,.2,1);
-  min-height:280px;
-}
-.card-3d .card-face{ backface-visibility:hidden; transform:translateZ(0); }
-.card-3d .card-back{
-  position:absolute; inset:0;
-  border-radius:18px; background:#fff;
-  transform:rotateY(180deg); overflow:hidden;
-}
-/* flip in place on hover */
-.card-3d:hover .card-inner{ transform:rotateY(180deg); }
-
-/* keep other cards intact (no blur, no pointer lock) */
-.cards:has(.card-3d:hover) .card-3d:not(:hover){
-  filter:none; pointer-events:auto;
-}
 
 /* back layout stays the same */
 .back-wrap{ display:grid; grid-template-columns:1.2fr 1fr; gap:24px; height:100%; padding:24px; }
@@ -575,17 +572,7 @@ body.modal-open{ overflow:hidden; }
 .card-3d .card-face{ backface-visibility:hidden; }
 .card-3d .card-back{ position:absolute; inset:0; border-radius:18px; background:#fff; transform:rotateY(180deg); overflow:hidden; }
 
-/* —— NO HOVER STATES — only .active will flip —— */
-.card-3d.active .card-inner{ transform:rotateY(180deg); }
 
-/* Fullscreen card when active */
-.card-3d.active{
-  position:fixed; top:50%; left:50%; transform:translate(-50%,-50%) !important;
-  z-index:9999; width:min(1100px,92vw); height:min(82vh,920px); padding:0;
-  box-shadow:0 30px 120px rgba(2,8,23,.35);
-}
-.card-3d.active .card-inner, .card-3d.active .card-back{ height:100%; }
-.cards:has(.card-3d.active) .card-3d:not(.active){ filter:blur(4px) saturate(.9); pointer-events:none; }
 
 /* Back layout */
 .back-wrap{ display:grid; grid-template-columns:1.2fr 1fr; gap:24px; height:100%; padding:24px; }
@@ -615,21 +602,6 @@ body.modal-open{ overflow:hidden; }
 @media(max-width:800px){ .kpi{ grid-column: span 6; } }
 @media(max-width:560px){ .kpi{ grid-column: 1 / -1; } }
 
-    /* --- kill click-to-center variants if any remain --- */
-.card-3d.active{ position:static !important; inset:auto !important; width:auto !important; height:auto !important; transform:none !important; box-shadow:none !important; z-index:auto !important; }
-.scrim{ display:none !important; }
-body.modal-open, html[style*="overflow: hidden"]{ overflow:auto !important; }
-
-    /* --- Flip cards: hover-only, no blur, no :has() --- */
-.card-3d{ perspective:1200px; position:relative; }
-.card-3d .card-inner{
-  position:relative; min-height:280px;
-  transform-style:preserve-3d; will-change:transform;
-  transition:transform .55s cubic-bezier(.2,.7,.2,1);
-}
-.card-3d .card-face{ backface-visibility:hidden; transform:translateZ(0); }
-.card-3d .card-back{ position:absolute; inset:0; border-radius:18px; background:#fff; transform:rotateY(180deg); overflow:hidden; }
-.card-3d:hover .card-inner{ transform:rotateY(180deg); }
 
 /* back layout */
 .back-wrap{ display:grid; grid-template-columns:1.2fr 1fr; gap:20px; height:100%; padding:20px; }
@@ -1288,7 +1260,6 @@ function startCount(el){
 }
 </script>
 
-   <div id="scrim" class="scrim" aria-hidden="true"></div>
 
 
 
