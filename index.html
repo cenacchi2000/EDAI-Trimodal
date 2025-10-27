@@ -350,37 +350,45 @@
   line-height: 1.75;
   color: var(--muted, #5b6b80);
 }
-
-/* --- more whitespace at the sides for the figures section --- */
+/* Wider side whitespace for the figures section */
 .container.narrow{
-  /* slightly smaller max width + generous side padding */
   max-width: min(1040px, 86vw);
-  padding-inline: clamp(28px, 6vw, 96px);
+  padding-inline: clamp(32px, 6vw, 96px);
 }
 
-/* center the grid nicely and increase gutters a touch */
+/* Exactly two cards per row on desktop; one on small screens */
 .cards{
+  display: grid;
+  grid-template-columns: repeat(2, minmax(320px, 1fr));
+  gap: 32px;
   margin-inline: auto;
-  gap: 32px; /* was 28 */
   align-items: stretch;
 }
+@media (max-width: 820px){
+  .cards{ grid-template-columns: 1fr; }
+}
 
-/* ====== flip/fullscreen now uses .active (set by JS after 4s dwell) ====== */
+/* Remove hover logic entirely */
+.cards:has(.card-3d:hover) .card-3d:not(:hover){ filter:none; pointer-events:auto; }
+.card-3d:hover,
+.card-3d:hover .card-inner{ transform:none; position:static; }
+
+/* Click-to-open uses .active */
 .card-3d .card-inner{
   transform-style: preserve-3d;
   transition: transform .6s cubic-bezier(.2,.7,.2,1);
+  min-height: 280px;
 }
-
-/* FLIP only when active */
+.card-3d .card-back{ position:absolute; inset:0; border-radius:18px; background:#fff; transform:rotateY(180deg); overflow:hidden; }
 .card-3d.active .card-inner{ transform: rotateY(180deg); }
 
-/* page blur only when there is an active card */
+/* Blur siblings only when one is active */
 .cards:has(.card-3d.active) .card-3d:not(.active){
-  filter: blur(4px) saturate(.8);
+  filter: blur(4px) saturate(.9);
   pointer-events: none;
 }
 
-/* fullscreen center only when active (no :hover anymore) */
+/* Fullscreen center ONLY when active */
 .card-3d.active{
   position: fixed;
   top: 50%;
@@ -392,13 +400,21 @@
   padding: 0;
   box-shadow: 0 30px 120px rgba(2,8,23,.35);
 }
-
-/* ensure the inner/back fill the active card */
 .card-3d.active .card-inner,
-.card-3d.active .card-back{ height: 100%; }
+.card-3d.active .card-back{ height:100%; }
 
-/* slightly larger back layout gap for readability in fullscreen */
-.card-3d.active .back-wrap{ gap: 26px; }
+/* Back layout for long explanations */
+.back-wrap{
+  display:grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 24px;
+  height:100%;
+  padding: 24px;
+}
+.back-figure{ display:flex; align-items:center; justify-content:center; overflow:hidden; border-radius:14px; background:linear-gradient(180deg,#f8fbff,#eef3ff); }
+.back-figure img{ width:100%; max-height:100%; object-fit:contain; }
+.back-text{ overflow:auto; padding-right:6px; }
+
 
 /* accessibility: reduce animation if the user prefers */
 @media (prefers-reduced-motion: reduce){
@@ -527,9 +543,6 @@
   <div class="container narrow">
     <h2 class="section-title">Figure Walkthrough</h2>
     <div class="cards">
-
-
-<div class="cards">
 
   <!-- 1) Signal: log-Mel spectrogram -->
   <div class="card card-3d">
@@ -1046,69 +1059,45 @@ document.querySelectorAll('.count').forEach(animateCount);
 })();
 </script>
 
-      <script>
-  (function(){
-    const grid = document.querySelector('.cards');
-    if(!grid) return;
-
-    const onEnter = e => { if(e.target.classList.contains('card-3d')) document.documentElement.style.overflow='hidden'; };
-    const onLeave = e => { if(e.target.classList.contains('card-3d')) document.documentElement.style.overflow=''; };
-
-    grid.addEventListener('pointerenter', onEnter, true);
-    grid.addEventListener('pointerleave', onLeave, true);
-  })();
-</script>
-
-      <script>
+   <script>
 (function(){
-  const DWELL_MS = 4000; // 4 seconds
   const cards = document.querySelectorAll('.cards .card-3d');
-  const timers = new WeakMap();
 
-  function activate(card){
-    // cancel any pending timers for others
-    cards.forEach(c => { if (c !== card) clearTimer(c); });
+  function open(card){
+    // close any currently open card
+    document.querySelectorAll('.card-3d.active').forEach(c=>c.classList.remove('active'));
     card.classList.add('active');
     document.documentElement.style.overflow = 'hidden';
   }
 
-  function deactivate(card){
-    if (!card) card = document.querySelector('.card-3d.active');
-    if (card) card.classList.remove('active');
-    document.documentElement.style.overflow = '';
+  function close(card){
+    (card || document.querySelector('.card-3d.active'))?.classList.remove('active');
+    if (!document.querySelector('.card-3d.active')){
+      document.documentElement.style.overflow = '';
+    }
   }
 
-  function clearTimer(card){
-    const t = timers.get(card);
-    if (t){ clearTimeout(t); timers.delete(card); }
-  }
+  // Toggle by clicking the card front/back (but keep clicks inside back-text scrollable)
+  cards.forEach(card=>{
+    card.addEventListener('click', (e)=>{
+      // Don’t toggle when clicking links/buttons inside the back text
+      const isInteractive = e.target.closest('a,button,summary,details');
+      if (isInteractive) return;
 
-  cards.forEach(card => {
-    card.addEventListener('pointerenter', () => {
-      clearTimer(card);
-      const t = setTimeout(() => activate(card), DWELL_MS);
-      timers.set(card, t);
-    }, {passive:true});
-
-    card.addEventListener('pointerleave', () => {
-      // if it hasn't activated yet, just cancel the timer; if active, close it
-      if (!card.classList.contains('active')) { clearTimer(card); }
-      else { deactivate(card); }
+      const already = card.classList.contains('active');
+      if (already) close(card); else open(card);
+      e.stopPropagation();
     });
-
-    // also close on wheel/scroll within card or when user presses Escape
-    card.addEventListener('wheel', () => { if (card.classList.contains('active')) deactivate(card); }, {passive:true});
   });
 
-  document.addEventListener('keydown', (e)=>{
-    if (e.key === 'Escape') deactivate();
-  });
-
-  // clicking outside an active card closes it
+  // Close when clicking outside an active card
   document.addEventListener('pointerdown', (e)=>{
     const active = document.querySelector('.card-3d.active');
-    if (active && !active.contains(e.target)) deactivate(active);
+    if (active && !active.contains(e.target)) close(active);
   });
+
+  // Close on Escape
+  document.addEventListener('keydown', (e)=>{ if(e.key === 'Escape') close(); });
 })();
 </script>
 
