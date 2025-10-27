@@ -55,88 +55,72 @@
   text-align: center;
 }
 
-/* ===== Section titles hard-center (safe overwrite) ===== */
-.section-title{
-  text-align:center;
-  margin: 0 0 24px;
-}
-#figures .section-title,
-#results .section-title{ text-align:center; }
+/* Center section titles (both) */
+.section-title{ text-align:center; margin:0 0 24px; }
 
-/* ===== Containers (remove right blank) ===== */
-.container{ max-width: min(1280px, 96vw); margin-inline:auto; padding-inline: clamp(16px, 4vw, 40px); }
-.container.narrow{ max-width: min(1280px, 96vw); padding-inline: clamp(16px, 4vw, 40px); }
+/* Containers wide enough to kill right-hand blank space */
+.container, .container.narrow{ max-width:min(1280px,96vw); margin-inline:auto; padding-inline:clamp(16px,4vw,40px); }
 
-/* ===== FIGURES: 3 per row (responsive) ===== */
+/* FIGURES: exactly 3 per row on wide screens */
 .cards.cards-fig{
   display:grid;
-  grid-template-columns: repeat(3, minmax(260px, 1fr));
-  gap: 28px;
+  grid-template-columns:repeat(3, minmax(280px,1fr));
+  gap:28px;
   margin-inline:auto;
   align-items:stretch;
 }
-@media (max-width: 1100px){ .cards.cards-fig{ grid-template-columns: repeat(2, minmax(260px,1fr)); } }
-@media (max-width: 720px) { .cards.cards-fig{ grid-template-columns: 1fr; } }
+@media (max-width:1080px){ .cards.cards-fig{ grid-template-columns:repeat(2, minmax(280px,1fr)); } }
+@media (max-width:720px){ .cards.cards-fig{ grid-template-columns:1fr; } }
 
-/* kill any leftover hover logic */
-.cards .card-3d:hover,
-.cards .card-3d:hover .card-inner{ transform:none !important; position:static !important; }
+/* Space results away from figures */
+#results{ margin-top:72px; }
+
+/* RESULTS: full width, 4 KPIs across on desktop */
+#results .results-wrap{ max-width:min(1400px,96vw); margin:0 auto; padding:0 clamp(24px,5vw,48px); text-align:center; }
+.kpis{ display:grid; grid-template-columns:repeat(4, minmax(240px,1fr)); gap:20px; }
+@media (max-width:1100px){ .kpis{ grid-template-columns:repeat(2, minmax(240px,1fr)); } }
+@media (max-width:560px){ .kpis{ grid-template-columns:1fr; } }
+
+/* KPI sizing toned down */
+.kpi{ background:#fff; border:1px solid rgba(15,36,65,.06); border-radius:18px; padding:16px 16px 14px; box-shadow:0 10px 30px rgba(15,23,42,.06); }
+.kpi header{ font-weight:700; color:#5b6b80; letter-spacing:.02em; margin-bottom:6px; }
+.kpi .kpi-main{ display:flex; align-items:baseline; justify-content:center; gap:6px; }
+.kpi .kpi-value{ font-weight:900; letter-spacing:-.02em; font-size:clamp(32px,3.2vw,44px); line-height:1; }
+.kpi .kpi-unit{ font-weight:900; font-size:clamp(14px,1.4vw,18px); }
+
+/* —— CLICK ONLY: remove all hover flip/zoom remnants —— */
+.card-3d:hover,
+.card-3d:hover .card-inner{ transform:none !important; position:static !important; box-shadow:none !important; }
+
+/* Any old “:has(.card-3d:hover)” page-blur rules are neutralized */
 .cards:has(.card-3d:hover) .card-3d:not(:hover){ filter:none !important; pointer-events:auto !important; }
 
-/* ===== Click-to-focus flip (centered) ===== */
+/* Click-to-center flip (unchanged, just ensure it’s present) */
 .card-3d{ perspective:1600px; position:relative; }
-.card-3d .card-inner{ transform-style:preserve-3d; transition: transform .6s cubic-bezier(.2,.7,.2,1); }
+.card-3d .card-inner{ transform-style:preserve-3d; transition:transform .6s cubic-bezier(.2,.7,.2,1); }
 .card-3d .card-face{ backface-visibility:hidden; }
 .card-3d .card-back{ position:absolute; inset:0; transform:rotateY(180deg); border-radius:18px; overflow:hidden; background:#fff; }
 
-/* active state: lock center */
 .card-3d.active{
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%,-50%) !important;
-  width: min(1100px, 92vw);
-  height: min(82vh, 920px);
-  z-index: 10001;
-  box-shadow: 0 30px 120px rgba(2,8,23,.35);
+  position:fixed; top:50%; left:50%;
+  transform:translate(-50%,-50%) !important;
+  width:min(1100px,92vw); height:min(82vh,920px);
+  z-index:10001; box-shadow:0 30px 120px rgba(2,8,23,.35);
 }
-.card-3d.active .card-inner{ height:100%; transform: rotateY(180deg); }
+.card-3d.active .card-inner{ height:100%; transform:rotateY(180deg); }
 .card-3d.active .card-back{ height:100%; }
 
-/* blur page when a card is active */
-.scrim{
-  position: fixed; inset:0;
-  background: rgba(10,16,28,.25);
-  backdrop-filter: blur(6px) saturate(1.1);
-  opacity:0; pointer-events:none; transition: opacity .25s ease;
-  z-index:10000;
-}
-.scrim.open{ opacity:1; pointer-events:auto; }
-
-/* when a card is active, freeze scroll */
-body.modal-open{ overflow:hidden; }
-
-/* back layout inside the active card */
-.back-wrap{
-  display:grid; grid-template-columns: 1.2fr 1fr;
-  gap: 24px; height:100%; padding:24px;
-}
-.back-figure{ display:flex; justify-content:center; align-items:center; border-radius:14px; overflow:hidden; background:linear-gradient(180deg,#f8fbff,#eef3ff); }
+/* Centered back layout */
+.back-wrap{ display:grid; grid-template-columns:1.2fr 1fr; gap:24px; height:100%; padding:24px; }
+.back-figure{ display:flex; align-items:center; justify-content:center; overflow:hidden; border-radius:14px; background:linear-gradient(180deg,#f8fbff,#eef3ff); }
 .back-figure img{ width:100%; max-height:100%; object-fit:contain; }
 .back-text{ overflow:auto; padding-right:6px; }
 
-/* ===== RESULTS: full-width, centered ===== */
-#results .container{ max-width: min(1280px, 96vw); }
-#results .section-title{ text-align:center; }
+/* Blur the page when active */
+.scrim{ position:fixed; inset:0; background:rgba(10,16,28,.25); backdrop-filter:blur(6px) saturate(1.1); opacity:0; pointer-events:none; transition:opacity .25s ease; z-index:10000; }
+.scrim.open{ opacity:1; pointer-events:auto; }
+body.modal-open{ overflow:hidden; }
 
-.kpis{
-  display:grid;
-  grid-template-columns: repeat(3, minmax(260px, 1fr));
-  gap: 22px;
-  margin-inline:auto;
-}
-@media (max-width: 1000px){ .kpis{ grid-template-columns: repeat(2, minmax(260px,1fr)); } }
-@media (max-width: 640px) { .kpis{ grid-template-columns: 1fr; } }
 
 .kpi{
   background: radial-gradient(120% 140% at 0% 0%, #ffffff 0%, #f7faff 70%);
@@ -704,7 +688,8 @@ body.modal-open{ overflow:hidden; }
 <section id="figures">
   <div class="container narrow">
     <h2 class="section-title">Figure Walkthrough</h2>
-    <div class="cards">
+    <div class="cards cards-fig">
+
 
   <!-- 1) Signal: log-Mel spectrogram -->
   <div class="card card-3d">
@@ -1073,11 +1058,12 @@ body.modal-open{ overflow:hidden; }
     </div>
 
     <!-- Narrative bullets -->
-   <div class="reasons fade-in" style="margin-top:18px">
-  <div class="reason"><strong>Severity—not diagnosis—drives the gains.</strong> Framing as graded severity (PHQ-8, PCL-5 bands) concentrates errors between adjacent tiers and boosts utility for triage decisions (decision-curve net-benefit stays higher across clinical thresholds).</div>
-  <div class="reason"><strong>Text carries depression; audio+face lift PTSD severe.</strong> Linguistic markers dominate PHQ-8 separation, while prosodic bursts and head-pose/gaze regularity sharpen Severe PTSD where text saturates.</div>
-  <div class="reason"><strong>Fusion is robust to missing/noisy streams.</strong> Removing TEXT is the only ablation that materially drops ACC/F1; calibrated late-fusion preserves severe-case sensitivity when audio/face degrade.</div>
+  <div class="reasons fade-in" style="margin-top:18px">
+  <div class="reason"><strong>Severity, not diagnosis, drives the gains.</strong> Graded severity (PHQ-8 and PCL-5 bands) concentrates errors between adjacent tiers and boosts utility for triage decisions. Decision-curve net benefit stays higher across clinical thresholds.</div>
+  <div class="reason"><strong>Text carries depression; audio + face lift PTSD severe.</strong> Linguistic markers dominate PHQ-8 separation, while prosodic bursts and head-pose or gaze regularity sharpen Severe PTSD where text saturates.</div>
+  <div class="reason"><strong>Fusion is robust to missing or noisy streams.</strong> Removing TEXT is the only ablation that materially drops ACC and F1. Calibrated late fusion preserves severe-case sensitivity when audio or face degrade.</div>
 </div>
+
 
 
     <!-- Collapsible full table (kept; optional) -->
@@ -1279,7 +1265,8 @@ function startCount(el){
 }
 </script>
 
-    <script>
+   <div id="scrim" class="scrim" aria-hidden="true"></div>
+<script>
 (()=> {
   const scrim = document.getElementById('scrim');
   const cards = document.querySelectorAll('.cards .card-3d');
@@ -1298,7 +1285,6 @@ function startCount(el){
     }
   }
 
-  // toggle on card click (ignore interactive elements inside)
   cards.forEach(card=>{
     card.addEventListener('click', (e)=>{
       if (e.target.closest('a,button,summary,details')) return;
@@ -1307,7 +1293,6 @@ function startCount(el){
     });
   });
 
-  // close when clicking outside or on ESC
   scrim.addEventListener('click', ()=>close());
   document.addEventListener('keydown', e=>{ if(e.key==='Escape') close(); });
   document.addEventListener('pointerdown', e=>{
@@ -1316,6 +1301,7 @@ function startCount(el){
   });
 })();
 </script>
+
 
 
   <script>
