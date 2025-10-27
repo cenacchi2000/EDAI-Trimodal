@@ -351,6 +351,61 @@
   color: var(--muted, #5b6b80);
 }
 
+/* --- more whitespace at the sides for the figures section --- */
+.container.narrow{
+  /* slightly smaller max width + generous side padding */
+  max-width: min(1040px, 86vw);
+  padding-inline: clamp(28px, 6vw, 96px);
+}
+
+/* center the grid nicely and increase gutters a touch */
+.cards{
+  margin-inline: auto;
+  gap: 32px; /* was 28 */
+  align-items: stretch;
+}
+
+/* ====== flip/fullscreen now uses .active (set by JS after 4s dwell) ====== */
+.card-3d .card-inner{
+  transform-style: preserve-3d;
+  transition: transform .6s cubic-bezier(.2,.7,.2,1);
+}
+
+/* FLIP only when active */
+.card-3d.active .card-inner{ transform: rotateY(180deg); }
+
+/* page blur only when there is an active card */
+.cards:has(.card-3d.active) .card-3d:not(.active){
+  filter: blur(4px) saturate(.8);
+  pointer-events: none;
+}
+
+/* fullscreen center only when active (no :hover anymore) */
+.card-3d.active{
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%) !important;
+  z-index: 9999;
+  width: min(1100px, 92vw);
+  height: min(82vh, 920px);
+  padding: 0;
+  box-shadow: 0 30px 120px rgba(2,8,23,.35);
+}
+
+/* ensure the inner/back fill the active card */
+.card-3d.active .card-inner,
+.card-3d.active .card-back{ height: 100%; }
+
+/* slightly larger back layout gap for readability in fullscreen */
+.card-3d.active .back-wrap{ gap: 26px; }
+
+/* accessibility: reduce animation if the user prefers */
+@media (prefers-reduced-motion: reduce){
+  .card-3d .card-inner{ transition: none; }
+}
+
+    
 /* smoothness + accessibility */
 @media (prefers-reduced-motion: reduce){
   .card-3d .card-inner{ transition: none; }
@@ -469,8 +524,9 @@
 
   <!-- ===== FIGURE WALKTHROUGH (narrated; filenames match Overleaf) ===== -->
   <section id="figures">
-    <div class="container">
-      <h2 class="section-title">Figure Walkthrough</h2>
+  <div class="container narrow">
+    <h2 class="section-title">Figure Walkthrough</h2>
+    <div class="cards">
 
 
 <div class="cards">
@@ -1002,6 +1058,60 @@ document.querySelectorAll('.count').forEach(animateCount);
     grid.addEventListener('pointerleave', onLeave, true);
   })();
 </script>
+
+      <script>
+(function(){
+  const DWELL_MS = 4000; // 4 seconds
+  const cards = document.querySelectorAll('.cards .card-3d');
+  const timers = new WeakMap();
+
+  function activate(card){
+    // cancel any pending timers for others
+    cards.forEach(c => { if (c !== card) clearTimer(c); });
+    card.classList.add('active');
+    document.documentElement.style.overflow = 'hidden';
+  }
+
+  function deactivate(card){
+    if (!card) card = document.querySelector('.card-3d.active');
+    if (card) card.classList.remove('active');
+    document.documentElement.style.overflow = '';
+  }
+
+  function clearTimer(card){
+    const t = timers.get(card);
+    if (t){ clearTimeout(t); timers.delete(card); }
+  }
+
+  cards.forEach(card => {
+    card.addEventListener('pointerenter', () => {
+      clearTimer(card);
+      const t = setTimeout(() => activate(card), DWELL_MS);
+      timers.set(card, t);
+    }, {passive:true});
+
+    card.addEventListener('pointerleave', () => {
+      // if it hasn't activated yet, just cancel the timer; if active, close it
+      if (!card.classList.contains('active')) { clearTimer(card); }
+      else { deactivate(card); }
+    });
+
+    // also close on wheel/scroll within card or when user presses Escape
+    card.addEventListener('wheel', () => { if (card.classList.contains('active')) deactivate(card); }, {passive:true});
+  });
+
+  document.addEventListener('keydown', (e)=>{
+    if (e.key === 'Escape') deactivate();
+  });
+
+  // clicking outside an active card closes it
+  document.addEventListener('pointerdown', (e)=>{
+    const active = document.querySelector('.card-3d.active');
+    if (active && !active.contains(e.target)) deactivate(active);
+  });
+})();
+</script>
+
 
   <script>
     // Lightbox without dark scrim
