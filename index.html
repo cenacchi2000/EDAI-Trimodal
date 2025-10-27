@@ -55,25 +55,105 @@
   text-align: center;
 }
 
+/* ===== Section titles hard-center (safe overwrite) ===== */
 .section-title{
-  font-weight: var(--title-weight);
-  letter-spacing: var(--title-tracking);
-  font-size: clamp(28px, 4vw, 40px);
-  line-height: 1.08;
-  text-align: center;
-  margin: 0 0 20px;
-  position: relative;
+  text-align:center;
+  margin: 0 0 24px;
 }
+#figures .section-title,
+#results .section-title{ text-align:center; }
 
-.section-title::after{
-  content:"";
-  display:block;
-  width:72px;
-  height:3px;
-  border-radius:3px;
-  margin:14px auto 0;
-  background: linear-gradient(90deg, rgba(34,80,244,.5), rgba(34,80,244,.15));
+/* ===== Containers (remove right blank) ===== */
+.container{ max-width: min(1280px, 96vw); margin-inline:auto; padding-inline: clamp(16px, 4vw, 40px); }
+.container.narrow{ max-width: min(1280px, 96vw); padding-inline: clamp(16px, 4vw, 40px); }
+
+/* ===== FIGURES: 3 per row (responsive) ===== */
+.cards.cards-fig{
+  display:grid;
+  grid-template-columns: repeat(3, minmax(260px, 1fr));
+  gap: 28px;
+  margin-inline:auto;
+  align-items:stretch;
 }
+@media (max-width: 1100px){ .cards.cards-fig{ grid-template-columns: repeat(2, minmax(260px,1fr)); } }
+@media (max-width: 720px) { .cards.cards-fig{ grid-template-columns: 1fr; } }
+
+/* kill any leftover hover logic */
+.cards .card-3d:hover,
+.cards .card-3d:hover .card-inner{ transform:none !important; position:static !important; }
+.cards:has(.card-3d:hover) .card-3d:not(:hover){ filter:none !important; pointer-events:auto !important; }
+
+/* ===== Click-to-focus flip (centered) ===== */
+.card-3d{ perspective:1600px; position:relative; }
+.card-3d .card-inner{ transform-style:preserve-3d; transition: transform .6s cubic-bezier(.2,.7,.2,1); }
+.card-3d .card-face{ backface-visibility:hidden; }
+.card-3d .card-back{ position:absolute; inset:0; transform:rotateY(180deg); border-radius:18px; overflow:hidden; background:#fff; }
+
+/* active state: lock center */
+.card-3d.active{
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%) !important;
+  width: min(1100px, 92vw);
+  height: min(82vh, 920px);
+  z-index: 10001;
+  box-shadow: 0 30px 120px rgba(2,8,23,.35);
+}
+.card-3d.active .card-inner{ height:100%; transform: rotateY(180deg); }
+.card-3d.active .card-back{ height:100%; }
+
+/* blur page when a card is active */
+.scrim{
+  position: fixed; inset:0;
+  background: rgba(10,16,28,.25);
+  backdrop-filter: blur(6px) saturate(1.1);
+  opacity:0; pointer-events:none; transition: opacity .25s ease;
+  z-index:10000;
+}
+.scrim.open{ opacity:1; pointer-events:auto; }
+
+/* when a card is active, freeze scroll */
+body.modal-open{ overflow:hidden; }
+
+/* back layout inside the active card */
+.back-wrap{
+  display:grid; grid-template-columns: 1.2fr 1fr;
+  gap: 24px; height:100%; padding:24px;
+}
+.back-figure{ display:flex; justify-content:center; align-items:center; border-radius:14px; overflow:hidden; background:linear-gradient(180deg,#f8fbff,#eef3ff); }
+.back-figure img{ width:100%; max-height:100%; object-fit:contain; }
+.back-text{ overflow:auto; padding-right:6px; }
+
+/* ===== RESULTS: full-width, centered ===== */
+#results .container{ max-width: min(1280px, 96vw); }
+#results .section-title{ text-align:center; }
+
+.kpis{
+  display:grid;
+  grid-template-columns: repeat(3, minmax(260px, 1fr));
+  gap: 22px;
+  margin-inline:auto;
+}
+@media (max-width: 1000px){ .kpis{ grid-template-columns: repeat(2, minmax(260px,1fr)); } }
+@media (max-width: 640px) { .kpis{ grid-template-columns: 1fr; } }
+
+.kpi{
+  background: radial-gradient(120% 140% at 0% 0%, #ffffff 0%, #f7faff 70%);
+  border:1px solid rgba(15,36,65,.06);
+  border-radius:18px; padding:18px;
+  box-shadow: 0 10px 30px rgba(15,23,42,.06);
+  transform: translateY(6px);
+  opacity:.0;
+  animation: kpi-in .6s cubic-bezier(.2,.7,.2,1) forwards;
+}
+.kpi:nth-child(2){ animation-delay:.06s }
+.kpi:nth-child(3){ animation-delay:.12s }
+
+.kpi h4{ margin:2px 0 8px; font-size:14px; color:#5b6b80; font-weight:700; letter-spacing:.04em; }
+.kpi .big{ font-weight:900; font-size:40px; letter-spacing:-.02em }
+
+@keyframes kpi-in{ to{ transform:none; opacity:1 } }
 
   /* --- Abstract typography --- */
 .section#abstract h2{
@@ -621,7 +701,7 @@
   </section>
 
   <!-- ===== FIGURE WALKTHROUGH (narrated; filenames match Overleaf) ===== -->
-  <section id="figures">
+<section id="figures">
   <div class="container narrow">
     <h2 class="section-title">Figure Walkthrough</h2>
     <div class="cards">
@@ -993,24 +1073,12 @@
     </div>
 
     <!-- Narrative bullets -->
-    <div class="bullets fade-in">
-      <div class="bullet">
-        <span class="dot dot--brand"></span>
-        <p><strong>Text dominates depression; audio+face bolster PTSD.</strong> Removing TEXT is the only ablation that materially hurts both tasks; audio and face add robustness, especially improving <em>Severe PTSD</em> separation.</p>
-      </div>
-      <div class="bullet">
-        <span class="dot dot--mint"></span>
-        <p><strong>Fusion ≈ strongest unimodal on ACC/F1, but better for clinics.</strong> Tri-modal fusion matches text on headline metrics and improves decision-curve <em>net benefit</em> and robustness under noisy/missing streams.</p>
-      </div>
-      <div class="bullet">
-        <span class="dot dot--orchid"></span>
-        <p><strong>Error shape is clinically sensible.</strong> Extremes are reliably identified; confusions cluster between adjacent severities (e.g., Mild↔Moderate), reflecting real-world ambiguity.</p>
-      </div>
-      <div class="bullet">
-        <span class="dot dot--amber"></span>
-        <p><strong>PTSD synergy differs.</strong> Text+Face is particularly strong; fusion sharpens <em>Severe</em> while Moderate remains toughest—consistent with confusion matrices and per-class F1.</p>
-      </div>
-    </div>
+   <div class="reasons fade-in" style="margin-top:18px">
+  <div class="reason"><strong>Severity—not diagnosis—drives the gains.</strong> Framing as graded severity (PHQ-8, PCL-5 bands) concentrates errors between adjacent tiers and boosts utility for triage decisions (decision-curve net-benefit stays higher across clinical thresholds).</div>
+  <div class="reason"><strong>Text carries depression; audio+face lift PTSD severe.</strong> Linguistic markers dominate PHQ-8 separation, while prosodic bursts and head-pose/gaze regularity sharpen Severe PTSD where text saturates.</div>
+  <div class="reason"><strong>Fusion is robust to missing/noisy streams.</strong> Removing TEXT is the only ablation that materially drops ACC/F1; calibrated late-fusion preserves severe-case sensitivity when audio/face degrade.</div>
+</div>
+
 
     <!-- Collapsible full table (kept; optional) -->
     <details class="accordion fade-in" style="margin-top:22px">
@@ -1031,6 +1099,7 @@
     </details>
   </div>
 </section>
+<div id="scrim" class="scrim" aria-hidden="true"></div>
 
 
 <!-- ===== MANUSCRIPT (arXiv only) ===== -->
@@ -1209,6 +1278,45 @@ function startCount(el){
   requestAnimationFrame(tick);
 }
 </script>
+
+    <script>
+(()=> {
+  const scrim = document.getElementById('scrim');
+  const cards = document.querySelectorAll('.cards .card-3d');
+
+  function open(card){
+    document.querySelectorAll('.card-3d.active').forEach(c=>c.classList.remove('active'));
+    card.classList.add('active');
+    document.body.classList.add('modal-open');
+    scrim.classList.add('open');
+  }
+  function close(target){
+    (target || document.querySelector('.card-3d.active'))?.classList.remove('active');
+    if(!document.querySelector('.card-3d.active')){
+      document.body.classList.remove('modal-open');
+      scrim.classList.remove('open');
+    }
+  }
+
+  // toggle on card click (ignore interactive elements inside)
+  cards.forEach(card=>{
+    card.addEventListener('click', (e)=>{
+      if (e.target.closest('a,button,summary,details')) return;
+      card.classList.contains('active') ? close(card) : open(card);
+      e.stopPropagation();
+    });
+  });
+
+  // close when clicking outside or on ESC
+  scrim.addEventListener('click', ()=>close());
+  document.addEventListener('keydown', e=>{ if(e.key==='Escape') close(); });
+  document.addEventListener('pointerdown', e=>{
+    const active = document.querySelector('.card-3d.active');
+    if(active && !active.contains(e.target) && !scrim.contains(e.target)) close(active);
+  });
+})();
+</script>
+
 
   <script>
     // Lightbox without dark scrim
