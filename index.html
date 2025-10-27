@@ -319,7 +319,13 @@ body.modal-open{ overflow:hidden; }
   position: relative;
 }
 /* Results full-bleed soft gradient header */
-#results{ position:relative; padding: 18px 0 64px; }
+/* more separation from the figures section above */
+#results{
+  position:relative;
+  margin-top: 96px;      /* +++ added */
+  padding: 18px 0 64px;
+}
+
 #results .results-hero{
   position:absolute; inset:0 0 auto 0; height:220px; z-index:-1;
   background:
@@ -381,9 +387,21 @@ body.modal-open{ overflow:hidden; }
 .kpi .kpi-main{
   display:flex; align-items:baseline; justify-content:center; gap:8px;
 }
-.kpi-value{ font-weight:900; letter-spacing:-.02em; font-size: clamp(36px, 4vw, 54px); line-height:1; background: linear-gradient(90deg, var(--c1), var(--c2));
-  -webkit-background-clip:text; background-clip:text; color: transparent; }
-.kpi-unit{ font-weight:900; font-size: clamp(16px, 1.6vw, 20px); color: var(--ink); }
+/* smaller headline number + better fit with header/footer */
+.kpi-value{
+  font-weight:900;
+  letter-spacing:-.02em;
+  font-size: clamp(28px, 2.6vw, 40px);  /* ↓ reduced */
+  line-height:1.02;
+  background: linear-gradient(90deg, var(--c1), var(--c2));
+  -webkit-background-clip:text; background-clip:text; color: transparent;
+}
+.kpi-unit{
+  font-weight:900;
+  font-size: clamp(14px, 1.2vw, 18px);  /* ↓ slightly smaller */
+  color: var(--ink);
+}
+
 .kpi footer{ margin-top:6px; color:var(--muted); font-weight:600; }
 
 /* Bulleted narrative */
@@ -442,30 +460,33 @@ body.modal-open{ overflow:hidden; }
 .cards{
   position: relative;
 }
+/* 3D flip — hover only, no enlargement */
+.card-3d{ perspective:1600px; position:relative; }
+.card-3d .card-inner{
+  position:relative;
+  transform-style:preserve-3d;
+  transition:transform .6s cubic-bezier(.2,.7,.2,1);
+  min-height:280px;
+}
+.card-3d .card-face{ backface-visibility:hidden; transform:translateZ(0); }
+.card-3d .card-back{
+  position:absolute; inset:0;
+  border-radius:18px; background:#fff;
+  transform:rotateY(180deg); overflow:hidden;
+}
+/* flip in place on hover */
+.card-3d:hover .card-inner{ transform:rotateY(180deg); }
 
+/* keep other cards intact (no blur, no pointer lock) */
 .cards:has(.card-3d:hover) .card-3d:not(:hover){
-  filter: blur(4px) saturate(.8);
-  pointer-events: none;
+  filter:none; pointer-events:auto;
 }
 
-.card-3d:hover{
-  position: fixed;
-  inset: auto;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%,-50%) !important;
-  z-index: 9999;
-  width: min(1100px, 92vw);
-  height: min(82vh, 920px);
-  padding: 0;                /* tighten */
-  box-shadow: 0 30px 120px rgba(2,8,23,.35);
-}
-
-/* ensure the inner fills the fullscreen card */
-.card-3d:hover .card-inner,
-.card-3d:hover .card-back{
-  height: 100%;
-}
+/* back layout stays the same */
+.back-wrap{ display:grid; grid-template-columns:1.2fr 1fr; gap:24px; height:100%; padding:24px; }
+.back-figure{ display:flex; align-items:center; justify-content:center; overflow:hidden; border-radius:14px; background:linear-gradient(180deg,#f8fbff,#eef3ff); }
+.back-figure img{ width:100%; max-height:100%; object-fit:contain; }
+.back-text{ overflow:auto; padding-right:6px; }
 
 /* back layout: figure + long text side-by-side */
 .back-wrap{
