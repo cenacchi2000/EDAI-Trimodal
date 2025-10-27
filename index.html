@@ -346,6 +346,58 @@
 }
 .card-3d:hover .card-inner{ transform:rotateY(180deg); }
 
+/* === FINAL 3D HOVER FLIP — keep only this .card-3d block === */
+.card-3d{
+  position: relative;
+  perspective: 1200px;
+  overflow: hidden;            /* keeps the back inside rounded corners */
+}
+.card-3d .card-inner{
+  position: relative;
+  min-height: 280px;           /* your desired card height */
+  transform-style: preserve-3d;
+  transition: transform .55s cubic-bezier(.2,.7,.2,1);
+  will-change: transform;
+}
+/* Both faces fully overlap the inner */
+.card-3d .card-face{
+  position: absolute;
+  inset: 0;                    /* top/right/bottom/left: 0 */
+  border-radius: 18px;
+  backface-visibility: hidden;
+  transform: translateZ(0);
+}
+.card-3d .card-front{
+  /* optional: ensure front is above back initially */
+  z-index: 2;
+}
+.card-3d .card-back{
+  background: #fff;
+  transform: rotateY(180deg);
+  overflow: hidden;
+}
+/* Flip on hover */
+.card-3d:hover .card-inner{
+  transform: rotateY(180deg);
+}
+
+/* Back content layout */
+.back-wrap{
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 20px;
+  height: 100%;
+  padding: 20px;
+}
+.back-figure{
+  display:flex; align-items:center; justify-content:center;
+  border-radius:14px; overflow:hidden;
+  background: linear-gradient(180deg,#f8fbff,#eef3ff);
+}
+.back-figure img{ width:100%; max-height:100%; object-fit:contain; }
+.back-text{ overflow:auto; padding-right:6px; }
+
+    
 /* Back layout */
 .back-wrap{ display:grid; grid-template-columns:1.2fr 1fr; gap:20px; height:100%; padding:20px; }
 .back-figure{ display:flex; align-items:center; justify-content:center; border-radius:14px; overflow:hidden; background:linear-gradient(180deg,#f8fbff,#eef3ff); }
