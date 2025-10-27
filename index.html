@@ -74,19 +74,40 @@
 
 /* Space results away from figures */
 #results{ margin-top:72px; }
-
-/* RESULTS: full width, 4 KPIs across on desktop */
-#results .results-wrap{ max-width:min(1400px,96vw); margin:0 auto; padding:0 clamp(24px,5vw,48px); text-align:center; }
-.kpis{ display:grid; grid-template-columns:repeat(4, minmax(240px,1fr)); gap:20px; }
+/* --- Selected Results layout (simple + consistent) --- */
+#results{ margin-top:96px; padding:18px 0 56px; }
+.kpis{ display:grid; grid-template-columns:repeat(4, minmax(220px,1fr)); gap:16px; }
 @media (max-width:1100px){ .kpis{ grid-template-columns:repeat(2, minmax(240px,1fr)); } }
 @media (max-width:560px){ .kpis{ grid-template-columns:1fr; } }
 
-/* KPI sizing toned down */
-.kpi{ background:#fff; border:1px solid rgba(15,36,65,.06); border-radius:18px; padding:16px 16px 14px; box-shadow:0 10px 30px rgba(15,23,42,.06); }
-.kpi header{ font-weight:700; color:#5b6b80; letter-spacing:.02em; margin-bottom:6px; }
-.kpi .kpi-main{ display:flex; align-items:baseline; justify-content:center; gap:6px; }
-.kpi .kpi-value{ font-weight:900; letter-spacing:-.02em; font-size:clamp(32px,3.2vw,44px); line-height:1; }
-.kpi .kpi-unit{ font-weight:900; font-size:clamp(14px,1.4vw,18px); }
+.kpi{
+  background:#fff; border:1px solid rgba(15,36,65,.08);
+  border-radius:18px; box-shadow:0 10px 30px rgba(15,23,42,.06);
+  padding:14px 16px; /* tighter */
+}
+.kpi header{
+  margin:0 0 8px; font-weight:700; color:#5b6b80; letter-spacing:.01em;
+  line-height:1.25; word-break:keep-all;
+}
+.kpi .kpi-main{
+  display:flex; align-items:baseline; justify-content:center;
+  gap:6px; white-space:nowrap;  /* keeps “0.862 ACC” on one line */
+}
+.kpi-value{
+  font-weight:900; letter-spacing:-.02em;
+  font-size:clamp(26px,2.3vw,36px); /* smaller */
+  line-height:1.05;
+  background:linear-gradient(90deg,var(--c1),var(--c2));
+  -webkit-background-clip:text; background-clip:text; color:transparent;
+}
+.kpi-unit{ font-weight:900; font-size:clamp(13px,1.1vw,16px); color:var(--ink); }
+.kpi footer{ margin-top:6px; color:#5b6b80; font-weight:600; }
+
+/* subtle colorways (keep your four) */
+.kpi--brand{ --c1:#2250f4; --c2:#7aa2ff; }
+.kpi--mint{  --c1:#0ea5a4; --c2:#7fe6e0; }
+.kpi--orchid{--c1:#7c3aed; --c2:#c4b5fd; }
+.kpi--amber{ --c1:#f59e0b; --c2:#fde68a; }
 
 /* —— CLICK ONLY: remove all hover flip/zoom remnants —— */
 .card-3d:hover,
@@ -593,6 +614,29 @@ body.modal-open{ overflow:hidden; }
 @media(max-width:1100px){ .kpi{ grid-column: span 4; } }
 @media(max-width:800px){ .kpi{ grid-column: span 6; } }
 @media(max-width:560px){ .kpi{ grid-column: 1 / -1; } }
+
+    /* --- kill click-to-center variants if any remain --- */
+.card-3d.active{ position:static !important; inset:auto !important; width:auto !important; height:auto !important; transform:none !important; box-shadow:none !important; z-index:auto !important; }
+.scrim{ display:none !important; }
+body.modal-open, html[style*="overflow: hidden"]{ overflow:auto !important; }
+
+    /* --- Flip cards: hover-only, no blur, no :has() --- */
+.card-3d{ perspective:1200px; position:relative; }
+.card-3d .card-inner{
+  position:relative; min-height:280px;
+  transform-style:preserve-3d; will-change:transform;
+  transition:transform .55s cubic-bezier(.2,.7,.2,1);
+}
+.card-3d .card-face{ backface-visibility:hidden; transform:translateZ(0); }
+.card-3d .card-back{ position:absolute; inset:0; border-radius:18px; background:#fff; transform:rotateY(180deg); overflow:hidden; }
+.card-3d:hover .card-inner{ transform:rotateY(180deg); }
+
+/* back layout */
+.back-wrap{ display:grid; grid-template-columns:1.2fr 1fr; gap:20px; height:100%; padding:20px; }
+.back-figure{ display:flex; align-items:center; justify-content:center; border-radius:14px; overflow:hidden; background:linear-gradient(180deg,#f8fbff,#eef3ff); }
+.back-figure img{ width:100%; max-height:100%; object-fit:contain; }
+.back-text{ overflow:auto; padding-right:6px; }
+
 
 
     /* Tables */
@@ -1106,7 +1150,6 @@ body.modal-open{ overflow:hidden; }
     </details>
   </div>
 </section>
-<div id="scrim" class="scrim" aria-hidden="true"></div>
 
 
 <!-- ===== MANUSCRIPT (arXiv only) ===== -->
@@ -1202,48 +1245,7 @@ body.modal-open{ overflow:hidden; }
 })();
 </script>
 
-   <script>
-(function(){
-  const cards = document.querySelectorAll('.cards .card-3d');
-
-  function open(card){
-    // close any currently open card
-    document.querySelectorAll('.card-3d.active').forEach(c=>c.classList.remove('active'));
-    card.classList.add('active');
-    document.documentElement.style.overflow = 'hidden';
-  }
-
-  function close(card){
-    (card || document.querySelector('.card-3d.active'))?.classList.remove('active');
-    if (!document.querySelector('.card-3d.active')){
-      document.documentElement.style.overflow = '';
-    }
-  }
-
-  // Toggle by clicking the card front/back (but keep clicks inside back-text scrollable)
-  cards.forEach(card=>{
-    card.addEventListener('click', (e)=>{
-      // Don’t toggle when clicking links/buttons inside the back text
-      const isInteractive = e.target.closest('a,button,summary,details');
-      if (isInteractive) return;
-
-      const already = card.classList.contains('active');
-      if (already) close(card); else open(card);
-      e.stopPropagation();
-    });
-  });
-
-  // Close when clicking outside an active card
-  document.addEventListener('pointerdown', (e)=>{
-    const active = document.querySelector('.card-3d.active');
-    if (active && !active.contains(e.target)) close(active);
-  });
-
-  // Close on Escape
-  document.addEventListener('keydown', (e)=>{ if(e.key === 'Escape') close(); });
-})();
-</script>
-
+  
 <script>
 // Reveal on scroll (staggered)
 const observer = new IntersectionObserver((entries)=>{
@@ -1287,41 +1289,6 @@ function startCount(el){
 </script>
 
    <div id="scrim" class="scrim" aria-hidden="true"></div>
-<script>
-(()=> {
-  const scrim = document.getElementById('scrim');
-  const cards = document.querySelectorAll('.cards .card-3d');
-
-  function open(card){
-    document.querySelectorAll('.card-3d.active').forEach(c=>c.classList.remove('active'));
-    card.classList.add('active');
-    document.body.classList.add('modal-open');
-    scrim.classList.add('open');
-  }
-  function close(target){
-    (target || document.querySelector('.card-3d.active'))?.classList.remove('active');
-    if(!document.querySelector('.card-3d.active')){
-      document.body.classList.remove('modal-open');
-      scrim.classList.remove('open');
-    }
-  }
-
-  cards.forEach(card=>{
-    card.addEventListener('click', (e)=>{
-      if (e.target.closest('a,button,summary,details')) return;
-      card.classList.contains('active') ? close(card) : open(card);
-      e.stopPropagation();
-    });
-  });
-
-  scrim.addEventListener('click', ()=>close());
-  document.addEventListener('keydown', e=>{ if(e.key==='Escape') close(); });
-  document.addEventListener('pointerdown', e=>{
-    const active = document.querySelector('.card-3d.active');
-    if(active && !active.contains(e.target) && !scrim.contains(e.target)) close(active);
-  });
-})();
-</script>
 
 
 
